@@ -1,14 +1,17 @@
-Plugin = exports.Plugin = function (client) {
-	this.name = 'logger';
-	this.title = 'Logger';
-	this.version = '0.1';
-	this.author = 'Luke Strickland';
+var Plugin = (function () {
+    function Plugin(client) {
+        this.name = 'factoids';
+        this.title = 'Factoids';
+        this.version = '0.1';
+        this.author = 'Luke Strickland';
 
-	this.irc = client;
+        this.irc = client;
+    }
+    Plugin.prototype.onMessage = function (from, to, message) {
+        console.log(from, to, message);
+    };
+    return Plugin;
+})();
+exports.Plugin = Plugin;
 
-	this.record = [];
-};
-
-Plugin.prototype.onMessage = function (from, to, message) {
-
-};
+//@ sourceMappingURL=logger.js.map

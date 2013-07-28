@@ -8,10 +8,8 @@ var Plugin = (function () {
         this.irc = client;
     }
     Plugin.prototype.onMessage = function (from, to, message) {
-        console.log(from, to, message);
+        console.log(this.irc);
     };
     return Plugin;
 })();
-exports.Plugin = Plugin;
-
 //@ sourceMappingURL=logger.js.map

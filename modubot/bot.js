@@ -19,6 +19,7 @@ Bot = exports.Bot = function (config) {
 	this.config = config || {};
 
 	this.plugins = config.plugins || [];
+	this.hooks = [];
 
 };
 
@@ -36,6 +37,12 @@ Bot.prototype.spawn = function () {
 		var p = this.plugins[i];
 		plugin.load(this, p);
 	}
+
+	client.addListener('join', function (channel, nick, message) {
+		if (this.debug) {
+			console.log('Joined Channel: ', channel);
+		}
+	});
 
 	/**
 	 * Sends errors to plugins and if debug show them

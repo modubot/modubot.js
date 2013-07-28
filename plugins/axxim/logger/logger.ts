@@ -1,6 +1,6 @@
 ///<reference path='../../.ts/node.d.ts' />
 
-export class Plugin {
+class Plugin {
 	name: string;
 	title: string;
 	version: string;
@@ -18,7 +18,7 @@ export class Plugin {
 	}
 
 	onMessage(from, to, message) {
-		console.log(from, to, message);
+		console.log(this.irc);
 	}
 
 

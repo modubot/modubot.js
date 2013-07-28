@@ -11,6 +11,4 @@ Plugin = exports.Plugin = function (client) {
 
 Plugin.prototype.onMessage = function (from, to, message) {
 
-	// Determine if message is a factoid
-
 };

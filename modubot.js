@@ -11,7 +11,11 @@ var config = {
 	command: ".",
 	debug: true,
 
-	plugins: ['axxim/factoids', 'axxim/logger'],
+	plugins: [
+		'axxim/factoids',
+		'axxim/logger',
+	//	'axxim/url'
+	],
 
 	database: {
 		host: "localhost",

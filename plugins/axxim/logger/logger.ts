@@ -1,6 +1,6 @@
 ///<reference path='../../.ts/node.d.ts' />
 
-class Module {
+class Plugin {
 	name: string;
 	title: string;
 	version: string;

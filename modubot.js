@@ -11,7 +11,7 @@ var config = {
 	command: ".",
 	debug: true,
 
-	modules: [
+	plugins: [
 		//'axxim/factoids',
 		'axxim/logger',
 		'axxim/url'

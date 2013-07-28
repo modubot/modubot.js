@@ -1,6 +1,6 @@
 var irc = require('irc');
 
-var plugin = require('./plugin');
+var module = require('./module');
 
 Bot = exports.Bot = function (config) {
 
@@ -15,10 +15,10 @@ Bot = exports.Bot = function (config) {
 	this.admins = config.admins || ['clone1018'];
 	this.debug = config.debug || false;
 
-	// carry over config object to allow plugins to access it
+	// carry over config object to allow modules to access it
 	this.config = config || {};
 
-	this.plugins = config.plugins || [];
+	this.modules = config.modules || [];
 	this.hooks = [];
 
 };
@@ -33,9 +33,9 @@ Bot.prototype.spawn = function () {
 
 	this.client = client;
 
-	for (var i = 0, z = this.plugins.length; i < z; i++) {
-		var p = this.plugins[i];
-		plugin.load(this, p);
+	for (var i = 0, z = this.modules.length; i < z; i++) {
+		var p = this.modules[i];
+		module.load(this, p);
 	}
 
 	client.addListener('join', function (channel, nick, message) {
@@ -45,7 +45,7 @@ Bot.prototype.spawn = function () {
 	});
 
 	/**
-	 * Sends errors to plugins and if debug show them
+	 * Sends errors to modules and if debug show them
 	 */
 	client.addListener('error', function (message) {
 		if (this.debug) {

@@ -3,7 +3,7 @@
 import url = require('url');
 import http = require('http');
 
-export class Plugin {
+export class Module {
 
 	name:string;
 	title:string;

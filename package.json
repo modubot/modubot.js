@@ -1,0 +1,18 @@
+{
+	"name": "Modubot",
+	"description": "Motherfucking modubot written in NodeJS yo.",
+	"private": true,
+	"contributors": [
+		{
+			"name": "Kamal Nasser",
+			"email": "kamal@kamalnasser.net"
+		},
+		{
+			"name": "Luke Strickland",
+			"email": "luke@axxim.net"
+		}
+	],
+	"dependencies": {
+		"irc": ">= 0.3.5"
+	}
+}

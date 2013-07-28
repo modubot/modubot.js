@@ -14,7 +14,7 @@ exports.addListener = function (bot, plugin, event, callback) {
 	return bot.client.addListener(event, callback);
 };
 
-exports.reload = function(bot, namespace) {
+exports.reload = function (bot, namespace) {
 	exports.unload(bot, namespace);
 	exports.load(bot, namespace);
 };

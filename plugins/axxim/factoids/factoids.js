@@ -1,5 +1,3 @@
-
-
 Plugin = exports.Plugin = function (client) {
 	this.name = 'factoids';
 	this.title = 'Factoids';

@@ -1,5 +1,3 @@
-
-
 Plugin = exports.Plugin = function (client) {
 	this.name = 'logger';
 	this.title = 'Logger';

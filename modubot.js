@@ -15,7 +15,7 @@ var config = {
 		//'axxim/factoids',
 		'axxim/logger',
 		'axxim/url',
-        'kamaln7/echo'
+		'kamaln7/echo'
 	],
 
 	database: {

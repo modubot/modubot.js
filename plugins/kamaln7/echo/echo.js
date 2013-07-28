@@ -7,9 +7,9 @@ Plugin = exports.Plugin = function (client) {
 	this.author = 'Kamal Nasser';
 
 	this.irc = client;
-    plugin = this;
+	plugin = this;
 };
 
 Plugin.prototype.onMessage = function (from, to, message) {
-    plugin.irc.client.say((to.substr(0, 1) == '#' ? to : from), message);
+	plugin.irc.client.say((to.substr(0, 1) == '#' ? to : from), message);
 };

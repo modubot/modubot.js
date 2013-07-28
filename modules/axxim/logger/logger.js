@@ -1,5 +1,5 @@
-var Plugin = (function () {
-    function Plugin(client) {
+var Module = (function () {
+    function Module(client) {
         this.name = 'factoids';
         this.title = 'Factoids';
         this.version = '0.1';
@@ -7,9 +7,9 @@ var Plugin = (function () {
 
         this.irc = client;
     }
-    Plugin.prototype.onMessage = function (from, to, message) {
+    Module.prototype.onMessage = function (from, to, message) {
         console.log(this.bot);
     };
-    return Plugin;
+    return Module;
 })();
 //@ sourceMappingURL=logger.js.map

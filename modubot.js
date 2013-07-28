@@ -12,9 +12,9 @@ var config = {
 	debug: true,
 
 	plugins: [
-		'axxim/factoids',
+		//'axxim/factoids',
 		'axxim/logger',
-	//	'axxim/url'
+		'axxim/url'
 	],
 
 	database: {
@@ -24,7 +24,7 @@ var config = {
 		database: ""
 	},
 
-	admins: ["clone1018"]
+	admins: ["clone1018", "kamal"]
 };
 
 var modubot = new modu.Bot(config);

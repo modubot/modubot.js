@@ -6,7 +6,7 @@ exports.reload = function (bot, namespace) {
 };
 
 exports.unload = function (bot, namespace) {
-
+	delete bot.plugins[namespace];
 };
 
 
@@ -33,14 +33,14 @@ exports.load = function (bot, namespace) {
 
 			// Add plugin to active list
 			// "Plugin" is from the actual plugin
-			bot.plugins[name] = new Plugin(bot);
+			bot.plugins[namespace] = new Plugin(bot);
 
 			/*
 			 * Hooks
 			 */
 			['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'].forEach(function (event) {
 				var onEvent = 'on' + event.charAt(0).toUpperCase() + event.substr(1),
-					callback = bot.plugins[name][onEvent];
+					callback = bot.plugins[namespace][onEvent];
 
 				if (typeof callback == 'function') {
 					bot.client.addListener(event, callback);

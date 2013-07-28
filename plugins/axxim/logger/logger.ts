@@ -7,6 +7,7 @@ class Plugin {
 	author: string;
 
 	irc: any;
+	bot: any;
 
 	constructor(client) {
 		this.name = 'factoids';
@@ -18,7 +19,7 @@ class Plugin {
 	}
 
 	onMessage(from, to, message) {
-		console.log(this.irc);
+		console.log(this.bot);
 	}
 
 

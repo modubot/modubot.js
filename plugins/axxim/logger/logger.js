@@ -8,7 +8,7 @@ var Plugin = (function () {
         this.irc = client;
     }
     Plugin.prototype.onMessage = function (from, to, message) {
-        console.log(this.irc);
+        console.log(this.bot);
     };
     return Plugin;
 })();

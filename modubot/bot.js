@@ -25,6 +25,8 @@ Bot = exports.Bot = function (config) {
 
 Bot.prototype.spawn = function () {
 
+	var config = this.config;
+
 	var client = new irc.Client(this.host, this.nick, {
 		userName: this.username,
 		realName: this.realname,
@@ -51,6 +53,17 @@ Bot.prototype.spawn = function () {
 		if (this.debug) {
 			console.log('error: ', message);
 		}
+	});
+
+
+	client.addListener('message', function(from, to, message) {
+		if(message.indexOf(config.command) === 0) {
+			client.emit('command', from, to, message);
+		}
+	});
+
+	client.addListener('command', function (from, to, message) {
+		console.log('GOT COMMAND', from, to, message);
 	});
 
 };

@@ -13,8 +13,8 @@ var config = {
 
 	plugins: [
 		//'axxim/factoids',
-		'axxim/logger',
-		'axxim/url',
+		//'axxim/logger',
+		//'axxim/url',
 		'kamaln7/echo'
 	],
 

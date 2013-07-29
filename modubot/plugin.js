@@ -27,6 +27,7 @@ exports.load = function (bot, namespace) {
 
 	fs.readFile('./plugins/' + namespace + '/' + name + '.js', 'utf8', function (err, data) {
 		if (err) {
+            console.log("Could not load " + namespace);
 			console.log(err);
 		} else {
 			eval(data);
@@ -44,8 +45,11 @@ exports.load = function (bot, namespace) {
 
 				if (typeof callback == 'function') {
 					bot.client.addListener(event, callback);
+                    bot.debug && console.log("Registered " + onEvent + " hook for " + namespace);
 				}
 			}, bot);
+
+            bot.debug && console.log("Loaded " + namespace);
 		}
 	});
 

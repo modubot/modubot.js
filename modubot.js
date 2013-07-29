@@ -8,7 +8,7 @@ var config = {
 	username: "Modubot",
 	realname: "Modubot",
 	channels: ["#modubot"],
-	command: ".",
+	prefix: ".",
 	debug: true,
 
 	plugins: [

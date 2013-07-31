@@ -1,8 +1,8 @@
 var modu = require('./modubot/bot');
 
 var config = {
-	host: "irc.esper.net",
-	port: 6667,
+	host: "localhost",
+	port: 1234,
 	password: "",
 	nick: "Modubot",
 	username: "Modubot",
@@ -13,7 +13,7 @@ var config = {
 	debug: true,
 
 	plugins: [
-		'axxim/mime',
+		'axxim/factoids',
 		//'axxim/logger',
 		//'axxim/url',
 		//'kamaln7/echo'

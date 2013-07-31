@@ -7,6 +7,7 @@ export class Plugin {
 
 	bot:any;
 	client:any;
+    commands:any;
 
 	constructor(bot:any) {
 		this.name = 'factoids';
@@ -17,20 +18,26 @@ export class Plugin {
 
 		this.bot = bot;
 		this.client = bot.client;
+        this.commands = {
+            'remember': 'onCommandRemember',
+            'r': 'onCommandRemember'
+        };
 	}
 
+    onCommandRemember(from:string, to:string, message:string, args:any, text:string) {
+        this.client.say(to, 'Hello');
+    }
+
 	onMessage(from:string, to:string, message:string) {
-		//console.log(message.charAt(0), this.bot.config.factoid);
-		if(message.charAt(0) == this.bot.config.factoid) {
-			this.client.say(to, 'Factoid!');
+        var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
+
+		if(this.isFactoid(message)) {
+			this.client.say(to, 'Could not find: ' + factoid);
 		}
 	}
 
 	isFactoid(command:any) {
-		var configFactoid = this.bot.config.factoidPrefix;
-		var factoidPrefixes = configFactoid.split(' ');
-
-		return factoidPrefixes.indexOf(command) > -1;
+        return (command.charAt(0) == this.bot.config.factoid);
 	}
 
 }

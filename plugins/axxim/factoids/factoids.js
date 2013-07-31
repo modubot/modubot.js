@@ -8,18 +8,25 @@ var Plugin = (function () {
 
         this.bot = bot;
         this.client = bot.client;
+        this.commands = {
+            'remember': 'onCommandRemember',
+            'r': 'onCommandRemember'
+        };
     }
+    Plugin.prototype.onCommandRemember = function (from, to, message, args, text) {
+        this.client.say(to, 'Hello');
+    };
+
     Plugin.prototype.onMessage = function (from, to, message) {
-        if (message.charAt(0) == this.bot.config.factoid) {
-            this.client.say(to, 'Factoid!');
+        var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
+
+        if (this.isFactoid(message)) {
+            this.client.say(to, 'Could not find: ' + factoid);
         }
     };
 
     Plugin.prototype.isFactoid = function (command) {
-        var configFactoid = this.bot.config.factoidPrefix;
-        var factoidPrefixes = configFactoid.split(' ');
-
-        return factoidPrefixes.indexOf(command) > -1;
+        return (command.charAt(0) == this.bot.config.factoid);
     };
     return Plugin;
 })();

@@ -38,6 +38,12 @@ exports.addPluginEvent = function(bot, plugin, ev, f) {
 	return bot.client.addListener(ev, callback);
 };
 
+exports.addPluginCommand = function(bot, plugin, command, func) {
+    bot.client.addListener('command.' + command, function (from, to, message) {
+        bot.plugins[plugin][func](from, to, message);
+    });
+};
+
 /**
  * Unload the plugin (not completed)
  *
@@ -67,6 +73,7 @@ exports.load = function (bot, namespace) {
 	var pluginFile = require('../plugins/' + namespace + '/' + name);
 	bot.plugins[namespace] = new pluginFile.Plugin(bot);
 
+    // Load the hooks
 	['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'].forEach(function (event) {
 		var onEvent = 'on' + event.charAt(0).toUpperCase() + event.substr(1),
 			callback = bot.plugins[namespace][onEvent];
@@ -77,4 +84,20 @@ exports.load = function (bot, namespace) {
 		}
 	}, bot);
 
+    // Load the commands
+    var commands = bot.plugins[namespace].commands;
+    for(var key in commands) {
+        var command = key;
+        var func = commands[key];
+        var callback = bot.plugins[namespace][func];
+
+        exports.addPluginCommand(bot, namespace, command, func);
+    }
+
+};
+
+exports.getAllMethods = function(object) {
+    return Object.getOwnPropertyNames(object).filter(function(property) {
+        return typeof object[property] == 'function';
+    });
 };

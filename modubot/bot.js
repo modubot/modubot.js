@@ -13,6 +13,7 @@ Bot = exports.Bot = function (config) {
 
 Bot.prototype.spawn = function () {
     var config = this.config;
+    var client = this.client;
 
     console.log('Connecting to '+config.host);
 
@@ -27,6 +28,14 @@ Bot.prototype.spawn = function () {
         var p = config.plugins[i];
         plugin.load(this, p);
     }
+
+    this.client.addListener('message', function(from, to, message) {
+        if(message.charAt(0) == config.command)  {
+            var command = message.split(' ')[0].replace(config.command, '');
+
+            this.emit('command.'+command, from, to, message);
+        }
+    });
 
     this.client.addListener('raw', function (raw) {
         if (config.debug) {

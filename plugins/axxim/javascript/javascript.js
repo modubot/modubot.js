@@ -1,29 +1,28 @@
 var Sandbox = require('sandbox');
 
 Plugin = exports.Plugin = function (bot) {
-    this.name = 'javascript';
-    this.title = 'JavaScript Eval';
-    this.version = '0.1';
-    this.author = 'Luke Strickland';
+	this.name = 'javascript';
+	this.title = 'JavaScript Eval';
+	this.version = '0.1';
+	this.author = 'Luke Strickland';
 
-    this.bot = bot;
-    this.client = bot.client;
+	this.bot = bot;
+	this.client = bot.client;
 
-    this.commands = {
-        'javascript': 'evalJavascript',
-        'js': 'evalJavascript'
-    };
+	this.commands = {
+		'javascript': 'evalJavascript',
+		'js': 'evalJavascript'
+	};
 };
 
-Plugin.prototype.evalJavascript = function(from, to, message, args) {
-    var client = this.client;
+Plugin.prototype.evalJavascript = function (from, to, message, args) {
+	var client = this.client;
 
-    var contents = args.slice(1);
-    contents = contents.join(' ');
+	var contents = args.slice(1);
+	contents = contents.join(' ');
 
-    var s = new Sandbox();
-    s.run(contents, function( output ) {
-        console.log(output);
-        client.say((to.substr(0, 1) === "#" ? to : from), output.result);
-    })
+	var s = new Sandbox();
+	s.run(contents, function (output) {
+		client.say((to.substr(0, 1) === "#" ? to : from), output.result);
+	})
 };

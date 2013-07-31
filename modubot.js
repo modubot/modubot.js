@@ -1,41 +1,7 @@
-var fs = require('fs');
-
 /*
- * Create the config files required
+ * Start the bot
  */
+var Modu = require('./modubot/bot');
 
-var defaultConfig = {
-    host: "irc.esper.net",
-    port: 6667,
-    password: "",
-    nick: "Modubot",
-    username: "Modubot",
-    realname: "Modubot",
-    channels: ["#modubot"],
-    command: ".",
-    factoid: "?",
-    debug: true,
-
-    plugins: [
-        'axxim/factoids'
-    ],
-
-    database: {
-        host: "localhost",
-        user: "",
-        password: "",
-        database: ""
-    },
-
-    admins: []
-};
-
-if(fs.existsSync('config/bot.json') === false) {
-    fs.writeFileSync('config/bot.json', JSON.stringify(defaultConfig, null, '\t'));
-}
-
-var config = require('./config/bot.json');
-var modu = require('./modubot/bot');
-
-var modubot = new modu.Bot(config);
+var modubot = new Modu.Bot('./config/bot.json');
 modubot.spawn();

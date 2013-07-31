@@ -10,6 +10,5 @@ Plugin = (->
   Plugin::onMessage = (from, to, message) ->
     @client.say ((if to.substr(0, 1) is "#" then to else from)), message
 
-  Plugin
-)()
+  Plugin)()
 exports.Plugin = Plugin

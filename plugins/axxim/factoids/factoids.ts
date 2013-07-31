@@ -7,8 +7,8 @@ export class Plugin {
 
 	bot:any;
 	client:any;
-    commands:any;
-    factoids:any;
+	commands:any;
+	factoids:any;
 
 	constructor(bot:any) {
 		this.name = 'factoids';
@@ -19,44 +19,44 @@ export class Plugin {
 
 		this.bot = bot;
 		this.client = bot.client;
-        this.commands = {
-            'remember': 'onCommandRemember',
-            'r': 'onCommandRemember',
-            'forget': 'onCommandForget',
-            'f': 'onCommandForget'
-        };
+		this.commands = {
+			'remember': 'onCommandRemember',
+			'r': 'onCommandRemember',
+			'forget': 'onCommandForget',
+			'f': 'onCommandForget'
+		};
 
-        this.factoids = {};
+		this.factoids = {};
 	}
 
-    onCommandForget(from:string, to:string, message:string, args:any) {
+	onCommandForget(from:string, to:string, message:string, args:any) {
 
-    }
+	}
 
-    onCommandRemember(from:string, to:string, message:string, args:any) {
-        if(args.length < 2) {
-            this.client.notice(from, '.remember <factoid> <text>')
-        }
+	onCommandRemember(from:string, to:string, message:string, args:any) {
+		if (args.length < 2) {
+			this.client.notice(from, '.remember <factoid> <text>')
+		}
 
-        var factoid = args[1];
+		var factoid = args[1];
 
-        var contents = args.splice(2);
-        contents = contents.join(' ');
+		var contents = args.splice(2);
+		contents = contents.join(' ');
 
-        this.factoids[factoid.toLowerCase()] = contents;
-        this.client.notice(to, 'Factoid "'+factoid+'" created.');
-    }
+		this.factoids[factoid.toLowerCase()] = contents;
+		this.client.notice(to, 'Factoid "' + factoid + '" created.');
+	}
 
 	onMessage(from:string, to:string, message:string) {
-        var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
+		var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
-		if(this.isFactoid(message)) {
+		if (this.isFactoid(message)) {
 			this.client.say(to, this.factoids[factoid.toLowerCase()]);
 		}
 	}
 
 	isFactoid(command:any) {
-        return (command.charAt(0) == this.bot.config.factoid);
+		return (command.charAt(0) == this.bot.config.factoid);
 	}
 
 }

@@ -8,8 +8,8 @@ var vm = require('vm');
  * @param namespace
  */
 exports.reload = function (bot, namespace) {
-    exports.unload(bot, namespace);
-    exports.load(bot, namespace);
+	exports.unload(bot, namespace);
+	exports.load(bot, namespace);
 };
 
 /**
@@ -21,13 +21,13 @@ exports.reload = function (bot, namespace) {
  * @param f
  * @returns {*|void}
  */
-exports.addPluginEvent = function(bot, plugin, ev, f) {
+exports.addPluginEvent = function (bot, plugin, ev, f) {
 	if (typeof bot.hooks[plugin ] == 'undefined') {
 		bot.hooks[plugin] = [];
 	}
 
-	var callback = (function() {
-		return function() {
+	var callback = (function () {
+		return function () {
 			f.apply(that, arguments);
 		};
 	})();
@@ -38,11 +38,11 @@ exports.addPluginEvent = function(bot, plugin, ev, f) {
 	return bot.client.addListener(ev, callback);
 };
 
-exports.addPluginCommand = function(bot, plugin, command, func) {
-    bot.client.addListener('command.' + command, function (from, to, message) {
-        var args = message.split(' ');
-        bot.plugins[plugin][func](from, to, message, args);
-    });
+exports.addPluginCommand = function (bot, plugin, command, func) {
+	bot.client.addListener('command.' + command, function (from, to, message) {
+		var args = message.split(' ');
+		bot.plugins[plugin][func](from, to, message, args);
+	});
 };
 
 /**
@@ -52,7 +52,7 @@ exports.addPluginCommand = function(bot, plugin, command, func) {
  * @param namespace
  */
 exports.unload = function (bot, namespace) {
-    delete bot.plugins[namespace];
+	delete bot.plugins[namespace];
 };
 
 
@@ -63,18 +63,18 @@ exports.unload = function (bot, namespace) {
  * @param namespace
  */
 exports.load = function (bot, namespace) {
-    bot.debug && console.log("Loading Plugin: " + namespace);
+	bot.debug && console.log("Loading Plugin: " + namespace);
 
-    var name = namespace.split('/')[1];
+	var name = namespace.split('/')[1];
 
-    exports.unload(bot, namespace);
+	exports.unload(bot, namespace);
 
 
 	// Load the plugin
 	var pluginFile = require('../plugins/' + namespace + '/' + name);
 	bot.plugins[namespace] = new pluginFile.Plugin(bot);
 
-    // Load the hooks
+	// Load the hooks
 	['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'].forEach(function (event) {
 		var onEvent = 'on' + event.charAt(0).toUpperCase() + event.substr(1),
 			callback = bot.plugins[namespace][onEvent];
@@ -85,20 +85,20 @@ exports.load = function (bot, namespace) {
 		}
 	}, bot);
 
-    // Load the commands
-    var commands = bot.plugins[namespace].commands;
-    for(var key in commands) {
-        var command = key;
-        var func = commands[key];
-        var callback = bot.plugins[namespace][func];
+	// Load the commands
+	var commands = bot.plugins[namespace].commands;
+	for (var key in commands) {
+		var command = key;
+		var func = commands[key];
+		var callback = bot.plugins[namespace][func];
 
-        exports.addPluginCommand(bot, namespace, command, func);
-    }
+		exports.addPluginCommand(bot, namespace, command, func);
+	}
 
 };
 
-exports.getAllMethods = function(object) {
-    return Object.getOwnPropertyNames(object).filter(function(property) {
-        return typeof object[property] == 'function';
-    });
+exports.getAllMethods = function (object) {
+	return Object.getOwnPropertyNames(object).filter(function (property) {
+		return typeof object[property] == 'function';
+	});
 };

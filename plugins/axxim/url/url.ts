@@ -2,10 +2,8 @@
 
 declare var bot;
 
-import url = require
-('url');
-import http = require
-('http');
+import url = require('url');
+import http = require('http');
 
 export class Plugin {
 

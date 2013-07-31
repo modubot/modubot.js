@@ -8,14 +8,15 @@ var config = {
 	username: "Modubot",
 	realname: "Modubot",
 	channels: ["#modubot"],
-	prefix: ".",
+	command: ".",
+	factoid: "?",
 	debug: true,
 
 	plugins: [
-		//'axxim/factoids',
+		'axxim/mime',
 		//'axxim/logger',
 		//'axxim/url',
-		'kamaln7/echo'
+		//'kamaln7/echo'
 	],
 
 	database: {

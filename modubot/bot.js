@@ -4,44 +4,38 @@ var plugin = require('./plugin');
 
 Bot = exports.Bot = function (config) {
 
-    this.host = config.host || '127.0.0.1';
-    this.port = config.port || 6667;
-    this.password = config.password || '';
-    this.nick = config.nick || 'Modubot';
-    this.username = config.username || 'Modubot';
-    this.realname = config.realname || 'Modubot';
-    this.prefix = config.prefix || '.';
-    this.channels = config.channels || [];
-    this.admins = config.admins || ['clone1018'];
-    this.debug = config.debug || false;
-
     // carry over config object to allow plugins to access it
     this.config = config || {};
 
     this.plugins = config.plugins || [];
-    this.hooks = [];
-
+	this.hooks = [];
 };
 
 Bot.prototype.spawn = function () {
-
     var config = this.config;
 
-    var client = new irc.Client(this.host, this.nick, {
-        userName: this.username,
-        realName: this.realname,
-        channels: this.channels
+    console.log('Connecting to '+config.host);
+
+    this.client = new irc.Client(config.host, config.nick, {
+        port: config.port,
+        userName: config.username,
+        realName: config.realname,
+        channels: config.channels
     });
 
-    this.client = client;
-
-    for (var i = 0, z = this.plugins.length; i < z; i++) {
-        var p = this.plugins[i];
+    for (var i = 0, z = config.plugins.length; i < z; i++) {
+        var p = config.plugins[i];
         plugin.load(this, p);
     }
 
-    client.addListener('join', function (channel, nick, message) {
-        if (this.debug) {
+    this.client.addListener('raw', function (raw) {
+        if (config.debug) {
+            console.log(Math.round(new Date().getTime() / 1000) + ' ' + raw.rawCommand + ' ' + raw.args.join(' '));
+        }
+    });
+
+    this.client.addListener('join', function (channel, nick, message) {
+        if (config.debug) {
             console.log('Joined Channel: ', channel);
         }
     });
@@ -49,8 +43,8 @@ Bot.prototype.spawn = function () {
     /**
      * Sends errors to plugins and if debug show them
      */
-    client.addListener('error', function (message) {
-        if (this.debug) {
+    this.client.addListener('error', function (message) {
+        if (config.debug) {
             console.log('error: ', message);
         }
     });

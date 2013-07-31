@@ -1,7 +1,5 @@
 ///<reference path='../../.ts/node.d.ts' />
 
-declare var bot;
-
 import url = require('url');
 import http = require('http');
 

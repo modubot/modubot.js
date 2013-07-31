@@ -17,6 +17,7 @@
 		"url": "https://github.com/Modubot/Modubot.js.git"
 	},
 	"dependencies": {
-		"irc": ">= 0.3.5"
+		"irc": ">= 0.3.5",
+        "sandbox": ">= 0.8.3"
 	}
 }

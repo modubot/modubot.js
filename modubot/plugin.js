@@ -40,7 +40,8 @@ exports.addPluginEvent = function(bot, plugin, ev, f) {
 
 exports.addPluginCommand = function(bot, plugin, command, func) {
     bot.client.addListener('command.' + command, function (from, to, message) {
-        bot.plugins[plugin][func](from, to, message);
+        var args = message.split(' ');
+        bot.plugins[plugin][func](from, to, message, args);
     });
 };
 

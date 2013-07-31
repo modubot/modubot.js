@@ -10,18 +10,35 @@ var Plugin = (function () {
         this.client = bot.client;
         this.commands = {
             'remember': 'onCommandRemember',
-            'r': 'onCommandRemember'
+            'r': 'onCommandRemember',
+            'forget': 'onCommandForget',
+            'f': 'onCommandForget'
         };
+
+        this.factoids = {};
     }
-    Plugin.prototype.onCommandRemember = function (from, to, message, args, text) {
-        this.client.say(to, 'Hello');
+    Plugin.prototype.onCommandForget = function (from, to, message, args) {
+    };
+
+    Plugin.prototype.onCommandRemember = function (from, to, message, args) {
+        if (args.length < 2) {
+            this.client.notice(from, '.remember <factoid> <text>');
+        }
+
+        var factoid = args[1];
+
+        var contents = args.splice(2);
+        contents = contents.join(' ');
+
+        this.factoids[factoid.toLowerCase()] = contents;
+        this.client.notice(to, 'Factoid "' + factoid + '" created.');
     };
 
     Plugin.prototype.onMessage = function (from, to, message) {
         var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
         if (this.isFactoid(message)) {
-            this.client.say(to, 'Could not find: ' + factoid);
+            this.client.say(to, this.factoids[factoid.toLowerCase()]);
         }
     };
 

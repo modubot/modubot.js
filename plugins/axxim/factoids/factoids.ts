@@ -8,6 +8,7 @@ export class Plugin {
 	bot:any;
 	client:any;
     commands:any;
+    factoids:any;
 
 	constructor(bot:any) {
 		this.name = 'factoids';
@@ -20,19 +21,37 @@ export class Plugin {
 		this.client = bot.client;
         this.commands = {
             'remember': 'onCommandRemember',
-            'r': 'onCommandRemember'
+            'r': 'onCommandRemember',
+            'forget': 'onCommandForget',
+            'f': 'onCommandForget'
         };
+
+        this.factoids = {};
 	}
 
-    onCommandRemember(from:string, to:string, message:string, args:any, text:string) {
-        this.client.say(to, 'Hello');
+    onCommandForget(from:string, to:string, message:string, args:any) {
+
+    }
+
+    onCommandRemember(from:string, to:string, message:string, args:any) {
+        if(args.length < 2) {
+            this.client.notice(from, '.remember <factoid> <text>')
+        }
+
+        var factoid = args[1];
+
+        var contents = args.splice(2);
+        contents = contents.join(' ');
+
+        this.factoids[factoid.toLowerCase()] = contents;
+        this.client.notice(to, 'Factoid "'+factoid+'" created.');
     }
 
 	onMessage(from:string, to:string, message:string) {
         var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
 		if(this.isFactoid(message)) {
-			this.client.say(to, 'Could not find: ' + factoid);
+			this.client.say(to, this.factoids[factoid.toLowerCase()]);
 		}
 	}
 

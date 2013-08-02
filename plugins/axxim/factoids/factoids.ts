@@ -6,6 +6,7 @@ export class Plugin {
 	author:string;
 
 	bot:any;
+	database:any;
 	client:any;
 	commands:any;
 	factoids:any;
@@ -18,6 +19,7 @@ export class Plugin {
 		this.author = 'Luke Strickland';
 
 		this.bot = bot;
+		this.database = bot.database;
 		this.client = bot.client;
 		this.commands = {
 			'remember': 'onCommandRemember',
@@ -26,7 +28,6 @@ export class Plugin {
 			'f': 'onCommandForget'
 		};
 
-		this.factoids = {};
 	}
 
 	onCommandForget(from:string, to:string, message:string, args:any) {
@@ -37,24 +38,43 @@ export class Plugin {
 		if (args.length < 2) {
 			this.client.notice(from, '.remember <factoid> <text>')
 		}
+		var client = this.client;
 
 		var factoid = args[1];
 
 		var contents = args.splice(2);
 		contents = contents.join(' ');
 
-		this.factoids[factoid.toLowerCase()] = contents;
-		this.client.notice(from, 'Factoid "' + factoid + '" created.');
+		this.database.query(
+			'INSERT INTO factoids (factoid,content,owner,channel,forgotten,locked) VALUES (?,?,?,?,0,0)',
+			[factoid, contents, from, to],
+			function (err, rows) {
+				client.notice(from, 'Factoid "' + factoid + '" created.');
+			});
+
 	}
 
 	onMessage(from:string, to:string, message:string) {
+		var client = this.client;
+
 		var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
 		if (this.isFactoid(message)) {
+
+			this.database.query(
+				'SELECT * FROM factoids WHERE factoid = ?',
+				[factoid],
+				function (err, results) {
+
+					client.say(to, results[0].content);
+
+				});
+
+			/*
 			var contents = this.factoids[factoid.toLowerCase()];
 			var special = /<(.*?)>/ig;
 
-			if(contents.match(special)) {
+			if (contents.match(special)) {
 				var command = special.exec(contents)[1];
 				var newMessage = message.replace(special, '');
 
@@ -63,6 +83,7 @@ export class Plugin {
 			}
 
 			this.client.say(to, contents);
+			 */
 		}
 	}
 

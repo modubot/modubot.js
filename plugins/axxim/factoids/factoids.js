@@ -7,6 +7,7 @@ var Plugin = (function () {
         this.author = 'Luke Strickland';
 
         this.bot = bot;
+        this.database = bot.database;
         this.client = bot.client;
         this.commands = {
             'remember': 'onCommandRemember',
@@ -14,8 +15,6 @@ var Plugin = (function () {
             'forget': 'onCommandForget',
             'f': 'onCommandForget'
         };
-
-        this.factoids = {};
     }
     Plugin.prototype.onCommandForget = function (from, to, message, args) {
     };
@@ -24,32 +23,27 @@ var Plugin = (function () {
         if (args.length < 2) {
             this.client.notice(from, '.remember <factoid> <text>');
         }
+        var client = this.client;
 
         var factoid = args[1];
 
         var contents = args.splice(2);
         contents = contents.join(' ');
 
-        this.factoids[factoid.toLowerCase()] = contents;
-        this.client.notice(from, 'Factoid "' + factoid + '" created.');
+        this.database.query('INSERT INTO factoids (factoid,content,owner,channel,forgotten,locked) VALUES (?,?,?,?,0,0)', [factoid, contents, from, to], function (err, rows) {
+            client.notice(from, 'Factoid "' + factoid + '" created.');
+        });
     };
 
     Plugin.prototype.onMessage = function (from, to, message) {
+        var client = this.client;
+
         var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
         if (this.isFactoid(message)) {
-            var contents = this.factoids[factoid.toLowerCase()];
-            var special = /<(.*?)>/ig;
-
-            if (contents.match(special)) {
-                var command = special.exec(contents)[1];
-                var newMessage = message.replace(special, '');
-
-                this.client.emit('command.' + command, from, to, newMessage, newMessage.split(' '));
-                return;
-            }
-
-            this.client.say(to, contents);
+            this.database.query('SELECT * FROM factoids WHERE factoid = ?', [factoid], function (err, results) {
+                client.say(to, results[0].content);
+            });
         }
     };
 

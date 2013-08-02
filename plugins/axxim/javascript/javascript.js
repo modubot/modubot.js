@@ -23,6 +23,7 @@ Plugin.prototype.evalJavascript = function (from, to, message, args) {
 
 	var s = new Sandbox();
 	s.run(contents, function (output) {
+		console.log(contents);
 		client.say((to.substr(0, 1) === "#" ? to : from), output.result);
 	})
 };

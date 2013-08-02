@@ -44,14 +44,25 @@ export class Plugin {
 		contents = contents.join(' ');
 
 		this.factoids[factoid.toLowerCase()] = contents;
-		this.client.notice(to, 'Factoid "' + factoid + '" created.');
+		this.client.notice(from, 'Factoid "' + factoid + '" created.');
 	}
 
 	onMessage(from:string, to:string, message:string) {
 		var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
 		if (this.isFactoid(message)) {
-			this.client.say(to, this.factoids[factoid.toLowerCase()]);
+			var contents = this.factoids[factoid.toLowerCase()];
+			var special = /<(.*?)>/ig;
+
+			if(contents.match(special)) {
+				var command = special.exec(contents)[1];
+				var newMessage = message.replace(special, '');
+
+				this.client.emit('command.' + command, from, to, newMessage, newMessage.split(' '));
+				return;
+			}
+
+			this.client.say(to, contents);
 		}
 	}
 

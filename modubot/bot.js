@@ -65,7 +65,7 @@ Bot.prototype.spawn = function () {
 		if (message.charAt(0) == config.command) {
 			var command = message.split(' ')[0].replace(config.command, '');
 
-			this.emit('command.' + command, from, to, message);
+			this.emit('command.' + command, from, to, message, message.split(' '));
 		}
 	});
 

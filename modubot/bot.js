@@ -1,5 +1,6 @@
 var irc = require('irc'),
 	fs = require('fs'),
+    mysql = require('mysql'),
 
 	plugin = require('./plugin');
 
@@ -46,6 +47,14 @@ Bot = exports.Bot = function (configFile) {
 Bot.prototype.spawn = function () {
 	var config = this.config;
 	var client = this.client;
+    var database = this.database;
+
+    this.database = mysql.createConnection({
+        host     : config.database.host,
+        user     : config.database.user,
+        password : config.database.password,
+        database : config.database.database
+    });
 
 	console.log('Connecting to ' + config.host);
 

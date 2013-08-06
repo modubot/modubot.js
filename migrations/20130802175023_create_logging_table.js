@@ -9,7 +9,7 @@ var create_logging_table = new Migration({
 			t.column('created_at', 'timestamp', {'default': 'NOW()'});
 
 			t.primary_key('id');
-			t.key('channel');
+			t.index('channel');
 		});
 	},
 	down: function () {

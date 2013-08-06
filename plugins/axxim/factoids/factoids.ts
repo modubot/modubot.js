@@ -65,9 +65,7 @@ export class Plugin {
 				'SELECT * FROM factoids WHERE factoid = ?',
 				[factoid],
 				function (err, results) {
-
 					client.say(to, results[0].content);
-
 				});
 
 			/*

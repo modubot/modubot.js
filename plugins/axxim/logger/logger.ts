@@ -22,8 +22,23 @@ export class Plugin {
 		this.database = bot.database;
 	}
 
-	onMessage(to:string, from:string, message:string) {
+	onRaw(message:any) {
+		// We only want to log if this is a privmsg
+		if (message.rawCommand != 'PRIVMSG') return;
 
+		var channel, from, mentions, contents;
+
+		channel = message.args[0].charAt(0) === '#' ? message.args[0] : null;
+		from = message.nick;
+		mentions = null;
+		contents = message.args.splice(1);
+		contents = contents.join(' ');
+
+		this.database.query(
+			'INSERT INTO logs (`channel`, `from`, `mentions`, `message`) VALUES (?,?,?,?)',
+			[channel, from, mentions, contents], function (err, rows) {
+				if (err) console.error(err);
+			});
 	}
 
 }

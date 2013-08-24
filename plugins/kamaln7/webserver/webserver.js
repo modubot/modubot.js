@@ -1,8 +1,8 @@
 var Plugin = (function () {
     function Plugin(bot) {
-        this.name = 'ping';
-        this.title = 'Ping';
-        this.description = "Ping module for Modubot";
+        this.name = 'webserver';
+        this.title = 'Webserver';
+        this.description = "Webserver module for Modubot";
         this.version = '0.1';
         this.author = 'Kamal Nasser';
 

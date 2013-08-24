@@ -25,6 +25,12 @@ var Plugin = (function () {
         this.server.get('/', function (req, res) {
             res.send("Listening on port " + plugin.port + "!");
         });
+        this.server.get('/status', function (req, res) {
+            var status = {};
+            status.channels = plugin.client.chans;
+
+            res.json(status);
+        });
     };
     return Plugin;
 })();

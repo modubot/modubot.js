@@ -21,6 +21,7 @@
 		"sandbox": ">= 0.8.3",
 		"mysql": "2.0.0-alpha8",
 		"moment": ">= 2.1.0",
-		"google": "*"
+		"google": "*",
+		"express": "3.*"
 	}
 }

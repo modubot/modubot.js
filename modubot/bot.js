@@ -18,6 +18,7 @@ Bot = exports.Bot = function (configFile) {
 		channels: ["#modubot"],
 		command: ".",
 		factoid: "?",
+		webserverport: 8888,
 		debug: true,
 
 		plugins: [

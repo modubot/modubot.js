@@ -1,0 +1,12 @@
+body {
+    padding: 30px;
+    font: 14px "Open Sans", "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+.navbar {
+    margin-bottom: 30px;
+}

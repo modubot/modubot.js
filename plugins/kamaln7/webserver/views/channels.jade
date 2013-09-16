@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div
+    div.row
+      div.col-md-12
+        legend= nick + ' on ' + server
+        table.table.table-striped
+          thead
+            tr
+              th Channel
+              th Mode
+              th Topic
+          tbody
+            each channel in channels
+              tr
+                td= channel.key
+                td= channel.mode
+                td= channel.topic

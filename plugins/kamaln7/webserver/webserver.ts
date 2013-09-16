@@ -23,8 +23,15 @@ export class Plugin {
 		this.database = bot.database;
 		this.client = bot.client;
 		this.commands = {};
-		this.server = require('express')();
+
+		var express = require('express');
+
+		this.server = express();
+		this.server.use(express.static(__dirname + '/public'));
+		this.server.set('views', __dirname + '/views');
+		this.server.set('view engine', 'jade');
 		this.port = this.bot.config.webserverport || 8888;
+
 		if(this.server.listen(this.port)){
 			console.log('Webserver listening on port http://localhost:' + this.port);
 		} else {
@@ -37,13 +44,10 @@ export class Plugin {
 	setupRoutes(){
 		var plugin = this;
 		this.server.get('/', function(req, res){
-			res.send("Listening on port " + plugin.port + "!");
+			res.render('home', {menu: 'home'});
 		});
-		this.server.get('/status', function(req, res){
-			var status = {};
-			status.channels = plugin.client.chans;
-
-			res.json(status);
+		this.server.get('/channels', function(req, res){
+			res.render('channels', {menu: 'channels', nick: plugin.client.nick, server: plugin.client.opt.server, channels: plugin.client.chans});
 		});
 	}
 

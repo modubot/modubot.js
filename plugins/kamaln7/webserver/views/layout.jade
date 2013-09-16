@@ -1,0 +1,16 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='//fetch.assetrepo.net/bootstrap-3.0.0.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    if additionalStylesheets
+      each stylesheet in additionalStylesheets
+        link(rel='stylesheet', href=stylesheet)
+  body
+    div.container
+        include includes/nav
+        block content
+    script(src='//fetch.assetrepo.net/jquery-2.0.3.min.js')
+    script(src='//fetch.assetrepo.net/bootstrap-3.0.0.min.js')
+    script(src='/javascripts/app.js')

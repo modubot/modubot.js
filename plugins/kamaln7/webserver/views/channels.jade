@@ -10,6 +10,11 @@ block content
               th Channel
               th Mode
               th Topic
+          tfoot
+            tr
+              th Total:
+              td= Object.keys(bot.chans).length
+              td
           tbody
             each channel in bot.chans
               tr

@@ -11,3 +11,6 @@ div.navbar.navbar-default
         a(href='/') Home
       li(class=(menu === 'channels' ? 'active' : ''))
         a(href='/channels') Channels
+    ul.nav.navbar-nav.pull-right
+      li
+        a(href='#')= bot.nick + ' on ' + bot.opt.server

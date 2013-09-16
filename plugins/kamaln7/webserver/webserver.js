@@ -12,12 +12,13 @@ var Plugin = (function () {
         this.commands = {};
 
         var express = require('express');
+        this.port = this.bot.config.webserverport || 8888;
 
         this.server = express();
         this.server.use(express.static(__dirname + '/public'));
         this.server.set('views', __dirname + '/views');
         this.server.set('view engine', 'jade');
-        this.port = this.bot.config.webserverport || 8888;
+        this.server.locals.bot = this.client;
 
         if (this.server.listen(this.port)) {
             console.log('Webserver listening on port http://localhost:' + this.port);
@@ -33,7 +34,7 @@ var Plugin = (function () {
             res.render('home', { menu: 'home' });
         });
         this.server.get('/channels', function (req, res) {
-            res.render('channels', { menu: 'channels', nick: plugin.client.nick, server: plugin.client.opt.server, channels: plugin.client.chans });
+            res.render('channels', { menu: 'channels' });
         });
     };
     return Plugin;

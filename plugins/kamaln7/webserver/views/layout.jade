@@ -4,9 +4,6 @@ html
     title= title
     link(rel='stylesheet', href='//fetch.assetrepo.net/bootstrap-3.0.0.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    if additionalStylesheets
-      each stylesheet in additionalStylesheets
-        link(rel='stylesheet', href=stylesheet)
   body
     div.container
         include includes/nav

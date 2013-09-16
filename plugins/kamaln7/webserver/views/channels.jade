@@ -4,7 +4,6 @@ block content
   div
     div.row
       div.col-md-12
-        legend= nick + ' on ' + server
         table.table.table-striped
           thead
             tr
@@ -12,7 +11,7 @@ block content
               th Mode
               th Topic
           tbody
-            each channel in channels
+            each channel in bot.chans
               tr
                 td= channel.key
                 td= channel.mode

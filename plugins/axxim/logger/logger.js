@@ -3,28 +3,37 @@ var Plugin = (function () {
         this.name = 'logger';
         this.title = 'Logger';
         this.description = "Logging module";
-        this.version = '0.1';
+        this.version = '0.2';
         this.author = 'Luke Strickland';
 
         this.bot = bot;
         this.database = bot.database;
+
+        this.logSchema = bot.database.Schema({
+            channel: String,
+            from: String,
+            message: String,
+            createdAt: { type: Date, default: Date.now }
+        });
+        this.Log = bot.database.model('Log', this.logSchema);
     }
     Plugin.prototype.onRaw = function (message) {
         if (message.rawCommand != 'PRIVMSG')
             return;
 
-        var channel, from, mentions, contents;
+        var channel, from, contents;
 
         channel = message.args[0].charAt(0) === '#' ? message.args[0] : null;
         from = message.nick;
-        mentions = null;
         contents = message.args.splice(1);
         contents = contents.join(' ');
 
-        this.database.query('INSERT INTO logs (`channel`, `from`, `mentions`, `message`) VALUES (?,?,?,?)', [channel, from, mentions, contents], function (err, rows) {
-            if (err)
-                console.error(err);
+        var log = new this.Log({
+            channel: channel,
+            from: from,
+            message: contents
         });
+        log.save();
     };
     return Plugin;
 })();

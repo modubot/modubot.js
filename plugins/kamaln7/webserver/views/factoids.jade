@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  div
+    div.row
+      div.col-md-12
+        table.table.table-striped
+          thead
+            tr
+              th Factoid
+              th Owner
+              th Channel
+              th Value
+          tfoot
+            tr
+              th Total:
+              td= factoids.length
+              td
+              td
+          tbody
+            each factoid in factoids
+              tr
+                td= factoid.factoid
+                td= factoid.owner
+                td= factoid.channel
+                td= factoid.content

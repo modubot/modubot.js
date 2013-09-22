@@ -89,6 +89,10 @@ var Plugin = (function () {
     Plugin.prototype.isFactoid = function (command) {
         return (command.charAt(0) == this.bot.config.factoid);
     };
+
+    Plugin.prototype.getAllFactoids = function (callback) {
+        this.Factoid.find({ forgotten: false }, callback);
+    };
     return Plugin;
 })();
 exports.Plugin = Plugin;

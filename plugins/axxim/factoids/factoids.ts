@@ -122,4 +122,8 @@ export class Plugin {
 		return (command.charAt(0) == this.bot.config.factoid);
 	}
 
+	getAllFactoids(callback){
+		this.Factoid.find({forgotten: false}, callback);
+	}
+
 }

@@ -69,8 +69,15 @@ export class Plugin {
 	}
 
 	factoids(){
+		var plugin = this;
 		this.server.get('/factoids', function(req, res){
-			res.render('factoids', {menu: 'factoids'});
+			plugin.bot.plugins['axxim/factoids'].getAllFactoids(function(err, factoids){
+				if(err){
+					factoids = [];
+				}
+
+				res.render('factoids', {menu: 'factoids', factoids: factoids});
+			});
 		});
 	}
 

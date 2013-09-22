@@ -37,7 +37,8 @@ export class Plugin {
 			owner: String,
 			channel: String,
 			forgotten: {type: Boolean, default: false},
-			locked:  {type: Boolean, default: false}
+			locked:  {type: Boolean, default: false},
+			createdAt: {type: Date, default: Date.now}
 		});
 		this.Factoid = this.database.model('Factoid', this.factoidSchema);
 	}
@@ -123,7 +124,7 @@ export class Plugin {
 	}
 
 	getAllFactoids(callback){
-		this.Factoid.find({forgotten: false}, callback);
+		this.Factoid.find({forgotten: false}, null, {sort: { factoid: 1 }}, callback);
 	}
 
 }

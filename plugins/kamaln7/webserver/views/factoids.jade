@@ -11,10 +11,12 @@ block content
               th Owner
               th Channel
               th Value
+              th Creation Date
           tfoot
             tr
               th Total:
               td= factoids.length
+              td
               td
               td
           tbody
@@ -24,3 +26,4 @@ block content
                 td= factoid.owner
                 td= factoid.channel
                 td= factoid.content
+                td= factoid.createdAt

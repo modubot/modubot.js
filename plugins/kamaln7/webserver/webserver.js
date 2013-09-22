@@ -11,6 +11,7 @@ var Plugin = (function () {
         this.client = bot.client;
         this.commands = {};
         this.config = config;
+        this.plugins = [];
 
         var express = require('express');
         this.port = this.config.port || 8888;
@@ -20,6 +21,7 @@ var Plugin = (function () {
         this.server.set('views', __dirname + '/views');
         this.server.set('view engine', 'jade');
         this.server.locals.bot = this.client;
+        this.server.locals.plugins = this.plugins;
 
         if (this.server.listen(this.port)) {
             console.log('Webserver listening on port http://localhost:' + this.port);
@@ -42,10 +44,9 @@ var Plugin = (function () {
 
     Plugin.prototype.loadPlugins = function () {
         var plugin = this;
-        console.log(this.config);
         this.config.plugins.forEach(function (webserverPlugin) {
-            console.log(webserverPlugin);
             if (typeof plugin[webserverPlugin] == 'function') {
+                plugin.plugins.push(webserverPlugin);
                 plugin[webserverPlugin]();
             }
         });
@@ -53,7 +54,7 @@ var Plugin = (function () {
 
     Plugin.prototype.factoids = function () {
         this.server.get('/factoids', function (req, res) {
-            res.end(200);
+            res.render('factoids', { menu: 'factoids' });
         });
     };
     return Plugin;

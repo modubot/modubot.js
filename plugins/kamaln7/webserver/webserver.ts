@@ -12,6 +12,7 @@ export class Plugin {
 	server:any;
 	port:number;
 	config:any;
+	plugins:any;
 
 	constructor(bot:any, config:any) {
 		this.name = 'webserver';
@@ -25,6 +26,7 @@ export class Plugin {
 		this.client = bot.client;
 		this.commands = {};
 		this.config = config;
+		this.plugins = [];
 
 		var express = require('express');
 		this.port = this.config.port || 8888;
@@ -34,6 +36,7 @@ export class Plugin {
 		this.server.set('views', __dirname + '/views');
 		this.server.set('view engine', 'jade');
 		this.server.locals.bot = this.client;
+		this.server.locals.plugins = this.plugins;
 
 		if(this.server.listen(this.port)){
 			console.log('Webserver listening on port http://localhost:' + this.port);
@@ -57,10 +60,9 @@ export class Plugin {
 
 	loadPlugins(){
 		var plugin = this;
-		console.log(this.config);
 		this.config.plugins.forEach(function(webserverPlugin){
-			console.log(webserverPlugin);
 			if(typeof plugin[webserverPlugin] == 'function'){
+				plugin.plugins.push(webserverPlugin);
 				plugin[webserverPlugin]();
 			}
 		});
@@ -68,7 +70,7 @@ export class Plugin {
 
 	factoids(){
 		this.server.get('/factoids', function(req, res){
-			res.end(200);
+			res.render('factoids', {menu: 'factoids'});
 		});
 	}
 

@@ -11,6 +11,9 @@ div.navbar.navbar-default
         a(href='/') Home
       li(class=(menu === 'channels' ? 'active' : ''))
         a(href='/channels') Channels
+      if(!!~plugins.indexOf('factoids'))
+        li(class=(menu === 'factoids' ? 'active' : ''))
+          a(href='/factoids') Factoids
     ul.nav.navbar-nav.pull-right
       li
         a(href='#')= bot.nick + ' on ' + bot.opt.server

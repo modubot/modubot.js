@@ -12,7 +12,7 @@ var Plugin = (function () {
         this.commands = {};
 
         var express = require('express');
-        this.port = config.port || 8888;
+        this.port = config.webserver.port || 8888;
 
         this.server = express();
         this.server.use(express.static(__dirname + '/public'));

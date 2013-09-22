@@ -81,5 +81,12 @@ Bot.prototype.spawn = function () {
 			console.log('error: ', message);
 		}
 	});
+};
 
+Bot.prototype.reply = function(from, to, reply){
+	if(to.charAt(0) == '#'){
+		this.client.say(to, from + ': ' + reply);
+	} else {
+		this.client.say(from, reply);
+	}
 };

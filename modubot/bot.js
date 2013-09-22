@@ -88,6 +88,14 @@ Bot.prototype.spawn = function () {
 	});
 };
 
+Bot.prototype.getReplyTo = function(from, to){
+	if(to.charAt(0) == '#'){
+		return to;
+	} else {
+		return from;
+	}
+};
+
 Bot.prototype.reply = function(from, to, reply){
 	if(to.charAt(0) == '#'){
 		this.client.say(to, from + ': ' + reply);

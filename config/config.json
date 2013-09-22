@@ -24,7 +24,8 @@
 		"webserver": {
 			"port": 8888,
 			"plugins": [
-				"factoids"
+				"factoids",
+				"logs"
 			]
 		}
 	}

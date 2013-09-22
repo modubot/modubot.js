@@ -52,4 +52,8 @@ export class Plugin {
 		log.save();
 	}
 
+	getLastXLogs(amount:number, callback) {
+		this.Log.find({}, null, {sort: { createdAt: -1 }, limit: amount}, callback);
+	}
+
 }

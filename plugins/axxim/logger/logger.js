@@ -35,6 +35,10 @@ var Plugin = (function () {
         });
         log.save();
     };
+
+    Plugin.prototype.getLastXLogs = function (amount, callback) {
+        this.Log.find({}, null, { sort: { createdAt: -1 }, limit: amount }, callback);
+    };
     return Plugin;
 })();
 exports.Plugin = Plugin;

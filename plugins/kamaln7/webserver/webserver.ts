@@ -81,4 +81,17 @@ export class Plugin {
 		});
 	}
 
+	logs(){
+		var plugin = this;
+		this.server.get('/logs', function(req, res){
+			plugin.bot.plugins['axxim/logger'].getLastXLogs(5, function(err, logs){
+				if(err){
+					logs = [];
+				}
+
+				res.render('logs', {menu: 'logs', logs: logs});
+			});
+		});
+	}
+
 }

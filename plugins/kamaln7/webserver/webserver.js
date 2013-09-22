@@ -64,6 +64,19 @@ var Plugin = (function () {
             });
         });
     };
+
+    Plugin.prototype.logs = function () {
+        var plugin = this;
+        this.server.get('/logs', function (req, res) {
+            plugin.bot.plugins['axxim/logger'].getLastXLogs(5, function (err, logs) {
+                if (err) {
+                    logs = [];
+                }
+
+                res.render('logs', { menu: 'logs', logs: logs });
+            });
+        });
+    };
     return Plugin;
 })();
 exports.Plugin = Plugin;

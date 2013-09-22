@@ -11,6 +11,7 @@ export class Plugin {
 	commands:any;
 	server:any;
 	port:number;
+	config:any;
 
 	constructor(bot:any, config:any) {
 		this.name = 'webserver';
@@ -23,9 +24,10 @@ export class Plugin {
 		this.database = bot.database;
 		this.client = bot.client;
 		this.commands = {};
+		this.config = config;
 
 		var express = require('express');
-		this.port = config.port || 8888;
+		this.port = this.config.port || 8888;
 
 		this.server = express();
 		this.server.use(express.static(__dirname + '/public'));
@@ -40,6 +42,7 @@ export class Plugin {
 		}
 
 		this.setupRoutes();
+		this.loadPlugins();
 	}
 
 	setupRoutes(){
@@ -49,6 +52,23 @@ export class Plugin {
 		});
 		this.server.get('/channels', function(req, res){
 			res.render('channels', {menu: 'channels'});
+		});
+	}
+
+	loadPlugins(){
+		var plugin = this;
+		console.log(this.config);
+		this.config.plugins.forEach(function(webserverPlugin){
+			console.log(webserverPlugin);
+			if(typeof plugin[webserverPlugin] == 'function'){
+				plugin[webserverPlugin]();
+			}
+		});
+	}
+
+	factoids(){
+		this.server.get('/factoids', function(req, res){
+			res.end(200);
 		});
 	}
 

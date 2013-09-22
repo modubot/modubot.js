@@ -10,9 +10,10 @@ var Plugin = (function () {
         this.database = bot.database;
         this.client = bot.client;
         this.commands = {};
+        this.config = config;
 
         var express = require('express');
-        this.port = config.webserver.port || 8888;
+        this.port = this.config.port || 8888;
 
         this.server = express();
         this.server.use(express.static(__dirname + '/public'));
@@ -27,6 +28,7 @@ var Plugin = (function () {
         }
 
         this.setupRoutes();
+        this.loadPlugins();
     }
     Plugin.prototype.setupRoutes = function () {
         var plugin = this;
@@ -35,6 +37,23 @@ var Plugin = (function () {
         });
         this.server.get('/channels', function (req, res) {
             res.render('channels', { menu: 'channels' });
+        });
+    };
+
+    Plugin.prototype.loadPlugins = function () {
+        var plugin = this;
+        console.log(this.config);
+        this.config.plugins.forEach(function (webserverPlugin) {
+            console.log(webserverPlugin);
+            if (typeof plugin[webserverPlugin] == 'function') {
+                plugin[webserverPlugin]();
+            }
+        });
+    };
+
+    Plugin.prototype.factoids = function () {
+        this.server.get('/factoids', function (req, res) {
+            res.end(200);
         });
     };
     return Plugin;

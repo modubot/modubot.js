@@ -11,6 +11,9 @@ export class Plugin {
 	commands:any;
 	factoids:any;
 
+	factoidSchema:any;
+	Factoid:any;
+
 	constructor(bot:any) {
 		this.name = 'factoids';
 		this.title = 'Factoids';
@@ -28,6 +31,15 @@ export class Plugin {
 			'f': 'onCommandForget'
 		};
 
+		this.factoidSchema = this.database.Schema({
+			factoid: String,
+			content: String,
+			owner: String,
+			channel: String,
+			forgotten: {type: Boolean, default: false},
+			locked:  {type: Boolean, default: false}
+		});
+		this.Factoid = this.database.model('Factoid', this.factoidSchema);
 	}
 
 	onCommandForget(from:string, to:string, message:string, args:any) {
@@ -40,33 +52,54 @@ export class Plugin {
 		}
 		var client = this.client;
 
-		var factoid = args[1];
+		var factoidName = args[1];
 
 		var contents = args.splice(2);
 		contents = contents.join(' ');
 
-		this.database.query(
-			'INSERT INTO factoids (factoid,content,owner,channel,forgotten,locked) VALUES (?,?,?,?,0,0)',
-			[factoid, contents, from, to],
-			function (err, rows) {
-				client.notice(from, 'Factoid "' + factoid + '" created.');
-			});
+		var plugin = this;
+		this.Factoid.update({factoid: factoidName, forgotten: false}, {$set: {forgotten: true}}, {multi: true}, function(err, numberAffected){
+			if(err){
+				plugin.bot.reply(from, to, err);
+				return;
+			}
 
+			var factoid = new plugin.Factoid({
+				factoid: factoidName,
+				content: contents,
+				owner: from,
+				channel: (to.charAt(0) == '#' ? to : '')
+			});
+			factoid.save(function(err, factoid){
+				if(err){
+					plugin.bot.reply(from, to, err);
+					return;
+				}
+
+				plugin.bot.reply(from, to, (numberAffected ? 'Updated' : 'Created') + ' ' + factoidName + '.');
+			});
+		});
 	}
 
 	onMessage(from:string, to:string, message:string) {
 		var client = this.client;
 
-		var factoid = message.split(' ')[0].replace(this.bot.config.factoid, '');
-
 		if (this.isFactoid(message)) {
+			var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
-			this.database.query(
-				'SELECT * FROM factoids WHERE factoid = ?',
-				[factoid],
-				function (err, results) {
-					client.say(to, results[0].content);
-				});
+			var plugin = this;
+			this.Factoid.findOne({factoid: factoidName, forgotten: false}, function(err, factoid){
+				if(err){
+					plugin.bot.reply(from, to, err);
+					return;
+				}
+
+				if(!factoid){
+					return;
+				}
+
+				plugin.client.say(plugin.bot.getReplyTo(from, to), factoid.factoid + ': ' + factoid.content);
+			});
 
 			/*
 			var contents = this.factoids[factoid.toLowerCase()];

@@ -1,48 +1,30 @@
 var irc = require('irc'),
-	fs = require('fs'),
     mysql = require('mysql'),
 
 	plugin = require('./plugin');
 
-Bot = exports.Bot = function (configFile) {
+Bot = exports.Bot = function (configDir) {
+	var defaultConfig = require('../' + configDir + '/config.json');
+	var localConfig = require('../' + configDir + '/local/config.json');
+	var config = defaultConfig;
 
-	this.configFile = configFile;
+	Object.keys(localConfig).forEach(function(key) {
+		switch(key){
+			case "plugin":
+				Object.keys(localConfig[key]).forEach(function(plugin) {
+					Object.keys(localConfig[key][plugin]).forEach(function(item) {
+						config[key][plugin][item] = localConfig[key][plugin][item];
+					});
+				});
+				break;
+			default:
+				config[key] = localConfig[key];
+		}
+	});
 
-	var defaults = {
-		host: "irc.esper.net",
-		port: 6667,
-		password: "",
-		nick: "Modubot",
-		username: "Modubot",
-		realname: "Modubot",
-		channels: ["#modubot"],
-		command: ".",
-		factoid: "?",
-		webserverport: 8888,
-		debug: true,
-
-		plugins: [
-			'axxim/factoids'
-		],
-
-		database: {
-			host: "localhost",
-			user: "",
-			password: "",
-			database: ""
-		},
-
-		admins: []
-	};
-
-	if (fs.existsSync(this.configFile) === false) {
-		fs.writeFileSync(this.configFile, JSON.stringify(defaults, null, '\t'));
-	}
-
-	this.config = require('../' + this.configFile);
+	this.config = config;
 	this.plugins = this.config.plugins;
 	this.hooks = [];
-
 };
 
 Bot.prototype.spawn = function () {

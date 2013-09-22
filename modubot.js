@@ -3,5 +3,5 @@
  */
 var Modu = require('./modubot/bot');
 
-var modubot = new Modu.Bot('./config/bot.json');
+var modubot = new Modu.Bot('./config');
 modubot.spawn();

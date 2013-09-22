@@ -18,7 +18,8 @@
 		"host": "localhost",
 		"user": "modubot",
 		"password": "",
-		"database": "modubot"
+		"database": "modubot",
+		"mongodb": "mongodb://localhost/modubot"
 	},
 
 	"admins": [],

@@ -12,7 +12,7 @@ export class Plugin {
 	server:any;
 	port:number;
 
-	constructor(bot:any) {
+	constructor(bot:any, config:any) {
 		this.name = 'webserver';
 		this.title = 'Webserver';
 		this.description = "Webserver module for Modubot";
@@ -25,7 +25,7 @@ export class Plugin {
 		this.commands = {};
 
 		var express = require('express');
-		this.port = this.bot.config.webserverport || 8888;
+		this.port = config.port || 8888;
 
 		this.server = express();
 		this.server.use(express.static(__dirname + '/public'));

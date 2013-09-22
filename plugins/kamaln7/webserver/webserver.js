@@ -1,5 +1,5 @@
 var Plugin = (function () {
-    function Plugin(bot) {
+    function Plugin(bot, config) {
         this.name = 'webserver';
         this.title = 'Webserver';
         this.description = "Webserver module for Modubot";
@@ -12,7 +12,7 @@ var Plugin = (function () {
         this.commands = {};
 
         var express = require('express');
-        this.port = this.bot.config.webserverport || 8888;
+        this.port = config.port || 8888;
 
         this.server = express();
         this.server.use(express.static(__dirname + '/public'));

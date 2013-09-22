@@ -1,6 +1,6 @@
 {
   "name": "Modubot",
-  "description": "Motherfucking modubot written in NodeJS yo.",
+  "description": "Modubot: The scalable, and extensible IRC Bot.",
   "private": true,
   "contributors": [
     {

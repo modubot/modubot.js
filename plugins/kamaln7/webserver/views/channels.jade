@@ -13,10 +13,10 @@ block content
           tfoot
             tr
               th Total:
-              td= Object.keys(bot.chans).length
+              td= Object.keys(bot.client.chans).length
               td
           tbody
-            each channel in bot.chans
+            each channel in bot.client.chans
               tr
                 td= channel.key
                 td= channel.mode

@@ -20,7 +20,7 @@ var Plugin = (function () {
         this.server.use(express.static(__dirname + '/public'));
         this.server.set('views', __dirname + '/views');
         this.server.set('view engine', 'jade');
-        this.server.locals.bot = this.client;
+        this.server.locals.bot = this.bot;
         this.server.locals.plugins = this.plugins;
 
         if (this.server.listen(this.port)) {
@@ -35,7 +35,8 @@ var Plugin = (function () {
     Plugin.prototype.setupRoutes = function () {
         var plugin = this;
         this.server.get('/', function (req, res) {
-            res.render('home', { menu: 'home' });
+            var hostname = require('os').hostname();
+            res.render('home', { menu: 'home', hostname: hostname });
         });
         this.server.get('/channels', function (req, res) {
             res.render('channels', { menu: 'channels' });

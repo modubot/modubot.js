@@ -1,3 +1,38 @@
 extends layout
 
 block content
+  div
+    div.row
+      div.col-md-6
+        legend Info
+        p
+          strong
+            a(href="https://modubot.net") Modubot.js
+          |  running on&nbsp;
+          strong
+            =hostname
+          |  (
+          =process.platform + ' ' + process.arch
+          | ).
+        p
+          strong Uptime:&nbsp;
+          =Math.round(process.uptime()) + ' seconds.'
+      div.col-md-6
+        legend Plugins
+        table.table.table-striped
+          thead
+            tr
+              th Name
+              th Version
+              th Description
+          tfoot
+            tr
+              th Total:
+              td= Object.keys(bot.plugins).length
+              td
+          tbody
+            each plugin in bot.plugins
+              tr
+                td= bot.plugins[plugin].title
+                td= bot.plugins[plugin].version
+                td= bot.plugins[plugin].description

@@ -72,8 +72,8 @@ exports.load = function (bot, namespace) {
 
 	// Load the plugin
 	var pluginFile = require('../plugins/' + namespace + '/' + name);
-	var botConfig = bot.config.plugin[namespace] || {};
-	bot.plugins[namespace] = new pluginFile.Plugin(bot, botConfig);
+	var pluginConfig = bot.config.plugin[name] || {};
+	bot.plugins[namespace] = new pluginFile.Plugin(bot, pluginConfig);
 
 	// Load the hooks
 	['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'].forEach(function (event) {

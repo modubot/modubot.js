@@ -22,7 +22,7 @@
  */
 
 var Modu = require('./modubot/bot');
-var config = new Modu.Bot('./config/bot.json').config.database;
+var config = new Modu.Bot('./config').config.database;
 
 // Path to the migrations directory (relative to migrate)
 exports.migration_path = './migrations/';

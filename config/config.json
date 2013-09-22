@@ -15,10 +15,6 @@
 	],
 
 	"database": {
-		"host": "localhost",
-		"user": "modubot",
-		"password": "",
-		"database": "modubot",
 		"mongodb": "mongodb://localhost/modubot"
 	},
 

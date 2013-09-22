@@ -1,5 +1,5 @@
 var irc = require('irc'),
-    mysql = require('mysql'),
+	mongoose = require('mongoose'),
 
 	plugin = require('./plugin');
 
@@ -32,12 +32,17 @@ Bot.prototype.spawn = function () {
 	var client = this.client;
     var database = this.database;
 
-    this.database = mysql.createConnection({
-        host     : config.database.host,
-        user     : config.database.user,
-        password : config.database.password,
-        database : config.database.database
-    });
+	this.database = mongoose;
+	mongoose.connect(config.database.mongodb);
+	var db = mongoose.connection;
+	var connected = false;
+	db.on('error', function(err){
+		console.log(err);
+		process.exit(1);
+	});
+	db.once('open', function() {
+		connected = true;
+	});
 
 	console.log('Connecting to ' + config.host);
 

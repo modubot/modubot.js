@@ -52,7 +52,8 @@ export class Plugin {
 		var plugin = this;
 		this.server.get('/', function(req, res){
 			var hostname = require('os').hostname();
-			res.render('home', {menu: 'home', hostname: hostname});
+			var moment = require('moment');
+			res.render('home', {menu: 'home', hostname: hostname, moment: moment});
 		});
 		this.server.get('/channels', function(req, res){
 			res.render('channels', {menu: 'channels'});

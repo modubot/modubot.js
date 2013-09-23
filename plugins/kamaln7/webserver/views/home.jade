@@ -16,7 +16,7 @@ block content
           | ).
         p
           strong Uptime:&nbsp;
-          =Math.round(process.uptime()) + ' seconds.'
+          =moment.duration((process.uptime() * 1000)).humanize()
       div.col-md-6
         legend Plugins
         table.table.table-striped
@@ -28,7 +28,7 @@ block content
           tfoot
             tr
               th Total:
-              td= Object.keys(bot.plugins).length
+              td= Object.keys(bot.plugins).length / 2
               td
           tbody
             each plugin in bot.plugins

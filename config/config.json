@@ -23,6 +23,9 @@
 	"plugin": {
 		"webserver": {
 			"port": 8888
+		},
+		"wolframalpha": {
+			"applicationId": "http://products.wolframalpha.com/developers/"
 		}
 	}
 }

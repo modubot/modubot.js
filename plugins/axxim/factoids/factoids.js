@@ -3,7 +3,7 @@ var Plugin = (function () {
         this.name = 'factoids';
         this.title = 'Factoids';
         this.description = "Factoid module for Modubot";
-        this.version = '0.1';
+        this.version = '0.2';
         this.author = 'Luke Strickland';
 
         this.bot = bot;
@@ -79,10 +79,10 @@ var Plugin = (function () {
                     return;
                 }
 
-                var prefix = factoid.factoid;
+                var prefix = '';
                 var pipe = message.match(/\|[ ]?([\S]+)$/i);
                 if (pipe) {
-                    prefix = pipe[1];
+                    prefix = pipe[1] + ': ';
                 }
 
                 var special = factoid.content.match(/^<([a-z]+)>(.*)/i);
@@ -101,7 +101,7 @@ var Plugin = (function () {
                             break;
                     }
                 } else {
-                    this.client.say(this.bot.getReplyTo(from, to), prefix + ': ' + factoid.content);
+                    this.client.say(this.bot.getReplyTo(from, to), prefix + factoid.content);
                 }
             }).bind(this));
         }
@@ -109,6 +109,10 @@ var Plugin = (function () {
 
     Plugin.prototype.isFactoid = function (command) {
         return (command.charAt(0) == this.bot.config.factoid);
+    };
+
+    Plugin.prototype.isFactoidInfo = function (command) {
+        return (command.charAt(1) == '+');
     };
 
     Plugin.prototype.getAllFactoids = function (callback) {

@@ -18,7 +18,7 @@ export class Plugin {
 		this.name = 'factoids';
 		this.title = 'Factoids';
 		this.description = "Factoid module for Modubot";
-		this.version = '0.1';
+		this.version = '0.2';
 		this.author = 'Luke Strickland';
 
 		this.bot = bot;
@@ -82,6 +82,15 @@ export class Plugin {
 		});
 	}
 
+	/**
+	 * Handle potential factoids by binding to the global message evnet.
+	 *
+	 * Currently handles piping, special factoids and regular factoids.
+	 *
+	 * @param from
+	 * @param to
+	 * @param message
+	 */
 	onMessage(from:string, to:string, message:string) {
 		if (this.isFactoid(message)) {
 			var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '');
@@ -96,36 +105,56 @@ export class Plugin {
 					return;
 				}
 
-				var prefix = factoid.factoid;
+				// By default no prefix
+				var prefix = '';
 				var pipe = message.match(/\|[ ]?([\S]+)$/i);
 				if (pipe) {
-					prefix = pipe[1];
+					prefix = pipe[1] + ': ';
 				}
 
+				// If the factoid has an special flags inside <>'s
 				var special = factoid.content.match(/^<([a-z]+)>(.*)/i);
 				if(special){
 					var content = special[2];
 					special = special[1];
 					switch(special){
 						case 'alias':
+
 							this.onMessage(from, to, this.bot.config.factoid + content);
 							break;
 						case 'cmd':
 							var args = content.split(' ');
 							var command = args.shift();
+
 							// TODO: Improve this
 							this.client.emit('command.' + command, from, to, this.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + this.bot.config.factoid.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
 							break;
 					}
 				} else {
-					this.client.say(this.bot.getReplyTo(from, to), prefix + ': ' + factoid.content);
+					this.client.say(this.bot.getReplyTo(from, to), prefix + factoid.content);
 				}
 			}).bind(this));
 		}
 	}
 
+	/**
+	 * Is the string a factoid?
+	 *
+	 * @param command
+	 * @returns {boolean}
+	 */
 	isFactoid(command:any) {
 		return (command.charAt(0) == this.bot.config.factoid);
+	}
+
+	/**
+	 * Are we requesting factoid information?
+	 *
+	 * @param command
+	 * @returns {boolean}
+	 */
+	isFactoidInfo(command:any) {
+		return (command.charAt(1) == '+');
 	}
 
 	getAllFactoids(callback){

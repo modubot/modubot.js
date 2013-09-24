@@ -23,9 +23,6 @@
 	"plugin": {
 		"webserver": {
 			"port": 8888
-		},
-		"rss": {
-			"feeds": []
 		}
 	}
 }

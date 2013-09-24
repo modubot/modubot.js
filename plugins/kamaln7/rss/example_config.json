@@ -1,0 +1,13 @@
+{
+	"plugin": {
+		"...": {},
+		"rss": {
+			"name": "Feed Name",
+			"url": "http://url/feed",
+			"channels": [
+				"#channelsToNotify"
+			],
+			"interval": 1
+		}
+	}
+}

@@ -22,7 +22,7 @@
     "mysql": "2.0.0-alpha8",
     "moment": ">= 2.1.0",
     "google": "*",
-    "express": "3.*",
+	"express": "3.x",
     "jade": "*",
     "youtube-feeds": "~2.2.1",
     "get-youtube-id": "~0.1.3",

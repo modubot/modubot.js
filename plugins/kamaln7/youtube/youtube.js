@@ -12,31 +12,27 @@ var Plugin = (function () {
         this.bot = bot;
         this.database = bot.database;
         this.client = bot.client;
-        this.commands = {
-            'youtube': 'onCommandYoutube',
-            'yt': 'onCommandYoutube'
-        };
-        this.regex = /(?:https?:\/\/)?(?:(?:(?:www\.)?youtube\.com\/watch\?.*?v=([a-zA-Z0-9_\-]+))|(?:(?:www\.)?youtu\.be\/([a-zA-Z0-9_\-]+)))/i;
+        this.commands = {};
     }
-    Plugin.prototype.onCommandYoutube = function (from, to, message, args) {
-        if (args.length < 2) {
-            this.client.reply(from, to, "Usage: .youtube http://youtube.com/watch?v=xyz");
+    Plugin.prototype.onMessage = function (from, to, message) {
+        var args = message.split(' ');
+
+        if (args.length < 1) {
+            this.bot.reply(from, to, "Usage: .youtube http://youtube.com/watch?v=xyz");
+            return;
         }
 
-        var link = args[1];
+        var link = args[0];
         var id = getYouTubeID(link);
         if (id) {
-            var plugin = this;
-            youtubeFeeds.video(id, function (err, data) {
+            youtubeFeeds.video(id, (function (err, data) {
                 if (err) {
-                    plugin.bot.reply(from, to, err);
+                    this.bot.reply(from, to, err);
                     return;
                 }
 
-                plugin.bot.reply(from, to, data.title + " [" + data.uploader + "] - " + data.viewCount + " views.");
-            });
-        } else {
-            this.bot.reply(from, to, "Invalid link.");
+                this.bot.reply(from, to, data.title + " [" + data.uploader + "] - " + data.viewCount + " views.");
+            }).bind(this));
         }
     };
     return Plugin;

@@ -14,9 +14,9 @@ div.navbar.navbar-default
       if(!!~plugins.indexOf('factoids'))
         li(class=(menu === 'factoids' ? 'active' : ''))
           a(href='/factoids') Factoids
-      if(!!~plugins.indexOf('logs'))
-        li(class=(menu === 'logs' ? 'active' : ''))
-          a(href='/logs') Logs
+      if(!!~plugins.indexOf('logger'))
+        li(class=(menu === 'logger' ? 'active' : ''))
+          a(href='/logger') Logger
     ul.nav.navbar-nav.pull-right
       li
         a(href='#')= bot.client.nick + ' on ' + bot.client.opt.server

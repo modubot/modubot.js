@@ -22,11 +22,10 @@
 
 	"plugin": {
 		"webserver": {
-			"port": 8888,
-			"plugins": [
-				"factoids",
-				"logs"
-			]
+			"port": 8888
+		},
+		"rss": {
+			"feeds": []
 		}
 	}
 }

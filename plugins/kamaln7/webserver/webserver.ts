@@ -62,7 +62,8 @@ export class Plugin {
 
 	loadPlugins(){
 		var plugin = this;
-		this.config.plugins.forEach(function(webserverPlugin){
+		this.bot.config.plugins.forEach(function(webserverPlugin){
+			webserverPlugin = webserverPlugin.split('/')[1];
 			if(typeof plugin[webserverPlugin] == 'function'){
 				plugin.plugins.push(webserverPlugin);
 				plugin[webserverPlugin]();
@@ -83,15 +84,15 @@ export class Plugin {
 		});
 	}
 
-	logs(){
+	logger(){
 		var plugin = this;
-		this.server.get('/logs', function(req, res){
+		this.server.get('/logger', function(req, res){
 			plugin.bot.plugins['axxim/logger'].getLastXLogs(5, function(err, logs){
 				if(err){
 					logs = [];
 				}
 
-				res.render('logs', {menu: 'logs', logs: logs});
+				res.render('logger', {menu: 'logger', logs: logs});
 			});
 		});
 	}

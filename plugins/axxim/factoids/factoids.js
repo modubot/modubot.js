@@ -66,15 +66,12 @@ var Plugin = (function () {
     };
 
     Plugin.prototype.onMessage = function (from, to, message) {
-        var client = this.client;
-
         if (this.isFactoid(message)) {
             var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '');
 
-            var plugin = this;
-            this.Factoid.findOne({ factoid: factoidName, forgotten: false }, function (err, factoid) {
+            this.Factoid.findOne({ factoid: factoidName, forgotten: false }, (function (err, factoid) {
                 if (err) {
-                    plugin.bot.reply(from, to, err, 'notice');
+                    this.bot.reply(from, to, err, 'notice');
                     return;
                 }
 
@@ -82,8 +79,26 @@ var Plugin = (function () {
                     return;
                 }
 
-                plugin.client.say(plugin.bot.getReplyTo(from, to), factoid.factoid + ': ' + factoid.content);
-            });
+                var prefix = factoid.factoid;
+                var pipe = message.match(/\|[ ]?([\S]+)$/i);
+                if (pipe) {
+                    prefix = pipe[1];
+                }
+
+                var special = factoid.content.match(/^<([a-z]+)>(.*)/i);
+                if (special) {
+                    var content = special[2];
+                    special = special[1];
+                    switch (special) {
+                        case 'alias':
+                            var newMessage = message.replace(this.bot.config.factoid + factoidName, this.bot.config.factoid + content);
+                            this.onMessage(from, to, newMessage);
+                            break;
+                    }
+                } else {
+                    this.client.say(this.bot.getReplyTo(from, to), prefix + ': ' + factoid.content);
+                }
+            }).bind(this));
         }
     };
 

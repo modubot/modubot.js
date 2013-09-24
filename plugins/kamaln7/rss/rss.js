@@ -14,8 +14,11 @@ var Plugin = (function () {
         this.commands = {};
         this.config = config;
         this.loadedAt = moment();
+        this.readers = [];
 
-        var readers = [];
+        this.loadReaders();
+    }
+    Plugin.prototype.loadReaders = function () {
         this.config.feeds.forEach((function (feed) {
             var reader = new feedsub(feed.url, {
                 interval: feed.interval,
@@ -23,7 +26,7 @@ var Plugin = (function () {
             });
 
             reader.on('item', (function (item) {
-                if (this.loadedAt.isAfter(item.updated)) {
+                if (this.loadedAt.isAfter(item.published)) {
                     return;
                 }
 
@@ -32,10 +35,11 @@ var Plugin = (function () {
                 }).bind(this));
             }).bind(this));
 
-            readers.push(reader);
             reader.read();
+
+            this.readers.push(reader);
         }).bind(this));
-    }
+    };
     return Plugin;
 })();
 exports.Plugin = Plugin;

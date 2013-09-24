@@ -13,6 +13,7 @@ export class Plugin {
 	commands:any;
 	config:any;
 	loadedAt:any;
+	readers:any;
 
 	constructor(bot:any, config:any) {
 		this.name = 'rss';
@@ -27,8 +28,12 @@ export class Plugin {
 		this.commands = {};
 		this.config = config;
 		this.loadedAt = moment();
+		this.readers = [];
 
-		var readers = [];
+		this.loadReaders();
+	}
+
+	loadReaders() {
 		this.config.feeds.forEach((function(feed){
 			var reader = new feedsub(feed.url, {
 				interval: feed.interval,
@@ -36,7 +41,7 @@ export class Plugin {
 			});
 
 			reader.on('item', (function(item){
-				if(this.loadedAt.isAfter(item.updated)){
+				if(this.loadedAt.isAfter(item.published)){
 					return;
 				}
 
@@ -45,8 +50,9 @@ export class Plugin {
 				}).bind(this));
 			}).bind(this));
 
-			readers.push(reader);
 			reader.read();
+
+			this.readers.push(reader);
 		}).bind(this));
 	}
 

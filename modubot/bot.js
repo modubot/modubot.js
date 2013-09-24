@@ -97,10 +97,22 @@ Bot.prototype.getReplyTo = function(from, to){
 	}
 };
 
-Bot.prototype.reply = function(from, to, reply){
-	if(to.charAt(0) == '#'){
-		this.client.say(to, from + ': ' + reply);
-	} else {
-		this.client.say(from, reply);
+Bot.prototype.reply = function(from, to, reply, type){
+	if(!type){
+		type = 'privmsg';
+	}
+
+	switch(type){
+		case 'privmsg':
+			if(to.charAt(0) == '#'){
+				this.client.say(to, from + ': ' + reply);
+			} else {
+				this.client.say(from, reply);
+			}
+			break;
+
+		case 'notice':
+			this.client.notice(from, reply);
+			break;
 	}
 };

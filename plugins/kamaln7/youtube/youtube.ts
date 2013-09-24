@@ -12,7 +12,6 @@ export class Plugin {
 	database:any;
 	client:any;
 	commands:any;
-	regex:any;
 
 	constructor(bot:any) {
 		this.name = 'youtube';

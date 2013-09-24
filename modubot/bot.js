@@ -12,6 +12,7 @@ Bot = exports.Bot = function (configDir) {
 		switch(key){
 			case "plugin":
 				Object.keys(localConfig[key]).forEach(function(plugin) {
+					config[key][plugin] = {};
 					Object.keys(localConfig[key][plugin]).forEach(function(item) {
 						config[key][plugin][item] = localConfig[key][plugin][item];
 					});

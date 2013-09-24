@@ -31,10 +31,10 @@ var Plugin = (function () {
     };
 
     Plugin.prototype.onCommandRemember = function (from, to, message, args) {
-        if (args.length < 2) {
-            this.client.notice(from, '.remember <factoid> <text>');
+        if (args.length < 3) {
+            this.client.reply(from, to, '.remember <factoid> <text>', 'notice');
+            return;
         }
-        var client = this.client;
 
         var factoidName = args[1];
 
@@ -44,7 +44,7 @@ var Plugin = (function () {
         var plugin = this;
         this.Factoid.update({ factoid: factoidName, forgotten: false }, { $set: { forgotten: true } }, { multi: true }, function (err, numberAffected) {
             if (err) {
-                plugin.bot.reply(from, to, err);
+                plugin.bot.reply(from, to, err, 'notice');
                 return;
             }
 
@@ -60,7 +60,7 @@ var Plugin = (function () {
                     return;
                 }
 
-                plugin.bot.reply(from, to, (numberAffected ? 'Updated' : 'Created') + ' ' + factoidName + '.');
+                plugin.bot.reply(from, to, (numberAffected ? 'Updated' : 'Created') + ' ' + factoidName + '.', 'notice');
             });
         });
     };
@@ -74,7 +74,7 @@ var Plugin = (function () {
             var plugin = this;
             this.Factoid.findOne({ factoid: factoidName, forgotten: false }, function (err, factoid) {
                 if (err) {
-                    plugin.bot.reply(from, to, err);
+                    plugin.bot.reply(from, to, err, 'notice');
                     return;
                 }
 

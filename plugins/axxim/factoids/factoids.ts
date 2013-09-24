@@ -48,10 +48,10 @@ export class Plugin {
 	}
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {
-		if (args.length < 2) {
-			this.client.notice(from, '.remember <factoid> <text>')
+		if (args.length < 3) {
+			this.client.reply(from, to, '.remember <factoid> <text>', 'notice');
+			return;
 		}
-		var client = this.client;
 
 		var factoidName = args[1];
 
@@ -61,7 +61,7 @@ export class Plugin {
 		var plugin = this;
 		this.Factoid.update({factoid: factoidName, forgotten: false}, {$set: {forgotten: true}}, {multi: true}, function(err, numberAffected){
 			if(err){
-				plugin.bot.reply(from, to, err);
+				plugin.bot.reply(from, to, err, 'notice');
 				return;
 			}
 
@@ -77,7 +77,7 @@ export class Plugin {
 					return;
 				}
 
-				plugin.bot.reply(from, to, (numberAffected ? 'Updated' : 'Created') + ' ' + factoidName + '.');
+				plugin.bot.reply(from, to, (numberAffected ? 'Updated' : 'Created') + ' ' + factoidName + '.', 'notice');
 			});
 		});
 	}
@@ -91,7 +91,7 @@ export class Plugin {
 			var plugin = this;
 			this.Factoid.findOne({factoid: factoidName, forgotten: false}, function(err, factoid){
 				if(err){
-					plugin.bot.reply(from, to, err);
+					plugin.bot.reply(from, to, err, 'notice');
 					return;
 				}
 

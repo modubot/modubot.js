@@ -4,8 +4,8 @@ var getYouTubeID = require('get-youtube-id');
 var Plugin = (function () {
     function Plugin(bot) {
         this.name = 'youtube';
-        this.title = 'Parse Youtube links and output information';
-        this.description = "Youtube module for Modubot";
+        this.title = 'YouTube';
+        this.description = "Parse Youtube links and output information";
         this.version = '0.1';
         this.author = 'Kamal Nasser';
 
@@ -19,8 +19,6 @@ var Plugin = (function () {
         this.regex = /(?:https?:\/\/)?(?:(?:(?:www\.)?youtube\.com\/watch\?.*?v=([a-zA-Z0-9_\-]+))|(?:(?:www\.)?youtu\.be\/([a-zA-Z0-9_\-]+)))/i;
     }
     Plugin.prototype.onCommandYoutube = function (from, to, message, args) {
-        var client = this.client;
-
         if (args.length < 2) {
             this.client.reply(from, to, "Usage: .youtube http://youtube.com/watch?v=xyz");
         }
@@ -35,7 +33,7 @@ var Plugin = (function () {
                     return;
                 }
 
-                plugin.bot.reply(from, to, data.title + " [" + data.uploader + "] " + data.viewCount + " views.");
+                plugin.bot.reply(from, to, data.title + " [" + data.uploader + "] - " + data.viewCount + " views.");
             });
         } else {
             this.bot.reply(from, to, "Invalid link.");

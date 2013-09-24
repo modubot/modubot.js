@@ -16,8 +16,8 @@ export class Plugin {
 
 	constructor(bot:any) {
 		this.name = 'youtube';
-		this.title = 'Parse Youtube links and output information';
-		this.description = "Youtube module for Modubot";
+		this.title = 'YouTube';
+		this.description = "Parse Youtube links and output information";
 		this.version = '0.1';
 		this.author = 'Kamal Nasser';
 
@@ -32,8 +32,6 @@ export class Plugin {
 	}
 
 	onCommandYoutube(from:string, to:string, message:string, args:any) {
-		var client = this.client;
-
 		if(args.length < 2){
 			this.client.reply(from, to, "Usage: .youtube http://youtube.com/watch?v=xyz");
 		}
@@ -48,7 +46,7 @@ export class Plugin {
 					return;
 				}
 
-				plugin.bot.reply(from, to, data.title + " [" + data.uploader + "] " + data.viewCount + " views.");
+				plugin.bot.reply(from, to, data.title + " [" + data.uploader + "] - " + data.viewCount + " views.");
 			});
 		} else {
 			this.bot.reply(from, to, "Invalid link.");

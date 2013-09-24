@@ -39,7 +39,7 @@ var Plugin = (function () {
         var factoidName = args[1];
 
         var contents = args.splice(2);
-        contents = contents.join(' ');
+        contents = contents.join(' ').trim();
 
         var plugin = this;
         this.Factoid.update({ factoid: factoidName, forgotten: false }, { $set: { forgotten: true } }, { multi: true }, function (err, numberAffected) {
@@ -91,8 +91,13 @@ var Plugin = (function () {
                     special = special[1];
                     switch (special) {
                         case 'alias':
-                            var newMessage = message.replace(this.bot.config.factoid + factoidName, this.bot.config.factoid + content);
-                            this.onMessage(from, to, newMessage);
+                            this.onMessage(from, to, this.bot.config.factoid + content);
+                            break;
+                        case 'cmd':
+                            var args = content.split(' ');
+                            var command = args.shift();
+
+                            this.client.emit('command.' + command, from, to, this.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + this.bot.config.factoid.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
                             break;
                     }
                 } else {

@@ -93,7 +93,7 @@ export class Plugin {
 				}
 
 				res.render('logger', {menu: 'logger', logs: logs});
-			});
+			}, false);
 		});
 	}
 

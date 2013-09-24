@@ -36,8 +36,15 @@ var Plugin = (function () {
         log.save();
     };
 
-    Plugin.prototype.getLastXLogs = function (amount, callback) {
-        this.Log.find({}, null, { sort: { createdAt: -1 }, limit: amount }, callback);
+    Plugin.prototype.getLastXLogs = function (amount, callback, includePrivate) {
+        if (typeof includePrivate === "undefined") { includePrivate = true; }
+        var search = {};
+        if (!includePrivate) {
+            search = {
+                channel: { $ne: '' }
+            };
+        }
+        this.Log.find(search, null, { sort: { createdAt: -1 }, limit: amount }, callback);
     };
     return Plugin;
 })();

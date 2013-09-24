@@ -52,8 +52,14 @@ export class Plugin {
 		log.save();
 	}
 
-	getLastXLogs(amount:number, callback) {
-		this.Log.find({}, null, {sort: { createdAt: -1 }, limit: amount}, callback);
+	getLastXLogs(amount:number, callback, includePrivate = true) {
+		var search = {};
+		if(!includePrivate){
+			search = {
+				channel: {$ne: ''}
+			};
+		}
+		this.Log.find(search, null, {sort: { createdAt: -1 }, limit: amount}, callback);
 	}
 
 }

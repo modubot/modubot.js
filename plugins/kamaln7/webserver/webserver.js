@@ -77,7 +77,7 @@ var Plugin = (function () {
                 }
 
                 res.render('logger', { menu: 'logger', logs: logs });
-            });
+            }, false);
         });
     };
     return Plugin;

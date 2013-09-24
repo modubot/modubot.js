@@ -1,5 +1,6 @@
 var youtubeFeeds = require('youtube-feeds');
 var getYouTubeID = require('get-youtube-id');
+var moment = require('moment');
 
 var Plugin = (function () {
     function Plugin(bot) {
@@ -31,7 +32,7 @@ var Plugin = (function () {
                     return;
                 }
 
-                this.bot.reply(from, to, data.title + " [" + data.uploader + "] - " + data.viewCount + " views.");
+                this.bot.reply(from, to, data.title + " | length " + moment.duration((data.duration * 1000)).humanize() + " | rated " + parseFloat(data.rating).toFixed(2) + "/5.00 | " + data.viewCount + " views | by " + data.uploader);
             }).bind(this));
         }
     };

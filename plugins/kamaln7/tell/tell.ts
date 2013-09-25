@@ -32,6 +32,7 @@ export class Plugin {
 	onCommandTell(from:string, to:string, message:string, args:any) {
 		if (args.length < 2) {
 			this.client.notice(from, this.bot.prefix + 'tell <person> <message>')
+			return;
 		}
 
 		var person = args[1];

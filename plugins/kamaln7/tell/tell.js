@@ -18,6 +18,7 @@ var Plugin = (function () {
     Plugin.prototype.onCommandTell = function (from, to, message, args) {
         if (args.length < 2) {
             this.client.notice(from, this.bot.prefix + 'tell <person> <message>');
+            return;
         }
 
         var person = args[1];

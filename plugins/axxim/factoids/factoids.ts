@@ -18,7 +18,7 @@ export class Plugin {
 		this.name = 'factoids';
 		this.title = 'Factoids';
 		this.description = "Factoid module for Modubot";
-		this.version = '0.2';
+		this.version = '0.3';
 		this.author = 'Luke Strickland';
 
 		this.bot = bot;
@@ -53,7 +53,7 @@ export class Plugin {
 			return;
 		}
 
-		var factoidName = args[1];
+		var factoidName = args[1].toLowerCase();
 
 		var contents = args.splice(2);
 		contents = contents.join(' ').trim();
@@ -93,7 +93,7 @@ export class Plugin {
 	 */
 	onMessage(from:string, to:string, message:string) {
 		if (this.isFactoid(message)) {
-			var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '');
+			var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '').toLowerCase();
 
 			this.Factoid.findOne({factoid: factoidName, forgotten: false}, (function(err, factoid){
 				if(err){

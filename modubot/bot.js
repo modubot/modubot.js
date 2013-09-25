@@ -12,7 +12,10 @@ Bot = exports.Bot = function (configDir) {
 		switch(key){
 			case "plugin":
 				Object.keys(localConfig[key]).forEach(function(plugin) {
-					config[key][plugin] = {};
+					if(!config[key][plugin]){
+						config[key][plugin] = {};
+					}
+
 					Object.keys(localConfig[key][plugin]).forEach(function(item) {
 						config[key][plugin][item] = localConfig[key][plugin][item];
 					});
@@ -30,19 +33,12 @@ Bot = exports.Bot = function (configDir) {
 
 Bot.prototype.spawn = function () {
 	var config = this.config;
-	var client = this.client;
-    var database = this.database;
 
 	this.database = mongoose;
 	mongoose.connect(config.database.mongodb);
 	var db = mongoose.connection;
-	var connected = false;
 	db.on('error', function(err){
-		console.log(err);
-		process.exit(1);
-	});
-	db.once('open', function() {
-		connected = true;
+		console.log('Could not establish MongoDB connection:' + err);
 	});
 
 	console.log('Connecting to ' + config.host);
@@ -51,7 +47,9 @@ Bot.prototype.spawn = function () {
 		port: config.port,
 		userName: config.username,
 		realName: config.realname,
-		channels: config.channels
+		channels: config.channels,
+		sasl: config.sasl,
+		password: config.password
 	});
 
 	for (var i = 0, z = config.plugins.length; i < z; i++) {

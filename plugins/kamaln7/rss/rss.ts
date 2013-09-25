@@ -41,7 +41,7 @@ export class Plugin {
 			});
 
 			reader.on('item', (function(item){
-				if(this.loadedAt.isAfter(item.published)){
+				if(feed.after && this.loadedAt.isAfter(item[feed.after])){
 					return;
 				}
 

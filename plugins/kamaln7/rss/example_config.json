@@ -4,6 +4,7 @@
 		"rss": {
 			"name": "Feed Name",
 			"url": "http://url/feed",
+			"after": "published_at",
 			"channels": [
 				"#channelsToNotify"
 			],

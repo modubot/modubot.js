@@ -2,6 +2,7 @@
 	"host": "ircserver",
 	"port": 6667,
 	"password": "",
+	"sasl": false,
 	"nick": "Modubot",
 	"username": "Modubot",
 	"realname": "Modubot",
@@ -25,7 +26,7 @@
 			"port": 8888
 		},
 		"wolframalpha": {
-			"applicationId": "http://products.wolframalpha.com/developers/"
+			"applicationId": "Get an application ID from http://products.wolframalpha.com/developers/"
 		}
 	}
 }

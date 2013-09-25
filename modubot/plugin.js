@@ -52,6 +52,14 @@ exports.addPluginCommand = function (bot, plugin, command, func) {
  * @param namespace
  */
 exports.unload = function (bot, namespace) {
+	['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'].forEach(function (event) {
+		var onEvent = 'on' + event.charAt(0).toUpperCase() + event.substr(1),
+			callback = bot.plugins[namespace][onEvent];
+
+		if (typeof callback == 'function') {
+			// remove listener
+		}
+	}, bot);
 	delete bot.plugins[namespace];
 };
 

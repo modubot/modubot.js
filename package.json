@@ -27,6 +27,7 @@
     "mongoose": "~3.6.19",
     "feedsub": "~0.2.6",
     "wolfram": "~0.2.6",
-    "google": "~0.3.2"
+    "google": "~0.3.2",
+    "weather": "~0.1.0"
   }
 }

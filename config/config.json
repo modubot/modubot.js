@@ -27,6 +27,9 @@
 		},
 		"wolframalpha": {
 			"applicationId": "Get an application ID from http://products.wolframalpha.com/developers/"
+		},
+		"weather": {
+			"appId": "Yahoo! App ID"
 		}
 	}
 }

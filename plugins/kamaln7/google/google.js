@@ -1,4 +1,3 @@
-var google = require('google');
 var Plugin = (function () {
     function Plugin(bot) {
         this.name = 'google';
@@ -14,13 +13,22 @@ var Plugin = (function () {
             'google': 'onCommandGoogle',
             'g': 'onCommandGoogle'
         };
-        google.resultsPerPage = 1;
+        this.google = require('google');
+        this.google.resultsPerPage = 1;
     }
     Plugin.prototype.onCommandGoogle = function (from, to, message, args) {
-        var client = this.client;
-        google(args, function (err, next, links) {
-            client.say((to.charAt(0) == '#' ? to : from), links[0].title + ' - ' + links[0].link);
-        }, client);
+        this.google(args, (function (err, next, links) {
+            if (!err && !links.length) {
+                err = 'No results.';
+            }
+
+            if (err) {
+                this.bot.reply(from, to, err, 'notice');
+                return;
+            }
+
+            this.bot.reply(from, to, links[0].title + ' - ' + links[0].link);
+        }).bind(this));
     };
     return Plugin;
 })();

@@ -1,4 +1,3 @@
-var google = require('google');
 export class Plugin {
 	name:string;
 	title:string;
@@ -10,6 +9,7 @@ export class Plugin {
 	database:any;
 	client:any;
 	commands:any;
+	google:any;
 
 	constructor(bot:any) {
 		this.name = 'google';
@@ -25,14 +25,23 @@ export class Plugin {
 			'google': 'onCommandGoogle',
 			'g': 'onCommandGoogle'
 		};
-		google.resultsPerPage = 1;
+		this.google = require('google');
+		this.google.resultsPerPage = 1;
 	}
 
 	onCommandGoogle(from:string, to:string, message:string, args:any) {
-		var client = this.client;
-		google(args, function(err, next, links){
-			client.say((to.charAt(0) == '#' ? to : from), links[0].title + ' - ' + links[0].link);
-		}, client);
+		this.google(args, (function(err, next, links){
+			if(!err && !links.length){
+				err = 'No results.';
+			}
+
+			if(err){
+				this.bot.reply(from, to, err, 'notice');
+				return;
+			}
+
+			this.bot.reply(from, to, links[0].title + ' - ' + links[0].link);
+		}).bind(this));
 	}
 
 }

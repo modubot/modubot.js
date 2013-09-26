@@ -115,8 +115,12 @@ Bot.prototype.reply = function(from, to, reply, type){
 	}
 };
 
-Bot.prototype.hasPermission = function(from, to, mode, notice = true){
-	var modes = ['', '+', '@'];
+Bot.prototype.hasPermission = function(from, to, mode, notice){
+	if(typeof notice == 'undefined'){
+		notice = true;
+	}
+
+	var modes = ['', '+', '%', '@', '&', '~'];
 
 	if(to.charAt(0) !== '#'){
 		return true;

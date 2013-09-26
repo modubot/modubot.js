@@ -114,3 +114,22 @@ Bot.prototype.reply = function(from, to, reply, type){
 			break;
 	}
 };
+
+Bot.prototype.hasPermission = function(from, to, mode, notice = true){
+	var modes = ['', '+', '@'];
+
+	if(to.charAt(0) !== '#'){
+		return true;
+	}
+	if(!this.client.chans.hasOwnProperty(to)){
+		return false;
+	}
+
+	var hasPermission = modes.indexOf(this.client.chans[to].users[from]) >= modes.indexOf(mode);
+
+	if(notice && !hasPermission){
+		this.reply(from, to, 'You are not authorized to do that.', 'notice');
+	}
+
+	return hasPermission;
+};

@@ -9,7 +9,6 @@ export class Plugin {
 	database:any;
 	client:any;
 	commands:any;
-	server:any;
 	port:number;
 
 	constructor(bot:any) {
@@ -23,11 +22,14 @@ export class Plugin {
 		this.database = bot.database;
 		this.client = bot.client;
 		this.commands = {
-			'module': 'onCommandModule'
+			'plugin': 'onCommandPlugin'
 		};
 	}
 
-	onCommandModule(from:string, to:string, message:string, args:any){
+	onCommandPlugin(from:string, to:string, message:string, args:any){
+		if(this.bot.hasPermission(from, to, '@')){
+			this.bot.reply(from, to, 'Authorized.');
+		}
 	}
 
 }

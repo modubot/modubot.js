@@ -80,7 +80,7 @@ Bot.prototype.spawn = function () {
 	}, this);
 
 	this.client.addListener('message', function (from, to, message) {
-		if (message.charAt(0) == config.command) {
+		if (message.charAt(0) == config.bot.command) {
 			var command = message.split(' ')[0].substring(1);
 
 			this.emit('command.' + command, from, to, message, message.split(' '));
@@ -88,13 +88,13 @@ Bot.prototype.spawn = function () {
 	});
 
 	this.client.addListener('raw', function (raw) {
-		if (config.debug) {
+		if (config.bot.debug) {
 			console.log(Math.round(new Date().getTime() / 1000) + ' ' + raw.rawCommand + ' ' + raw.args.join(' '));
 		}
 	});
 
 	this.client.addListener('join', function (channel, nick, message) {
-		if (config.debug) {
+		if (config.bot.debug) {
 			console.log('Joined Channel: ', channel);
 		}
 	});
@@ -103,7 +103,7 @@ Bot.prototype.spawn = function () {
 	 * Sends errors to plugins and if debug show them
 	 */
 	this.client.addListener('error', function (message) {
-		if (config.debug) {
+		if (config.bot.debug) {
 			console.log('error: ', message);
 		}
 	});

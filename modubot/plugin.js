@@ -63,7 +63,7 @@ exports.unload = function (bot, namespace) {
  * @param namespace
  */
 exports.load = function (bot, namespace) {
-	bot.debug && console.log("Loading Plugin: " + namespace);
+	bot.config.bot.debug && console.log("Loading Plugin: " + namespace);
 
 	var name = namespace.split('/')[1];
 
@@ -82,7 +82,7 @@ exports.load = function (bot, namespace) {
 
 		if (typeof callback == 'function') {
 			exports.addPluginEvent(bot, namespace, event, callback);
-			bot.debug && console.log("Registered " + onEvent + " hook for " + namespace);
+			bot.config.bot.debug && console.log("Registered " + onEvent + " hook for " + namespace);
 		}
 	}, bot);
 

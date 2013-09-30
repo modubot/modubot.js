@@ -17,3 +17,5 @@ node_modules
 
 # IDE
 .idea/
+
+/config/config.yml

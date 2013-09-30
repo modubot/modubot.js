@@ -1,32 +1,37 @@
 var irc = require('irc'),
 	mongoose = require('mongoose'),
+	plugin = require('./plugin'),
+	yaml = require('js-yaml'),
+	path = require('path'),
+	fs = require('fs');
 
-	plugin = require('./plugin');
+var util = require('util');
 
 Bot = exports.Bot = function (configDir) {
-	var defaultConfig = require('../' + configDir + '/config.json');
-	var localConfig = require('../' + configDir + '/local/config.json');
-	var config = defaultConfig;
 
-	Object.keys(localConfig).forEach(function(key) {
-		switch(key){
-			case "plugin":
-				Object.keys(localConfig[key]).forEach(function(plugin) {
-					if(!config[key][plugin]){
-						config[key][plugin] = {};
-					}
+	var defaultConfigPath = path.join(configDir, 'default.config.yml');
+	var localConfigPath = path.join(configDir, 'config.yml');
 
-					Object.keys(localConfig[key][plugin]).forEach(function(item) {
-						config[key][plugin][item] = localConfig[key][plugin][item];
-					});
-				});
-				break;
-			default:
-				config[key] = localConfig[key];
-		}
-	});
 
-	this.config = config;
+	// Let's load our config and fallback if we need to.
+	try {
+		// Manually load file
+		var fileContents = fs.readFileSync(localConfigPath, 'utf8');
+		var localConfig = yaml.load(fileContents);
+
+	} catch(e) {
+		// Need to copy the file in sync so we can safely process.exit below
+		var defaultConfig = fs.readFileSync(defaultConfigPath);
+		fs.writeFileSync(localConfigPath, defaultConfig);
+
+		console.info('Could not load local configuration.');
+		console.info('I\'ve copied the default configuration to config/config.yml. Please modify and restart the bot.');
+
+		process.exit();
+	}
+
+
+	this.config = localConfig;
 	this.plugins = this.config.plugins;
 	this.hooks = [];
 };
@@ -41,15 +46,15 @@ Bot.prototype.spawn = function () {
 		console.log('Could not establish MongoDB connection:' + err);
 	});
 
-	console.log('Connecting to ' + config.host);
+	console.log('Connecting to ' + config.network.host + ':' + config.network.port);
 
-	this.client = new irc.Client(config.host, config.nick, {
-		port: config.port,
-		userName: config.username,
-		realName: config.realname,
-		channels: config.channels,
-		sasl: config.sasl,
-		password: config.password
+	this.client = new irc.Client(config.network.host, config.network.nick, {
+		port: config.network.port,
+		userName: config.network.username,
+		realName: config.network.realname,
+		channels: config.network.channels,
+		sasl: config.network.sasl,
+		password: config.network.password
 	});
 
 	for (var i = 0, z = config.plugins.length; i < z; i++) {

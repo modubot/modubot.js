@@ -1,0 +1,30 @@
+---
+network:
+  host: ircserver
+  port: 6667
+  password: ""
+  sasl: false
+  nick: Modubot
+  username: Modubot
+  realname: Modubot
+  channels: []
+
+bot:
+  command: .
+  factoid: '?'
+  debug: true
+  admins: []
+
+plugins:
+  - kamaln7/ping
+
+database:
+  mongodb: mongodb://localhost/modubot
+
+plugin:
+  webserver:
+    port: 8888
+  wolframalpha:
+    applicationId: Get an application ID from http://products.wolframalpha.com/developers/
+  weather:
+    appId: Yahoo! App ID

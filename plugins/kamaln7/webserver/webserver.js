@@ -14,7 +14,7 @@ var Plugin = (function () {
         this.plugins = [];
 
         var express = require('express');
-        this.port = this.config.plugin.webserver.port || 8888;
+        this.port = this.config.port || 8888;
 
         this.server = express();
         this.server.use(express.static(__dirname + '/public'));

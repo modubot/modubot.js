@@ -75,10 +75,9 @@ Bot.prototype.spawn = function () {
 		password: config.network.password
 	});
 
-	for (var i = 0, z = config.plugins.length; i < z; i++) {
-		var p = config.plugins[i];
+	config.plugins.forEach(function (p) {
 		plugin.load(this, p);
-	}
+	}, this);
 
 	this.client.addListener('message', function (from, to, message) {
 		if (message.charAt(0) == config.command) {

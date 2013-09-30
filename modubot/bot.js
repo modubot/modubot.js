@@ -81,7 +81,7 @@ Bot.prototype.spawn = function () {
 
 	this.client.addListener('message', function (from, to, message) {
 		if (message.charAt(0) == config.command) {
-			var command = message.split(' ')[0].replace(config.command, '');
+			var command = message.split(' ')[0].substring(1);
 
 			this.emit('command.' + command, from, to, message, message.split(' '));
 		}

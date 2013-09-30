@@ -12,26 +12,44 @@ Bot = exports.Bot = function (configDir) {
 	var defaultConfigPath = path.join(configDir, 'default.config.yml');
 	var localConfigPath = path.join(configDir, 'config.yml');
 
+	var defaultConfigContents = fs.readFileSync(defaultConfigPath, 'utf8');
+	var defaultConfig = yaml.load(defaultConfigContents);
+
 
 	// Let's load our config and fallback if we need to.
 	try {
 		// Manually load file
-		var fileContents = fs.readFileSync(localConfigPath, 'utf8');
-		var localConfig = yaml.load(fileContents);
+		var localConfigContents = fs.readFileSync(localConfigPath, 'utf8');
+		var localConfig = yaml.load(localConfigContents);
 
 	} catch(e) {
 		// Need to copy the file in sync so we can safely process.exit below
-		var defaultConfig = fs.readFileSync(defaultConfigPath);
-		fs.writeFileSync(localConfigPath, defaultConfig);
+		fs.writeFileSync(localConfigPath, fs.readFileSync(defaultConfigPath));
 
-		console.info('Could not load local configuration.');
-		console.info('I\'ve copied the default configuration to config/config.yml. Please modify and restart the bot.');
+		console.info('Local config not found, copied default to config/config.yml');
 
 		process.exit();
 	}
 
+	Object.keys(localConfig).forEach(function (key) {
+		switch (key) {
+			case "plugin":
+				Object.keys(localConfig[key]).forEach(function (plugin) {
+					if (!defaultConfig[key][plugin]) {
+						defaultConfig[key][plugin] = {};
+					}
 
-	this.config = localConfig;
+					Object.keys(localConfig[key][plugin]).forEach(function (item) {
+						defaultConfig[key][plugin][item] = localConfig[key][plugin][item];
+					});
+				});
+				break;
+			default:
+				defaultConfig[key] = localConfig[key];
+		}
+	});
+
+	this.config = defaultConfig;
 	this.plugins = this.config.plugins;
 	this.hooks = [];
 };

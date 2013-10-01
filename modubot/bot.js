@@ -63,6 +63,9 @@ Bot.prototype.spawn = function () {
 	db.on('error', function(err){
 		console.log('Could not establish MongoDB connection:' + err);
 	});
+	db.on('open', function(test){
+		console.log('Connected to MongoDB');
+	});
 
 	console.log('Connecting to ' + config.network.host + ':' + config.network.port);
 

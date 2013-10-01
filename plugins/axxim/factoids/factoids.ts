@@ -6,6 +6,7 @@ export class Plugin {
 	author:string;
 
 	bot:any;
+	config:any;
 	database:any;
 	client:any;
 	commands:any;
@@ -14,7 +15,7 @@ export class Plugin {
 	factoidSchema:any;
 	Factoid:any;
 
-	constructor(bot:any) {
+	constructor(bot:any, config:any) {
 		this.name = 'factoids';
 		this.title = 'Factoids';
 		this.description = "Factoid module for Modubot";
@@ -22,6 +23,7 @@ export class Plugin {
 		this.author = 'Luke Strickland';
 
 		this.bot = bot;
+		this.config = config;
 		this.database = bot.database;
 		this.client = bot.client;
 		this.commands = {
@@ -93,7 +95,7 @@ export class Plugin {
 	 */
 	onMessage(from:string, to:string, message:string) {
 		if (this.isFactoid(message)) {
-			var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '').toLowerCase();
+			var factoidName = message.split(' ')[0].replace(this.config.command, '').toLowerCase();
 
 			this.Factoid.findOne({factoid: factoidName, forgotten: false}, (function(err, factoid){
 				if(err){
@@ -119,15 +121,14 @@ export class Plugin {
 					special = special[1];
 					switch(special){
 						case 'alias':
-
-							this.onMessage(from, to, this.bot.config.factoid + content);
+							this.onMessage(from, to, this.config.command + content);
 							break;
 						case 'cmd':
 							var args = content.split(' ');
 							var command = args.shift();
 
 							// TODO: Improve this
-							this.client.emit('command.' + command, from, to, this.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + this.bot.config.factoid.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
+							this.client.emit('command.' + command, from, to, this.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + this.config.command.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
 							break;
 					}
 				} else {
@@ -144,7 +145,7 @@ export class Plugin {
 	 * @returns {boolean}
 	 */
 	isFactoid(command:any) {
-		return (command.charAt(0) == this.bot.config.factoid);
+		return (command.charAt(0) == this.config.command);
 	}
 
 	/**

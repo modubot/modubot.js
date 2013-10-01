@@ -1,5 +1,5 @@
 var Plugin = (function () {
-    function Plugin(bot) {
+    function Plugin(bot, config) {
         this.name = 'factoids';
         this.title = 'Factoids';
         this.description = "Factoid module for Modubot";
@@ -7,6 +7,7 @@ var Plugin = (function () {
         this.author = 'Luke Strickland';
 
         this.bot = bot;
+        this.config = config;
         this.database = bot.database;
         this.client = bot.client;
         this.commands = {
@@ -65,9 +66,18 @@ var Plugin = (function () {
         });
     };
 
+    /**
+    * Handle potential factoids by binding to the global message evnet.
+    *
+    * Currently handles piping, special factoids and regular factoids.
+    *
+    * @param from
+    * @param to
+    * @param message
+    */
     Plugin.prototype.onMessage = function (from, to, message) {
         if (this.isFactoid(message)) {
-            var factoidName = message.split(' ')[0].replace(this.bot.config.factoid, '').toLowerCase();
+            var factoidName = message.split(' ')[0].replace(this.config.command, '').toLowerCase();
 
             this.Factoid.findOne({ factoid: factoidName, forgotten: false }, (function (err, factoid) {
                 if (err) {
@@ -79,25 +89,28 @@ var Plugin = (function () {
                     return;
                 }
 
+                // By default no prefix
                 var prefix = '';
                 var pipe = message.match(/\|[ ]?([\S]+)$/i);
                 if (pipe) {
                     prefix = pipe[1] + ': ';
                 }
 
+                // If the factoid has an special flags inside <>'s
                 var special = factoid.content.match(/^<([a-z]+)>(.*)/i);
                 if (special) {
                     var content = special[2];
                     special = special[1];
                     switch (special) {
                         case 'alias':
-                            this.onMessage(from, to, this.bot.config.factoid + content);
+                            this.onMessage(from, to, this.config.command + content);
                             break;
                         case 'cmd':
                             var args = content.split(' ');
                             var command = args.shift();
 
-                            this.client.emit('command.' + command, from, to, this.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + this.bot.config.factoid.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
+                            // TODO: Improve this
+                            this.client.emit('command.' + command, from, to, this.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + this.config.command.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
                             break;
                     }
                 } else {
@@ -107,10 +120,22 @@ var Plugin = (function () {
         }
     };
 
+    /**
+    * Is the string a factoid?
+    *
+    * @param command
+    * @returns {boolean}
+    */
     Plugin.prototype.isFactoid = function (command) {
-        return (command.charAt(0) == this.bot.config.factoid);
+        return (command.charAt(0) == this.config.command);
     };
 
+    /**
+    * Are we requesting factoid information?
+    *
+    * @param command
+    * @returns {boolean}
+    */
     Plugin.prototype.isFactoidInfo = function (command) {
         return (command.charAt(1) == '+');
     };
@@ -122,4 +147,4 @@ var Plugin = (function () {
 })();
 exports.Plugin = Plugin;
 
-//@ sourceMappingURL=factoids.js.map
+//# sourceMappingURL=factoids.js.map

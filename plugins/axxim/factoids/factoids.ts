@@ -51,7 +51,7 @@ export class Plugin {
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {
 		if (args.length < 3) {
-			this.client.reply(from, to, '.remember <factoid> <text>', 'notice');
+			this.bot.reply(from, to, '.remember <factoid> <text>', 'notice');
 			return;
 		}
 

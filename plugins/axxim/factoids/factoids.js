@@ -33,7 +33,7 @@ var Plugin = (function () {
 
     Plugin.prototype.onCommandRemember = function (from, to, message, args) {
         if (args.length < 3) {
-            this.client.reply(from, to, '.remember <factoid> <text>', 'notice');
+            this.bot.reply(from, to, '.remember <factoid> <text>', 'notice');
             return;
         }
 

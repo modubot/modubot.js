@@ -32,20 +32,22 @@ Bot = exports.Bot = function (configDir) {
 	}
 
 	Object.keys(localConfig).forEach(function (key) {
-		switch (key) {
-			case "plugin":
-				Object.keys(localConfig[key]).forEach(function (plugin) {
-					if (!defaultConfig[key][plugin]) {
-						defaultConfig[key][plugin] = {};
+		if(["plugin", "network", "bot"].indexOf(key) != -1){
+			Object.keys(localConfig[key]).forEach(function (subkey) {
+				if(key == "plugin"){
+					if (!defaultConfig[key][subkey]) {
+						defaultConfig[key][subkey] = {};
 					}
 
-					Object.keys(localConfig[key][plugin]).forEach(function (item) {
-						defaultConfig[key][plugin][item] = localConfig[key][plugin][item];
+					Object.keys(localConfig[key][subkey]).forEach(function (item) {
+						defaultConfig[key][subkey][item] = localConfig[key][subkey][item];
 					});
-				});
-				break;
-			default:
-				defaultConfig[key] = localConfig[key];
+				}else {
+					defaultConfig[key][subkey] = localConfig[key][subkey];
+				}
+			});
+		} else {
+			defaultConfig[key] = localConfig[key];
 		}
 	});
 

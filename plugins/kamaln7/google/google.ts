@@ -30,7 +30,8 @@ export class Plugin {
 	}
 
 	onCommandGoogle(from:string, to:string, message:string, args:any) {
-		this.google(args, (function(err, next, links){
+		var query = args.splice(1).join(' ');
+		this.google(query, (function(err, next, links){
 			if(!err && !links.length){
 				err = 'No results.';
 			}

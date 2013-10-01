@@ -17,7 +17,8 @@ var Plugin = (function () {
         this.google.resultsPerPage = 1;
     }
     Plugin.prototype.onCommandGoogle = function (from, to, message, args) {
-        this.google(args, (function (err, next, links) {
+        var query = args.splice(1).join(' ');
+        this.google(query, (function (err, next, links) {
             if (!err && !links.length) {
                 err = 'No results.';
             }
@@ -34,4 +35,4 @@ var Plugin = (function () {
 })();
 exports.Plugin = Plugin;
 
-//@ sourceMappingURL=google.js.map
+//# sourceMappingURL=google.js.map

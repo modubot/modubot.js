@@ -1,0 +1,15 @@
+{
+
+    "name": "url",
+    "title": "URL",
+    "description": "",
+    "version": "0.2",
+    "author": "Luke Strickland",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

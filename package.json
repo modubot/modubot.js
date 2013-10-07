@@ -1,7 +1,8 @@
 {
-	"name": "Modubot",
+	"name": "modubot",
+	"preferGlobal": false,
+	"version": "0.0.0",
 	"description": "Modubot: The scalable, and extensible IRC Bot.",
-	"private": false,
 	"contributors": [
 		{
 			"name": "Kamal Nasser",
@@ -12,6 +13,9 @@
 			"email": "luke@axxim.net"
 		}
 	],
+	"scripts": {
+		"start": "node ./bin/modubot"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Modubot/Modubot.js.git"
@@ -33,6 +37,11 @@
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",
-		"grunt-typescript": "~0.2.4"
+		"grunt-typescript": "~0.2.4",
+		"grunt-contrib-copy": "~0.4.1"
+	},
+	"license": "BSD-3",
+	"engines": {
+		"node": ">=0.8"
 	}
 }

@@ -1,0 +1,15 @@
+{
+
+    "name": "substitute",
+    "title": "Substitute",
+    "description": "Substitute module for Modubot",
+    "version": "0.2",
+    "author": "Kamal Nasser",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

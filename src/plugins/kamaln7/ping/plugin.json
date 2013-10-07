@@ -1,0 +1,15 @@
+{
+
+    "name": "ping",
+    "title": "Ping",
+    "description": "Ping Module for Modubot",
+    "version": "0.2",
+    "author": "Kamal Nasser",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

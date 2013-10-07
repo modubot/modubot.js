@@ -1,0 +1,15 @@
+{
+
+    "name": "javascript",
+    "title": "Javascript Eval",
+    "description": "Run javascript with Modubot",
+    "version": "0.2",
+    "author": "Luke Strickland",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

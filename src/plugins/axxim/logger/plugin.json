@@ -1,0 +1,15 @@
+{
+
+    "name": "logger",
+    "title": "Logger",
+    "description": "Logging module for Modubot",
+    "version": "0.2",
+    "author": "Luke Strickland",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

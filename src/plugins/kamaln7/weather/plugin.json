@@ -1,0 +1,15 @@
+{
+
+    "name": "weather",
+    "title": "Yahoo Weather",
+    "description": "Yahoo Weather module for Modubot",
+    "version": "0.2",
+    "author": "Kamal Nasser",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

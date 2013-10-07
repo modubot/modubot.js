@@ -1,0 +1,15 @@
+{
+
+    "name": "wolframalpha",
+    "title": "Wolframalpha",
+    "description": "Wolframalpha plugin for Modubot",
+    "version": "0.2",
+    "author": "Kamal Nasser",
+    "requires": {
+
+    },
+    "nodeRequires": {
+
+    }
+
+}

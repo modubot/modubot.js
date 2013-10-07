@@ -27,14 +27,13 @@ var Plugin = (function() {
 		var nick = args[1];
 		var Log = this.getLog();
 		if (!Log) {
-			this.bot.config.bot.debug &&
-				console.log('reynir/seen requires axxim/logger!');
+			this.bot.log.warn('reynir/seen requires axxim/logger!');
 			return;
 		}
 		var query = Log.findOne({from: nick}).sort('-createdAt');
 		query.exec((function (err, log) {
 			if (err) {
-				this.bot.config.bot.debug && console.log('seen.js: '+err);
+				this.bot.log.warn('seen.js: '+err);
 				return;
 			}
 			if (!log) {

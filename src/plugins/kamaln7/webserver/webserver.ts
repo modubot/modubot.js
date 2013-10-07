@@ -27,9 +27,9 @@ export class Plugin {
 		this.server.locals.plugins = this.plugins;
 
 		if(this.server.listen(this.port)){
-			console.log('Webserver listening on port http://localhost:' + this.port);
+			this.bot.log.info('Webserver listening on port http://localhost:' + this.port);
 		} else {
-			console.log('Error binding to port ' + this.port);
+			this.bot.log.info('Error binding to port ' + this.port);
 		}
 
 		this.setupRoutes();

@@ -33,8 +33,19 @@ export class Bot {
 
 		// Load Our Stuff
 		this.PluginManager = new Plugin.Plugin();
-		this.chatLog = bunyan.createLogger({name:'chatLog'});
-		this.log = bunyan.createLogger({name:'debugLog'});
+
+		this.chatLog = bunyan.createLogger({
+			name:'chatLog',
+			streams: [{
+				path: './logs/chat.log'
+			}]
+		});
+		this.log = bunyan.createLogger({
+			name:'debugLog',
+			streams: [{
+				path: './logs/debug.log'
+			}]
+		});
 
 		this.log.info('test');
 
@@ -95,7 +106,7 @@ export class Bot {
 		var db = mongoose.connection;
 
 		db.on('error', function(err){
-			Logger.warn('Could not establish MongoDB connection:' + err);
+			Logger.error('Could not establish MongoDB connection:' + err);
 		});
 		db.on('open', function(test){
 			Logger.info('Connected to MongoDB');
@@ -127,9 +138,9 @@ export class Bot {
 			}
 		});
 
-		this.client.addListener('raw', function (raw) {
-			Logger.info(raw.rawCommand + ' ' + raw.args.join(' '));
-		});
+		this.client.addListener('raw', (function (raw) {
+			this.chatLog.info(raw.rawCommand + ' ' + raw.args.join(' '));
+		}).bind(this));
 
 		this.client.addListener('join', function (channel, nick, message) {
 			Logger.info('Joined Channel: ', channel);

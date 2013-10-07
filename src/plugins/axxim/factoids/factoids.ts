@@ -39,7 +39,7 @@ export class Plugin {
 		var factoid = new Factoid(this.database);
 		factoid.forgetActive(factoidName, function(err, factoid) {
 			if(err) {
-				console.error(err);
+				this.bot.log.warn(err);
 			}
 		});
 	}

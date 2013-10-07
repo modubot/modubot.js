@@ -2,6 +2,7 @@
 /// <reference path="../.ts/js-yaml.d.ts" />
 /// <reference path="../.ts/mongoose.d.ts" />
 /// <reference path="../.ts/irc.d.ts" />
+/// <reference path="../.ts/bunyan.d.ts" />
 
 import path = require('path');
 import fs = require('fs');
@@ -9,14 +10,17 @@ import yaml = require('js-yaml');
 import mongoose = require('mongoose');
 import irc = require('irc');
 import Plugin = require('Plugin');
-import Logger = require('Logger');
+import bunyan = require('bunyan');
 
 export class Bot {
 
 	PluginManager: Plugin.Plugin;
-	Logger: any;
+
 
 	configDir: string;
+
+	log: any;
+	chatLog: any;
 
 	config: any;
 	plugins: any;
@@ -29,8 +33,21 @@ export class Bot {
 
 		// Load Our Stuff
 		this.PluginManager = new Plugin.Plugin();
-		this.Logger = new Logger.Logger();
 
+		this.log = bunyan.createLogger({
+			name: 'debugLog',
+			streams: [
+				{
+					stream: process.stdout
+				},
+				{
+					type: 'rotating-file',
+					path: './logs/debug.log',
+					period: '1d',
+					count: 10
+				}
+			]
+		});
 
 		var defaultConfigPath = path.join(configDir, 'default.config.yml');
 		var localConfigPath = path.join(configDir, 'config.yml');
@@ -49,7 +66,7 @@ export class Bot {
 			// Need to copy the file in sync so we can safely process.exit below
 			fs.writeFileSync(localConfigPath, fs.readFileSync(defaultConfigPath));
 
-			this.Logger.error('Local config not found, copied default to config/config.yml');
+			this.log.warn('Local config not found, copied default to config/config.yml');
 
 			process.exit();
 		}
@@ -81,7 +98,7 @@ export class Bot {
 
 	spawn() {
 		var config = this.config;
-		var Logger = this.Logger;
+		var Logger = this.log;
 
 		this.database = mongoose;
 		mongoose.connect(config.database.mongodb);
@@ -91,10 +108,10 @@ export class Bot {
 			Logger.error('Could not establish MongoDB connection:' + err);
 		});
 		db.on('open', function(test){
-			Logger.debug('Connected to MongoDB');
+			Logger.info('Connected to MongoDB');
 		});
 
-		Logger.debug('Connecting to ' + config.network.host + ':' + config.network.port);
+		Logger.info('Connecting to ' + config.network.host + ':' + config.network.port);
 
 		this.client = new irc.Client(config.network.host, config.network.nick, {
 			port: config.network.port,
@@ -120,10 +137,6 @@ export class Bot {
 			}
 		});
 
-		this.client.addListener('raw', function (raw) {
-			Logger.debug(raw.rawCommand + ' ' + raw.args.join(' '));
-		});
-
 		this.client.addListener('join', function (channel, nick, message) {
 			Logger.info('Joined Channel: ', channel);
 		});
@@ -132,7 +145,7 @@ export class Bot {
 		 * Sends errors to plugins and if debug show them
 		 */
 		this.client.addListener('error', function (message) {
-			Logger.error('error: ', message);
+			Logger.warn(message);
 		});
 	}
 

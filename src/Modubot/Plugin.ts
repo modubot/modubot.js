@@ -35,7 +35,7 @@ export class Plugin {
 	}
 
 	load(bot, namespace) {
-		console.log("Loading Plugin: " + namespace);
+		bot.log.info("Loading Plugin: " + namespace);
 
 		var name = namespace.split('/')[1];
 		var pConfig = this.loadConfiguration(namespace);
@@ -57,7 +57,7 @@ export class Plugin {
 
 			if (typeof callback == 'function') {
 				this.PluginManager.addPluginEvent(bot, namespace, event, callback);
-				console.log("Registered " + onEvent + " hook for " + namespace);
+				this.bot.log.info("Registered " + onEvent + " hook for " + namespace);
 			}
 		}, bot);
 

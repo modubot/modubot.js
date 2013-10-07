@@ -37,18 +37,21 @@ export class Bot {
 		this.chatLog = bunyan.createLogger({
 			name:'chatLog',
 			streams: [{
-				path: './logs/chat.log'
+				type: 'rotating-file',
+				path: './logs/chat.log',
+				period: '1d',
+				count: 10
 			}]
 		});
 		this.log = bunyan.createLogger({
 			name:'debugLog',
 			streams: [{
-				path: './logs/debug.log'
+				type: 'rotating-file',
+				path: './logs/debug.log',
+				period: '1d',
+				count: 10
 			}]
 		});
-
-		this.log.info('test');
-
 
 		var defaultConfigPath = path.join(configDir, 'default.config.yml');
 		var localConfigPath = path.join(configDir, 'config.yml');

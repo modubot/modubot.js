@@ -14,7 +14,7 @@
 		}
 	],
 	"scripts": {
-		"start": "node ./bin/modubot"
+		"start": "node ./bin/Modubot"
 	},
 	"repository": {
 		"type": "git",

@@ -21,11 +21,11 @@ database:
   mongodb: mongodb://localhost/modubot
 
 plugin:
-  webserver:
+  kamaln7/webserver:
     port: 8888
-  wolframalpha:
+  kamaln7/wolframalpha:
     applicationId: Get an application ID from http://products.wolframalpha.com/developers/
-  weather:
+  kamaln7/weather:
     appId: Yahoo! App ID
-  factoids:
+  axxim/factoids:
     command: ?

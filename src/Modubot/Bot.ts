@@ -34,23 +34,19 @@ export class Bot {
 		// Load Our Stuff
 		this.PluginManager = new Plugin.Plugin();
 
-		this.chatLog = bunyan.createLogger({
-			name:'chatLog',
-			streams: [{
-				type: 'rotating-file',
-				path: './logs/chat.log',
-				period: '1d',
-				count: 10
-			}]
-		});
 		this.log = bunyan.createLogger({
-			name:'debugLog',
-			streams: [{
-				type: 'rotating-file',
-				path: './logs/debug.log',
-				period: '1d',
-				count: 10
-			}]
+			name: 'debugLog',
+			streams: [
+				{
+					stream: process.stdout
+				},
+				{
+					type: 'rotating-file',
+					path: './logs/debug.log',
+					period: '1d',
+					count: 10
+				}
+			]
 		});
 
 		var defaultConfigPath = path.join(configDir, 'default.config.yml');
@@ -140,10 +136,6 @@ export class Bot {
 				this.emit('command.' + command, from, to, message, message.split(' '));
 			}
 		});
-
-		this.client.addListener('raw', (function (raw) {
-			this.chatLog.info(raw.rawCommand + ' ' + raw.args.join(' '));
-		}).bind(this));
 
 		this.client.addListener('join', function (channel, nick, message) {
 			Logger.info('Joined Channel: ', channel);

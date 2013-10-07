@@ -1,4 +1,4 @@
-var Plugin = (function() {
+exports.Plugin = (function() {
 	function Plugin(bot) {
 		this.name = 'seen';
 		this.tite = 'Seen';
@@ -9,7 +9,7 @@ var Plugin = (function() {
 		this.bot = bot;
 		this.database = bot.database;
 		this.commands = { 'seen' : 'onCommandSeen' };
-	    this.getLog = function() {
+		this.getLog = function() {
 			var logger = this.bot.plugins['axxim/logger'];
 			return logger && logger.Log;
 		}.bind(this);
@@ -52,4 +52,3 @@ var Plugin = (function() {
 
 	return Plugin;
 })();
-exports.Plugin = Plugin;

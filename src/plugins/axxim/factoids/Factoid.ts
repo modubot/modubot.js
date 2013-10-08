@@ -52,6 +52,10 @@ export class Factoid {
 	forgetActive(factoid:string, cb:any) {
 		var database = this.database;
 		this.active(factoid, function forgetFactoid(err, factoid) {
+            if (!factoid) {
+                // No results
+                err = 'Factoid was not found';
+            }
             if (err) {
                 cb(err, null);
                 return;
@@ -63,7 +67,7 @@ export class Factoid {
 			}
 
 			database.update(factoid, {
-				forgotten: true
+                $set: { forgotten: true }
 			}, cb);
 
 		});

@@ -23,23 +23,36 @@ export class Plugin {
 
 			case "load":
 				this.loadPlugin(args[2], function (err, namespace) {
-					console.log(err);
+					if(err) {
+						plugin.bot.reply(from, to, err.toString(), 'notice');
+						return;
+					}
 
 					plugin.bot.reply(from, to, 'Loaded Plugin: ' + namespace, 'notice');
 				});
 				break;
 			case "unload":
 				this.unloadPlugin(args[2], function (err) {
+					if(err) {
+						plugin.bot.reply(from, to, err.toString(), 'notice');
+						return;
+					}
 
 				});
 				break;
 			case "reload":
 				this.unloadPlugin(args[2], (function (err) {
-                    if (!err) {
-                        this.loadPlugin(args[2], function (err) {
+					if(err) {
+						plugin.bot.reply(from, to, err.toString(), 'notice');
+						return;
+					}
 
-                        });
-                    }
+                    this.loadPlugin(args[2], function (err) {
+	                    if(err) {
+		                    plugin.bot.reply(from, to, err.toString(), 'notice');
+		                    return;
+	                    }
+                    });
 				}).bind(this));
 				break;
 			case "list":

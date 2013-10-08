@@ -1,6 +1,8 @@
 
 export class Plugin {
 
+	possibleHooks:any = ['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'];
+
 	reload(bot, namespace) {
 		this.unload(bot, namespace);
 		this.load(bot, namespace);
@@ -66,7 +68,7 @@ export class Plugin {
         }
 
 		// Load the hooks
-		['registered', 'motd', 'names', 'topic', 'join', 'part', 'quit', 'kick', 'kill', 'message', 'notice', 'ping', 'pm', 'ctcp', 'ctcpNotice', 'ctcpPrivmsg', 'ctcpVersion', 'nick', 'plusMode', 'minusMode', 'whois', 'channelistStart', 'channelistItem', 'channelList', 'raw', 'error'].forEach(function (event) {
+		this.possibleHooks.forEach(function (event) {
 			var onEvent = 'on' + event.charAt(0).toUpperCase() + event.substr(1),
 				callback = bot.plugins[namespace][onEvent];
 
@@ -79,11 +81,6 @@ export class Plugin {
 		// Load the commands
 		var commands = bot.plugins[namespace].commands;
 		for (var key in commands) {
-			if(!commands.hasOwnProperty(key)) {
-				return;
-			}
-
-
 			var funcName = commands[key];
 			var event = 'command.' + key;
 

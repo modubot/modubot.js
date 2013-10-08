@@ -57,7 +57,7 @@ export class Plugin {
 
 			if (typeof callback == 'function') {
 				this.PluginManager.addPluginEvent(bot, namespace, event, callback);
-				this.bot.log.info("Registered " + onEvent + " hook for " + namespace);
+				bot.log.info("Registered " + onEvent + " hook for " + namespace);
 			}
 		}, bot);
 

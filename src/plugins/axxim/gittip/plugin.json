@@ -1,0 +1,15 @@
+{
+
+	"name": "gittip",
+	"title": "Gittip",
+	"description": "A Gittip Tipper for Modubot",
+	"version": "0.1",
+	"author": "Luke Strickland",
+	"requires": {
+
+	},
+	"nodeRequires": {
+
+	}
+
+}

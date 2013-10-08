@@ -52,7 +52,13 @@ export class Factoid {
 	forgetActive(factoid:string, cb:any) {
 		var database = this.database;
 		this.active(factoid, function forgetFactoid(err, factoid) {
-			if(factoid.locked) {
+            if (err) {
+                cb(err, null);
+                return;
+            }
+
+            if(factoid.locked) {
+                cb('Factoid is locked.', null);
 				return;
 			}
 

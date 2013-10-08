@@ -34,13 +34,13 @@ export class Plugin {
 				});
 				break;
 			case "reload":
-				this.unloadPlugin(args[2], function (err) {
+				this.unloadPlugin(args[2], (function (err) {
                     if (!err) {
                         this.loadPlugin(args[2], function (err) {
 
                         });
                     }
-				});
+				}).bind(this));
 				break;
 			case "list":
 				this.listPlugins(function (err, plugins) {
@@ -65,11 +65,13 @@ export class Plugin {
 	}
 
 	unloadPlugin(namespace:string, cb:any) {
+		try {
+			this.bot.PluginManager.unload(this.bot, namespace);
 
-		this.bot.PluginManager.unload(this.bot, namespace);
-
-		cb(null, namespace);
-
+			cb(null, namespace);
+		} catch(exception) {
+			cb(exception, namespace);
+		}
 	}
 
 	listPlugins(cb) {

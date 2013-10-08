@@ -53,7 +53,8 @@ export class Plugin {
 		try {
 			var pConfig = this.loadConfiguration(namespace);
 		} catch(err) {
-			throw bot.log.error(err);
+			bot.log.error(err);
+			throw err;
 		}
 
 

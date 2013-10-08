@@ -7,18 +7,23 @@ export class Plugin {
 	}
 
 	addPluginEvent(bot, plugin, ev, f) {
-		if (typeof bot.hooks[plugin ] == 'undefined') {
-			bot.hooks[plugin] = [];
+		if (typeof bot.plugins[plugin]['hooks'] == 'undefined') {
+			bot.plugins[plugin]['hooks'] = [];
 		}
 
+		// Calls a function with a given this value and arguments
+		// provided as an array (or an array-like object). Also
+		// sets 'this' to the plugin's class.
 		var callback = (function () {
 			return function () {
 				f.apply(that, arguments);
 			};
 		})();
 
-		bot.hooks[plugin ].push({event: ev, callback: callback});
+		bot.plugins[plugin]['hooks'].push({event: ev, callback: callback});
 
+		// Add the event listener and make sure the callback knows about
+		// the plugins class.
 		var that = bot.plugins[plugin];
 		return bot.client.addListener(ev, callback);
 	}
@@ -31,6 +36,18 @@ export class Plugin {
 	}
 
 	unload(bot, namespace) {
+
+		// Unregister our events
+		var hooks = bot.plugins[namespace]['hooks'];
+		for(var hook in hooks) {
+			console.log(hooks[hook]);
+			if(hooks[hook].hasOwnProperty('event')) {
+				bot.client.removeListener(hooks[hook]['event'], hooks[hook]['callback']);
+
+				bot.log.info("Unregistered " + hooks[hook]['event'] + " hook for " + namespace);
+			}
+		}
+
 		delete bot.plugins[namespace];
 	}
 
@@ -38,7 +55,13 @@ export class Plugin {
 		bot.log.info("Loading Plugin: " + namespace);
 
 		var name = namespace.split('/')[1];
-		var pConfig = this.loadConfiguration(namespace);
+
+		try {
+			var pConfig = this.loadConfiguration(namespace);
+		} catch(err) {
+			throw bot.log.error(err);
+		}
+
 
 		// Load the plugin
 		var pluginFile = require('../plugins/' + namespace + '/' + pConfig.mainFile);
@@ -64,11 +87,9 @@ export class Plugin {
 		// Load the commands
 		var commands = bot.plugins[namespace].commands;
 		for (var key in commands) {
-			var command = key;
 			var func = commands[key];
-			var callback = bot.plugins[namespace][func];
 
-			this.addPluginCommand(bot, namespace, command, func);
+			this.addPluginCommand(bot, namespace, key, func);
 		}
 
 	}
@@ -81,7 +102,13 @@ export class Plugin {
 
 	private loadConfiguration(namespace:string) {
 		var pluginConfig = new PluginConfig();
-		var configFile = require('../plugins/' + namespace + '/plugin.json');
+
+		try {
+			var configFile = require('../plugins/' + namespace + '/plugin.json');
+		} catch(err) {
+			throw err;
+		}
+
 
 		pluginConfig.name = configFile.name;
 		pluginConfig.title = configFile.title;

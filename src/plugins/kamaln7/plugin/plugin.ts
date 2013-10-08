@@ -23,6 +23,8 @@ export class Plugin {
 
 			case "load":
 				this.loadPlugin(args[2], function (err, namespace) {
+					console.log(err);
+
 					plugin.bot.reply(from, to, 'Loaded Plugin: ' + namespace, 'notice');
 				});
 				break;
@@ -53,11 +55,13 @@ export class Plugin {
 	}
 
 	loadPlugin(namespace:string, cb:any) {
+		try {
+			this.bot.PluginManager.load(this.bot, namespace);
 
-		this.bot.PluginManager.load(this.bot, namespace);
-
-		cb(false, namespace);
-
+			cb(null, namespace);
+		} catch(exception) {
+			cb(exception, namespace);
+		}
 	}
 
 	unloadPlugin(namespace:string, cb:any) {
@@ -69,7 +73,7 @@ export class Plugin {
 	}
 
 	listPlugins(cb) {
-		cb(null, this.bot.plugins.join(' '));
+		cb(null, Object.keys(this.bot.plugins).join(' '));
 	}
 
 

@@ -23,8 +23,7 @@ export class Bot {
 	chatLog: any;
 
 	config: any;
-	plugins: any;
-	hooks: any;
+	plugins: any = {};
 	database: any;
 	client: any;
 
@@ -92,8 +91,6 @@ export class Bot {
 		});
 
 		this.config = defaultConfig;
-		this.plugins = this.config.plugins;
-		this.hooks = [];
 	}
 
 	spawn() {
@@ -122,8 +119,10 @@ export class Bot {
 			password: config.network.password
 		});
 
-		if(config.plugins !== null) {
-			config.plugins.forEach(function (p) {
+		var plugins = this.config.plugins;
+
+		if(plugins !== null) {
+			plugins.forEach(function (p) {
 				this.PluginManager.load(this, p);
 			}, this);
 		}

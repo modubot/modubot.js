@@ -28,19 +28,11 @@ export class Plugin {
 		return bot.client.addListener(ev, callback);
 	}
 
-	addPluginCommand(bot, plugin, command, func) {
-		bot.client.addListener('command.' + command, function (from, to, message) {
-			var args = message.split(' ');
-			bot.plugins[plugin][func](from, to, message, args);
-		});
-	}
-
 	unload(bot, namespace) {
 
 		// Unregister our events
 		var hooks = bot.plugins[namespace]['hooks'];
 		for(var hook in hooks) {
-			console.log(hooks[hook]);
 			if(hooks[hook].hasOwnProperty('event')) {
 				bot.client.removeListener(hooks[hook]['event'], hooks[hook]['callback']);
 
@@ -87,9 +79,15 @@ export class Plugin {
 		// Load the commands
 		var commands = bot.plugins[namespace].commands;
 		for (var key in commands) {
-			var func = commands[key];
+			if(!commands.hasOwnProperty(key)) {
+				return;
+			}
 
-			this.addPluginCommand(bot, namespace, key, func);
+
+			var funcName = commands[key];
+			var event = 'command.' + key;
+
+			bot.PluginManager.addPluginEvent(bot, namespace, event, bot.plugins[namespace][funcName]);
 		}
 
 	}

@@ -37,13 +37,14 @@ export class Plugin {
 
 
 		var factoid = new Factoid(this.database);
-		factoid.forgetActive(factoidName, (function(err, factoid) {
+		factoid.forgetActive(factoidName, (function(err, numAffected) {
 			if(err) {
                 this.bot.log.warn(err);
+                this.bot.reply(from, to, 'An error occurred', 'notice');
                 return;
             }
 
-            this.bot.reply(from, to, 'Forgot ' + factoid.factoid, 'notice');
+            this.bot.reply(from, to, 'Forgot ' + factoidName, 'notice');
 		}).bind(this));
 	}
 

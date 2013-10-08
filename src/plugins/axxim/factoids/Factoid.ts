@@ -67,7 +67,7 @@ export class Factoid {
 			}
 
 			database.update(factoid, {
-				forgotten: true
+                $set: { forgotten: true }
 			}, cb);
 
 		});

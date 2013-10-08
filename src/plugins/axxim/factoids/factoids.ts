@@ -37,11 +37,14 @@ export class Plugin {
 
 
 		var factoid = new Factoid(this.database);
-		factoid.forgetActive(factoidName, function(err, factoid) {
+		factoid.forgetActive(factoidName, (function(err, factoid) {
 			if(err) {
-				this.bot.log.warn(err);
-			}
-		});
+                this.bot.log.warn(err);
+                return;
+            }
+
+            this.bot.reply(from, to, 'Forgot ' + factoid.factoid, 'notice');
+		}).bind(this));
 	}
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {

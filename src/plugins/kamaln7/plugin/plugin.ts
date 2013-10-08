@@ -33,10 +33,11 @@ export class Plugin {
 				break;
 			case "reload":
 				this.unloadPlugin(args[2], function (err) {
+                    if (!err) {
+                        this.loadPlugin(args[2], function (err) {
 
-				});
-				this.loadPlugin(args[2], function (err) {
-
+                        });
+                    }
 				});
 				break;
 			case "list":
@@ -63,12 +64,12 @@ export class Plugin {
 
 		this.bot.PluginManager.unload(this.bot, namespace);
 
-		cb(false, namespace);
+		cb(null, namespace);
 
 	}
 
 	listPlugins(cb) {
-		cb(false, this.bot.plugins.join(' '));
+		cb(null, this.bot.plugins.join(' '));
 	}
 
 

@@ -44,7 +44,7 @@ export class Plugin {
                 return;
             }
 
-            this.bot.reply(from, to, 'Forgot ' + factoidName, 'notice');
+            this.bot.reply(from, to, 'Forgot: ' + factoidName, 'notice');
 		}).bind(this));
 	}
 

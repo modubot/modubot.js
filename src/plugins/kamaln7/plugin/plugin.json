@@ -3,7 +3,7 @@
     "name": "plugin",
     "title": "Plugin Management",
     "description": "Manage Modubot plugins",
-    "version": "0.3",
+    "version": "0.2",
     "author": "Kamal Nasser",
     "requires": {
 

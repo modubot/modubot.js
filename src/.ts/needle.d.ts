@@ -3,4 +3,5 @@ declare module "needle" {
 	export function head(url: string, options?:any, callback?: any):string;
 	export function post(url: string, data:any, options?:any, callback?: any):string;
 	export function put(url: string, data:any, options?:any, callback?: any):string;
+	export function request(method:string, url: string, data:any, options?:any, callback?: any):string;
 }

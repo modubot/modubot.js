@@ -18,13 +18,6 @@ export class Plugin {
 			'gittip': 'onCommandGittip'
 		};
 		this.users = {};
-
-		this.gittip = {
-			hostname: 'www.gittip.com',
-			port: 443,
-			method: 'POST'
-		};
-
 	}
 
 	onCommandGittip(from, to, message, args) {
@@ -32,8 +25,6 @@ export class Plugin {
 			this.bot.reply(from, to, '.plugin <action> [namespace]', 'notice');
 			return;
 		}
-
-
 
 		var plugin = this;
 

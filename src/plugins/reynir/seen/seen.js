@@ -1,11 +1,5 @@
 exports.Plugin = (function() {
 	function Plugin(bot) {
-		this.name = 'seen';
-		this.tite = 'Seen';
-		this.description = "Prints last time a user was seen. Expects axxim/logger";
-		this.version = '0.0.1';
-		this.author = 'Reynir';
-
 		this.bot = bot;
 		this.database = bot.database;
 		this.commands = { 'seen' : 'onCommandSeen' };

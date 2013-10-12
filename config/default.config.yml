@@ -28,4 +28,4 @@ plugin:
   kamaln7/weather:
     appId: Yahoo! App ID
   axxim/factoids:
-    command: ?
+    command: "?"

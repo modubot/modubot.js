@@ -24,7 +24,6 @@ function MyState(input) {
   var result = [];
   var stepCounter = 0;
   var stepCounterMax = 1000;
-  console.log(input);
 
   this.increment = function() {
     cells[dp] += 1;
@@ -58,7 +57,6 @@ function MyState(input) {
     return cells[dp] === 0;
   };
   this.getResult = function() {
-    console.log(result)
     return result.join('').substring(0, 400);
   };
 }

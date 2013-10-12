@@ -28,4 +28,4 @@ plugin:
   weather:
     appId: Yahoo! App ID
   factoids:
-    command: ?
+    command: "?"

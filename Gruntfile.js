@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 					{
 						expand: true,
 						cwd: 'src/plugins',
-						src: ['**'],
+						src: ['**', '!**/*.ts'],
 						dest: 'bin/plugins/'
 					}
 				]

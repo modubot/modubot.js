@@ -116,7 +116,7 @@ export class Plugin {
 					special = special[1];
 					switch(special){
 						case 'alias':
-							plugin.onMessage(from, to, this.config.command + content);
+							plugin.onMessage(from, to, this.config.command + content + (prefix ? (' | ' + prefix.slice(0, -2)) : ''));
 							break;
 						case 'cmd':
 							var args = content.split(' ');

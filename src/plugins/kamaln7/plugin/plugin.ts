@@ -67,7 +67,7 @@ export class Plugin {
 
 	}
 
-	loadPlugin(namespace:string, cb:any) {
+	loadPlugin(namespace:string, cb: (err: any, namespace: any) => any) {
 		try {
 			this.bot.PluginManager.load(this.bot, namespace);
 
@@ -77,7 +77,7 @@ export class Plugin {
 		}
 	}
 
-	unloadPlugin(namespace:string, cb:any) {
+	unloadPlugin(namespace:string, cb: (err: any, namespace: any) => any) {
 		try {
 			this.bot.PluginManager.unload(this.bot, namespace);
 
@@ -87,7 +87,7 @@ export class Plugin {
 		}
 	}
 
-	listPlugins(cb) {
+	listPlugins(cb : (err: any, result: any) => any) {
 		cb(null, Object.keys(this.bot.plugins).join(' '));
 	}
 

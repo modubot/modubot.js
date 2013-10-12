@@ -40,7 +40,7 @@ export class Plugin {
 		log.save();
 	}
 
-	getLastXLogs(amount:number, callback, includePrivate = true) {
+	getLastXLogs(amount:number, callback: (err: any, result: any) => any, includePrivate = true) {
 		var search = {};
 		if(!includePrivate){
 			search = {

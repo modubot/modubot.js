@@ -29,11 +29,11 @@ export class Factoid {
 		}
 	}
 
-    findAll(cb: any) {
+    findAll(cb: (err: any, result: any) => any) {
         this.database.find({forgotten: false}, null, {sort: { factoid: 1 }}, cb);
     }
 
-	active(factoid:string, cb:any) {
+	active(factoid:string, cb: (err: any, result: any) => any) {
 		var query = this.database.findOne({
 			factoid: factoid,
 			forgotten: false
@@ -42,14 +42,14 @@ export class Factoid {
 		query.exec(cb);
 	}
 
-	history(factoid:string, cb:any) {
+	history(factoid:string, cb: (err: any, result: any) => any) {
 		this.database.find({
 			factoid: factoid,
 			forgotten: false
 		}, cb);
 	}
 
-	forgetActive(factoid:string, cb:any) {
+	forgetActive(factoid:string, cb: (err: any, result: any) => any) {
 		var database = this.database;
 		this.active(factoid, function forgetFactoid(err, factoid) {
             if (!factoid) {

@@ -28,9 +28,7 @@ export class Plugin {
 
 	onCommandForget(from:string, to:string, message:string, args:any) {
 		if (args.length < 2) {
-			this.bot.reply(from, to, "Usage: " +
-						   this.bot.config.bot.command + "f <factoid>",
-						   'notice');
+			this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid>', 'notice');
 			return;
 		}
 		var factoidName = args[1].toLowerCase();
@@ -39,18 +37,18 @@ export class Plugin {
 		var factoid = new Factoid(this.database);
 		factoid.forgetActive(factoidName, (function(err, numAffected) {
 			if(err) {
-                this.bot.log.warn(err);
-                this.bot.reply(from, to, 'An error occurred', 'notice');
-                return;
-            }
+				this.bot.log.warn(err);
+				this.bot.reply(from, to, 'An error occurred', 'notice');
+				return;
+			}
 
-            this.bot.reply(from, to, 'Forgot: ' + factoidName, 'notice');
+			this.bot.reply(from, to, 'Forgot: ' + factoidName, 'notice');
 		}).bind(this));
 	}
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {
 		if (args.length < 3) {
-			this.bot.reply(from, to, '.remember <factoid> <text>', 'notice');
+			this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid> <text>', 'notice');
 			return;
 		}
 
@@ -67,12 +65,13 @@ export class Plugin {
 		factoid.channel = (to.charAt(0) == '#' ? to : '');
 
 		var plugin = this;
-		factoid.save(function saveFactoid(err, factoid) {
-			if(err) {
-				plugin.bot.reply(from, to, err);
+		factoid.save(function saveFactoid(numAffected, err, factoid) {
+			if (err) {
+				plugin.bot.reply(from, to, err, 'notice');
+				return;
 			}
 
-			plugin.bot.reply(from, to, 'Added: ' + factoidName + '.', 'notice');
+			plugin.bot.reply(from, to, (numAffected ? 'Updated: ' : 'Added: ') + factoid.factoid + '.', 'notice');
 		});
 	}
 
@@ -85,7 +84,7 @@ export class Plugin {
 	 * @param to
 	 * @param message
 	 */
-	onMessage(from:string, to:string, message:string) {
+		onMessage(from:string, to:string, message:string) {
 		if (this.isFactoid(message)) {
 			var factoidName = message.split(' ')[0].replace(this.config.command, '').toLowerCase();
 
@@ -139,7 +138,7 @@ export class Plugin {
 	 * @param command
 	 * @returns {boolean}
 	 */
-	isFactoid(command:any) {
+		isFactoid(command:any) {
 		return (command.charAt(0) == this.config.command);
 	}
 
@@ -149,14 +148,14 @@ export class Plugin {
 	 * @param command
 	 * @returns {boolean}
 	 */
-	isFactoidInfo(command:any) {
+		isFactoidInfo(command:any) {
 		return (command.charAt(1) == '+');
 	}
 
 	getAllFactoids(callback){
 		var factoid = new Factoid(this.database);
 
-        factoid.findAll(callback);
+		factoid.findAll(callback);
 	}
 
 }

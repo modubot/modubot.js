@@ -3,12 +3,17 @@ var bf = require('./bf.js')
 Plugin = exports.Plugin = function Plugin(bot) {
   this.bot = bot;
   this.commands = { 'bf' : 'evalBrainfuck'
-                  , 'brainfuck' : 'evalBrainfuck' };
+                  , 'brainfuck' : 'onCommandBrainfuck' };
 }
 
 Plugin.prototype.evalBrainfuck = function (from, to, message, args) {
   var program = args.slice(1).join(' ');
-  var compiled = bf.compile(program);
+  try {
+    var compiled = bf.compile(program);
+  } catch (e) {
+    this.bot.reply(to, from, "Error: " + e.error);
+    return;
+  }
   try {
     var result = compiled.program(new MyState(compiled.comments));
     this.bot.reply(to, from, "Program successfully stopped: " + result.getResult());

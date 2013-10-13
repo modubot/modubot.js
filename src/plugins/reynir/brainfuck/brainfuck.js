@@ -1,9 +1,10 @@
 var bf = require('./bf.js')
 
-Plugin = exports.Plugin = function Plugin(bot) {
+Plugin = exports.Plugin = function Plugin(bot, config) {
   this.bot = bot;
   this.commands = { 'bf' : 'onCommandBrainfuck'
                   , 'brainfuck' : 'onCommandBrainfuck' };
+  this.maxSteps = config ? config.maxSteps || 1000 : 1000;
 }
 
 Plugin.prototype.onCommandBrainfuck = function (from, to, message, args) {
@@ -15,20 +16,19 @@ Plugin.prototype.onCommandBrainfuck = function (from, to, message, args) {
     return;
   }
   try {
-    var result = compiled.program(new MyState(compiled.comments));
+    var result = compiled.program(new MyState(compiled.comments, this.maxSteps));
     this.bot.reply(to, from, "Program successfully stopped: " + result.getResult());
   } catch (result) {
     this.bot.reply(to, from, "Program timed out: " + result.getResult());
   }
 }
 
-function MyState(input) {
+function MyState(input, stepCounterMax) {
   var cellSize = 3000;
   var cells = Array.apply(null, Array(cellSize)).map(function(_) { return 0; });
   var dp = 0;
   var result = [];
   var stepCounter = 0;
-  var stepCounterMax = 1000;
 
   this.increment = function() {
     cells[dp] += 1;

@@ -2,7 +2,7 @@ var bf = require('./bf.js')
 
 Plugin = exports.Plugin = function Plugin(bot) {
   this.bot = bot;
-  this.commands = { 'bf' : 'evalBrainfuck'
+  this.commands = { 'bf' : 'onCommandBrainfuck'
                   , 'brainfuck' : 'onCommandBrainfuck' };
 }
 

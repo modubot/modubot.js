@@ -29,9 +29,9 @@ export class Factoid {
 		}
 	}
 
-    findAll(cb: any) {
-        this.database.find({forgotten: false}, null, {sort: { factoid: 1 }}, cb);
-    }
+	findAll(cb: any) {
+		this.database.find({forgotten: false}, null, {sort: { factoid: 1 }}, cb);
+	}
 
 	active(factoid:string, cb:any) {
 		var query = this.database.findOne({
@@ -45,42 +45,54 @@ export class Factoid {
 	history(factoid:string, cb:any) {
 		this.database.find({
 			factoid: factoid,
-			forgotten: false
+			forgotten: true
 		}, cb);
 	}
 
-	forgetActive(factoid:string, cb:any) {
+	forgetActive(factoid:string, cb:any, lockedOverride:boolean = false) {
 		var database = this.database;
 		this.active(factoid, function forgetFactoid(err, factoid) {
-            if (!factoid) {
-                // No results
-                err = 'Factoid was not found';
-            }
-            if (err) {
-                cb(err, null);
-                return;
-            }
+			if (!factoid) {
+				// No results
+				err = 'Factoid was not found';
+			}
+			if (err) {
+				cb(err, null);
+				return;
+			}
 
-            if(factoid.locked) {
-                cb('Factoid is locked.', null);
+			if(!lockedOverride && factoid.locked) {
+				cb('Factoid is locked.', null);
 				return;
 			}
 
 			database.update(factoid, {
-                $set: { forgotten: true }
+				$set: { forgotten: true }
 			}, cb);
 
 		});
 	}
 
-	save(cb:any):any {
-		// Create a new database entry for this factoid
+	save(cb:any, lockedOverride:boolean = false):any {
+		// Create a temporary ORM object for the factoid
 		var factoid = new this.database({
 			factoid: this.factoid,
 			content: this.content,
 			owner: this.owner
 		});
-		factoid.save(cb);
+
+		// Set existing factoids of the same name to forgotten: true
+		this.forgetActive(this.factoid, function(err, numAffected){
+			if(err && err != 'Factoid was not found'){
+				// Delete the temporary object
+				delete factoid;
+
+				cb(null, err, null);
+				return;
+			}
+
+			factoid.save(cb.bind(this, numAffected));
+		}, lockedOverride);
 	}
 
 	generateMongooseSchema() {

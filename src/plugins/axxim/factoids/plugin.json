@@ -3,7 +3,7 @@
 	"name": "factoids",
 	"title": "Factoids",
 	"description": "Factoid module for Modubot",
-	"version": "0.3",
+	"version": "0.4",
 	"author": "Luke Strickland",
 	"requires": {
 

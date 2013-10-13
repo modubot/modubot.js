@@ -77,6 +77,7 @@ export class Factoid {
 		// Create a temporary ORM object for the factoid
 		var factoid = new this.database({
 			factoid: this.factoid,
+			channel: this.channel,
 			content: this.content,
 			owner: this.owner
 		});

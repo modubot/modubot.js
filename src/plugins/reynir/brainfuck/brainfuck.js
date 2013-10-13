@@ -6,7 +6,7 @@ Plugin = exports.Plugin = function Plugin(bot) {
                   , 'brainfuck' : 'onCommandBrainfuck' };
 }
 
-Plugin.prototype.evalBrainfuck = function (from, to, message, args) {
+Plugin.prototype.onCommandBrainfuck = function (from, to, message, args) {
   var program = args.slice(1).join(' ');
   try {
     var compiled = bf.compile(program);

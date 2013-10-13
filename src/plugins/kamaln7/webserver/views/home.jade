@@ -28,11 +28,11 @@ block content
           tfoot
             tr
               th Total:
-              td= Object.keys(bot.plugins).length / 2
+              td= Object.keys(bot.plugins).length
               td
           tbody
             each plugin in bot.plugins
               tr
-                td= bot.plugins[plugin].title
-                td= bot.plugins[plugin].version
-                td= bot.plugins[plugin].description
+                td= plugin.title
+                td= plugin.version
+                td= plugin.description

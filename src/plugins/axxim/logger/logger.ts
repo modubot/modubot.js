@@ -44,7 +44,7 @@ export class Plugin {
 		var search = {};
 		if(!includePrivate){
 			search = {
-				channel: {$ne: ''}
+				channel: {$ne: null}
 			};
 		}
 		this.Log.find(search, null, {sort: { createdAt: -1 }, limit: amount}, callback);

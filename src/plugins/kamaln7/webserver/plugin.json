@@ -3,7 +3,7 @@
     "name": "webserver",
     "title": "Webserver",
     "description": "Webserver module for Modubot",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "author": "Kamal Nasser",
     "requires": {
 

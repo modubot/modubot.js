@@ -52,6 +52,8 @@ export class Plugin {
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {
         this.bot.hasAccess(from, to, this.config.acl, (function(hasAccess) {
+            if(!hasAccess) return;
+
             if (args.length < 3) {
                 this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid> <text>', 'notice');
                 return;

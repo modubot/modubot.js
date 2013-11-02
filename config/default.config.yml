@@ -29,3 +29,4 @@ plugin:
     appId: Yahoo! App ID
   axxim/factoids:
     command: "?"
+    acl: {}

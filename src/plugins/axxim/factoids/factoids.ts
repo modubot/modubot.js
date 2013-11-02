@@ -27,52 +27,58 @@ export class Plugin {
 	}
 
 	onCommandForget(from:string, to:string, message:string, args:any) {
-		if (args.length < 2) {
-			this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid>', 'notice');
-			return;
-		}
-		var factoidName = args[1].toLowerCase();
+        this.bot.hasAccess(from, to, this.config.acl, (function(hasAccess) {
+            if(!hasAccess) return;
+
+            if (args.length < 2) {
+                this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid>', 'notice');
+                return;
+            }
+            var factoidName = args[1].toLowerCase();
 
 
-		var factoid = new Factoid(this.database);
-		factoid.forgetActive(factoidName, (function(err, numAffected) {
-			if(err) {
-				this.bot.log.warn(err);
-				this.bot.reply(from, to, 'An error occurred', 'notice');
-				return;
-			}
+            var factoid = new Factoid(this.database);
+            factoid.forgetActive(factoidName, (function(err, numAffected) {
+                if(err) {
+                    this.bot.log.warn(err);
+                    this.bot.reply(from, to, 'An error occurred', 'notice');
+                    return;
+                }
 
-			this.bot.reply(from, to, 'Forgot: ' + factoidName, 'notice');
-		}).bind(this));
+                this.bot.reply(from, to, 'Forgot: ' + factoidName, 'notice');
+            }).bind(this));
+        }).bind(this));
 	}
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {
-		if (args.length < 3) {
-			this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid> <text>', 'notice');
-			return;
-		}
+        this.bot.hasAccess(from, to, this.config.acl, (function(hasAccess) {
+            if (args.length < 3) {
+                this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid> <text>', 'notice');
+                return;
+            }
 
-		var factoidName = args[1].toLowerCase();
+            var factoidName = args[1].toLowerCase();
 
-		var contents = args.splice(2);
-		contents = contents.join(' ').trim();
+            var contents = args.splice(2);
+            contents = contents.join(' ').trim();
 
-		var factoid = new Factoid(this.database);
+            var factoid = new Factoid(this.database);
 
-		factoid.factoid = factoidName;
-		factoid.content = contents;
-		factoid.owner = from;
-		factoid.channel = (to.charAt(0) == '#' ? to : '');
+            factoid.factoid = factoidName;
+            factoid.content = contents;
+            factoid.owner = from;
+            factoid.channel = (to.charAt(0) == '#' ? to : '');
 
-		var plugin = this;
-		factoid.save(function saveFactoid(numAffected, err, factoid) {
-			if (err) {
-				plugin.bot.reply(from, to, err, 'notice');
-				return;
-			}
+            var plugin = this;
+            factoid.save(function saveFactoid(numAffected, err, factoid) {
+                if (err) {
+                    plugin.bot.reply(from, to, err, 'notice');
+                    return;
+                }
 
-			plugin.bot.reply(from, to, (numAffected ? 'Updated: ' : 'Added: ') + factoid.factoid + '.', 'notice');
-		});
+                plugin.bot.reply(from, to, (numAffected ? 'Updated: ' : 'Added: ') + factoid.factoid + '.', 'notice');
+            });
+        }).bind(this));
 	}
 
 	/**
@@ -84,7 +90,7 @@ export class Plugin {
 	 * @param to
 	 * @param message
 	 */
-		onMessage(from:string, to:string, message:string) {
+	 onMessage(from:string, to:string, message:string) {
 		if (this.isFactoid(message)) {
 			var factoidName = message.split(' ')[0].replace(this.config.command, '').toLowerCase();
 

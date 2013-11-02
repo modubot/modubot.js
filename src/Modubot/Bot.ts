@@ -172,6 +172,7 @@ export class Bot {
 		}
 	}
 
+    // DEPRECATED -- you should use hasAccess instead.
 	hasPermission(from, to, mode, notice:boolean = true) {
 		var modes = ['', '+', '%', '@', '&', '~'];
 
@@ -190,5 +191,50 @@ export class Bot {
 
 		return hasPermission;
 	}
+
+    hasAccess(from:string, to:string, modes:any, cb:any, notice:boolean = true) {
+        var channelModes = ['', '+', '%', '@', '&', '~'];
+        var isChannel = to.charAt(0) == '#';
+
+        var adminOverride = true;
+        var channelMode = '';
+        var allowQuery = true;
+
+        var hasPermission = true;
+
+        if ('object' === typeof modes) {
+            if (modes.hasOwnProperty('admin'))
+                adminOverride = modes['admin'];
+
+            if (modes.hasOwnProperty('channel'))
+                channelMode = modes['channel'];
+
+            if (modes.hasOwnProperty('query'))
+                allowQuery = modes['query'];
+        } else {
+            channelMode = modes;
+        }
+
+        if (isChannel) {
+            if (!this.client.chans.hasOwnProperty(to)) {
+                hasPermission = false;
+            } else {
+                hasPermission = channelModes.indexOf(this.client.chans[to].users[from]) >= channelModes.indexOf(channelMode);
+            }
+        } else {
+            hasPermission = allowQuery;
+        }
+        if (!hasPermission && adminOverride) {
+            var isAdmin = false; // TODO: Check if the user is an admin
+
+            hasPermission = isAdmin;
+        }
+
+
+        cb(hasPermission);
+        if (notice && !hasPermission) {
+            this.reply(from, to, 'You are not authorized to do that.', 'notice');
+        }
+    }
 
 }

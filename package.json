@@ -2,7 +2,7 @@
 	"name": "modubot",
 	"preferGlobal": false,
 	"private": true,
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "Modubot: The scalable, and extensible IRC Bot.",
 	"contributors": [
 		{

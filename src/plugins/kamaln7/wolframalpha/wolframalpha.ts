@@ -35,7 +35,7 @@ export class Plugin {
 				return;
 			}
 
-			if(!results.length){
+			if(!results || !results.length){
 				this.bot.reply(from, to, 'No results.');
 				return;
 			}

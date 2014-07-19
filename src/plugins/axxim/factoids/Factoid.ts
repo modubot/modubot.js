@@ -85,7 +85,7 @@ export class Factoid {
             var hits = {};
             result.hits.map(function(hit) {
                 // Group hits by day
-                var day = new Date(hit.setHours(0, 0, 0));
+                var day = (new Date(hit.setHours(0, 0, 0))).toISOString();
 
                 if(!hits[day])
                     hits[day] = 1;

@@ -6,6 +6,7 @@ export class Factoid {
 	channel:string;
 	forgotten:boolean;
 	locked:boolean;
+    hits:Date[];
 	createdAt:string;
 
 	mongoose:any;
@@ -20,7 +21,7 @@ export class Factoid {
 
 		var models = this.mongoose.modelSchemas;
 
-		// Make sure we dont make two models
+		// Make sure we don't make two models
 		if (models['Factoid'] === undefined) {
 			var factoidSchema = this.mongoose.Schema(this.generateMongooseSchema());
 			this.database = this.mongoose.model('Factoid', factoidSchema);
@@ -72,6 +73,30 @@ export class Factoid {
 		}, cb);
 	}
 
+    // Example usage of the hits array.
+    // Could be rendered as a graph and would look very cool.
+    hitsPerDay(_id:any, cb:any) {
+        this.database.findOne({
+            _id: _id
+        }, function(err, result) {
+            if (err)
+                cb(err, null);
+
+            var hits = {};
+            result.hits.map(function(hit) {
+                // Group hits by day
+                var day = new Date(hit.setHours(0, 0, 0));
+
+                if(!hits[day])
+                    hits[day] = 1;
+                else
+                    hits[day]++;
+            });
+
+            cb(null, hits);
+        });
+    }
+
 	forgetActive(factoid:string, cb:any, lockedOverride:boolean = false) {
 		var database = this.database;
 		this.active(factoid, function forgetFactoid(err, factoid) {
@@ -119,6 +144,11 @@ export class Factoid {
 		}, lockedOverride);
 	}
 
+    static hit(factoid:any, cb:any) {
+        factoid.hits.addToSet(Date.now());
+        factoid.save();
+    }
+
 	generateMongooseSchema() {
 		return {
 			factoid: String,
@@ -127,6 +157,7 @@ export class Factoid {
 			channel: String,
 			forgotten: {type: Boolean, default: false},
 			locked: {type: Boolean, default: false},
+            hits: {type: [Date], default: []},
 			createdAt: {type: Date, default: Date.now}
 		};
 	}

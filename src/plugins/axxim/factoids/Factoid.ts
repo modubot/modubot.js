@@ -33,6 +33,28 @@ export class Factoid {
 		this.database.find({forgotten: false}, null, {sort: { factoid: 1 }}, cb);
 	}
 
+    search(query:string, cb: (err: any, results: any) => any) {
+        // Escape "query" for usage in a regex pattern
+        var query = query.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+
+        this.database.find({
+            $or: [
+                // Search by name
+                {
+                    factoid: new RegExp(query, 'i')
+                },
+                // Search by contents
+                {
+                    content: new RegExp(query, 'i')
+                }
+            ]
+        }, 'factoid', {
+            sort: {
+                factoid: 1
+            }
+        }, cb);
+    }
+
 	active(factoid:string, cb:any) {
 		var query = this.database.findOne({
 			factoid: factoid,

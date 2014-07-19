@@ -21,7 +21,9 @@ export class Plugin {
 			'remember': 'onCommandRemember',
 			'r': 'onCommandRemember',
 			'forget': 'onCommandForget',
-			'f': 'onCommandForget'
+			'f': 'onCommandForget',
+            'fsearch': 'onCommandSearch',
+            'fs': 'onCommandSearch'
 		};
 
 	}
@@ -35,7 +37,6 @@ export class Plugin {
                 return;
             }
             var factoidName = args[1].toLowerCase();
-
 
             var factoid = new Factoid(this.database);
             factoid.forgetActive(factoidName, (function(err, numAffected) {
@@ -82,6 +83,36 @@ export class Plugin {
             });
         }).bind(this));
 	}
+
+    onCommandSearch(from:string, to:string, message:string, args:string[]) {
+        if (args.length < 2) {
+            this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <search query>', 'notice');
+            return;
+        }
+
+        args.shift();
+        var query:string = args.join(' ');
+
+        var factoid = new Factoid(this.database);
+        factoid.search(query, (function(err:any, results:any) {
+            if (err) {
+                this.bot.reply(from, to, 'Sorry, an error occurred.', 'notice');
+                return;
+            }
+
+            var response:string = 'No factoids found.';
+            if (results.length > 0) {
+                // Get the names only
+                results = results.map(function (factoid) {
+                    return factoid.factoid;
+                });
+
+                response = 'Found: ' + results.join(', ') + '.';
+            }
+
+            this.bot.reply(from, to, response);
+        }).bind(this));
+    }
 
 	/**
 	 * Handle potential factoids by binding to the global message event.

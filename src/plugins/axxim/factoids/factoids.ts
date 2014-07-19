@@ -23,7 +23,8 @@ export class Plugin {
 			'forget': 'onCommandForget',
 			'f': 'onCommandForget',
             'fsearch': 'onCommandSearch',
-            'fs': 'onCommandSearch'
+            'fs': 'onCommandSearch',
+            'factoidUsageCount': 'onCommandUsageCount'
 		};
 
 	}
@@ -114,6 +115,23 @@ export class Plugin {
         }).bind(this));
     }
 
+    onCommandUsageCount(from:string, to:string, message:string, args:string[]) {
+        if (args.length < 2) {
+            this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid>', 'notice');
+            return;
+        }
+
+        var factoid = new Factoid(this.database);
+        factoid.active(args[1], (function(err:any, result:any) {
+            if (err) {
+                this.bot.reply(from, to, 'Sorry, an error occurred.', 'notice');
+                return;
+            }
+
+            this.bot.reply(from, to, 'The factoid ' + result.factoid + ' has been used ' + result.hits.length + ' times so far.');
+        }).bind(this));
+    }
+
 	/**
 	 * Handle potential factoids by binding to the global message event.
 	 *
@@ -139,6 +157,9 @@ export class Plugin {
 				if(!factoid) {
 					return;
 				}
+
+                // Add a hit
+                Factoid.hit(factoid, function(){});
 
 				// By default no prefix
 				var prefix = '';

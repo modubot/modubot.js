@@ -1,4 +1,4 @@
-import FactoidClass = require('Factoid');
+import FactoidClass = require('./Factoid');
 var Factoid = FactoidClass.Factoid;
 
 export class Plugin {

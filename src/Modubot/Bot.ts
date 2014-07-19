@@ -9,7 +9,7 @@ import fs = require('fs');
 import yaml = require('js-yaml');
 import mongoose = require('mongoose');
 import irc = require('irc');
-import Plugin = require('Plugin');
+import Plugin = require('./Plugin');
 import bunyan = require('bunyan');
 
 export class Bot {

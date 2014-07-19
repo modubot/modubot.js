@@ -38,6 +38,7 @@ export class Factoid {
         var query = query.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
 
         this.database.find({
+            forgotten: false,
             $or: [
                 // Search by name
                 {

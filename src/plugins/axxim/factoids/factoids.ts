@@ -84,7 +84,7 @@ export class Plugin {
 	}
 
 	/**
-	 * Handle potential factoids by binding to the global message evnet.
+	 * Handle potential factoids by binding to the global message event.
 	 *
 	 * Currently handles piping, special factoids and regular factoids.
 	 *
@@ -134,7 +134,18 @@ export class Plugin {
 							break;
 					}
 				} else {
-					plugin.client.say(plugin.bot.getReplyTo(from, to), prefix + factoid.content);
+                    // Replace %input% with factoid's args.
+                    var factoidContent = factoid.content.toString();
+                    var args:any = message.split(' ');
+                    args.shift();
+                    args = args.join(' ');
+
+                    if (prefix) {
+                        args = args.replace(prefix.replace(/: $/, ''), '').replace(/[\s\|]+$/, '');
+                    }
+
+                    factoidContent = factoidContent.replace(/%input%/gi, args);
+					plugin.client.say(plugin.bot.getReplyTo(from, to), prefix + factoidContent);
 				}
 			}).bind(this));
 		}

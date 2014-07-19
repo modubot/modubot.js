@@ -15,13 +15,22 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+        coffee: {
+            glob_to_multiple: {
+                expand: true,
+                cwd: 'src',
+                src: ['**/*.coffee'],
+                dest: 'bin',
+                ext: '.js'
+            }
+        },
 		copy: {
 			main: {
 				files: [
 					{
 						expand: true,
 						cwd: 'src/plugins',
-						src: ['**', '!**/*.ts'],
+						src: ['**', '!**/*.ts', '!**/*.coffee'],
 						dest: 'bin/plugins/'
 					}
 				]
@@ -30,9 +39,10 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
-	// Default task(s).
-	grunt.registerTask('default', ['typescript','copy']);
+    // Default task(s).
+	grunt.registerTask('default', ['typescript', 'coffee', 'copy']);
 
 };

@@ -26,4 +26,4 @@ block content
                 td= factoid.owner
                 td= factoid.channel
                 td= factoid.content
-                td= factoid.createdAt
+                td(data-date=(new Date(factoid.createdAt).getTime() / 1000))= factoid.createdAt

@@ -40,12 +40,14 @@ export class Plugin {
 				return;
 			}
 
-			results.forEach((function(result){
-				if(result.primary){
-					var result = result.subpods;
-					this.bot.reply(from, to, result[0].value);
-				}
-			}).bind(this));
+            var result = results.filter(function(result) {
+                return result.primary;
+            }).map(function (result) {
+                return result.subpods[0].value;
+            }).join(' · ')
+                .replace(/(\r\n|\r|\n)/gm, ' · ');
+
+            this.bot.reply(from, to, result);
 		}).bind(this));
 	}
 

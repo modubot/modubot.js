@@ -16,7 +16,8 @@
   ],
   "scripts": {
     "start": "node ./bin/Modubot",
-    "postinstall": "grunt && node ./lib/install_plugins_deps.js"
+    "postinstall": "grunt && node ./lib/install_plugins_deps.js",
+    "postupdate": "grunt && node ./lib/install_plugins_deps.js"
   },
   "repository": {
     "type": "git",

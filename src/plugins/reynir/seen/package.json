@@ -4,12 +4,6 @@
     "title": "Seen",
     "description": "Prints last time a user was seen. Expects axxim/logger",
     "version": "0.0.2",
-    "author": "Reynir",
-    "requires": {
-
-    },
-    "nodeRequires": {
-
-    }
+    "author": {"name": "Reynir"}
 
 }

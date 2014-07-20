@@ -4,12 +4,6 @@
     "title": "Wolframalpha",
     "description": "Wolframalpha plugin for Modubot",
     "version": "0.2.1",
-    "author": "Kamal Nasser",
-    "requires": {
-
-    },
-    "nodeRequires": {
-
-    }
+    "author": {"name": "Kamal Nasser"}
 
 }

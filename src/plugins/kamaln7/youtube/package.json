@@ -3,13 +3,7 @@
     "name": "youtube",
     "title": "YouTube",
     "description": "Parse YouTube links and output information",
-    "version": "0.2",
-    "author": "Kamal Nasser",
-    "requires": {
-
-    },
-    "nodeRequires": {
-
-    }
+    "version": "0.2.0",
+    "author": {"name": "Kamal Nasser"}
 
 }

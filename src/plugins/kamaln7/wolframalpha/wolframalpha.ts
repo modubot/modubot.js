@@ -7,17 +7,18 @@ export class Plugin {
 	config:any;
 	wolfram:any;
 
-	constructor(bot:any, config:any) {
+	constructor(bot:any) {
 		this.bot = bot;
 		this.database = bot.database;
 		this.client = bot.client;
-		this.config = config;
+        this.config = require('./package.json').config;
+
 		this.commands = {
 			'wolframalpha': 'onCommandWolframalpha',
 			'wa': 'onCommandWolframalpha'
 		};
 
-		this.wolfram = wolfram.createClient(config.applicationId);
+		this.wolfram = wolfram.createClient(this.config.applicationId);
 	}
 
 	onCommandWolframalpha(from:string, to:string, message:string, args:any) {

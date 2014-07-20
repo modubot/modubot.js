@@ -4,6 +4,10 @@
 	"title": "Factoids",
 	"description": "Factoid module for Modubot",
 	"version": "0.4.2",
-	"author": {"name": "Luke Strickland"}
+	"author": {"name": "Luke Strickland"},
+    "config": {
+        "command": "?",
+        "acl": {}
+    }
 
 }

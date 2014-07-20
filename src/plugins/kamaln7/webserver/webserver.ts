@@ -8,13 +8,13 @@ export class Plugin {
 	config:any;
 	plugins:any;
 
-	constructor(bot:any, config:any) {
+	constructor(bot:any) {
 		this.bot = bot;
 		this.database = bot.database;
 		this.client = bot.client;
 		this.commands = {};
-		this.config = config;
 		this.plugins = [];
+        this.config = require('./package.json').config;
 
 		var express = require('express');
 		this.port = this.config.port || 8888;

@@ -6,11 +6,12 @@ export class Plugin {
 	config:any;
 	weather:any;
 
-	constructor(bot:any, config:any) {
+	constructor(bot:any) {
 		this.bot = bot;
 		this.database = bot.database;
 		this.client = bot.client;
-		this.config = config;
+        this.config = require('./package.json').config;
+
 		this.commands = {
 			'weather': 'onCommandWeather',
 			'w': 'onCommandWeather'

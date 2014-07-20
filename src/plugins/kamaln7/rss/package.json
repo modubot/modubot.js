@@ -4,6 +4,9 @@
     "title": "RSS",
     "description": "RSS module for Modubot",
     "version": "0.2.0",
-    "author": {"name": "Kamal Nasser"}
+    "author": {"name": "Kamal Nasser"},
+    "config": {
+        "feeds": []
+    }
 
 }

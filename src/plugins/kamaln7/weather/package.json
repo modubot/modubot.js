@@ -4,6 +4,9 @@
     "title": "Yahoo Weather",
     "description": "Yahoo Weather module for Modubot",
     "version": "0.2.0",
-    "author": {"name": "Kamal Nasser"}
+    "author": {"name": "Kamal Nasser"},
+    "config": {
+        "appId": "Yahoo! App ID"
+    }
 
 }

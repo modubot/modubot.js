@@ -12,14 +12,8 @@ export class Plugin {
 	}
 
 	onMessage(from:string, to:string, message:string) {
-		var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum porta laoreet. Nullam bibendum condimentum est, a vestibulum nisl lobortis vel.";
-		var match = message.trim().match(/^s\/([^\/])+\/([^\/])*\/?$/i);
-		if(match){
-			var search = match[1];
-			var replace = match[2];
-
-
-		}
+		// /s\/(([^\/])+)\/(([^\/])*)\/?/i
+        // /^([sm])\/(.*?(?<!\\\\))\/(?:(.*?(?<!\\\\))\/)?([a-z]*)/i    https://github.com/clone1018/Shocky/blob/8c0b59db25e0ad8dc5d9bc87fdd5af919da317ce/modulesrc/ModuleRegexReplace.java#L33
 	}
 
 }

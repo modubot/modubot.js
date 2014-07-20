@@ -57,6 +57,14 @@ export class Plugin {
 			throw err;
 		}
 
+        if (pluginConfig.pluginDependencies) {
+            pluginConfig.pluginDependencies.forEach(function (dependency) {
+                if ( ! bot.plugins[dependency]) {
+                    throw namespace + " requires " + dependency;
+                }
+            });
+        }
+
 
 		// Load the plugin
 		var pluginFile = require('../plugins/' + namespace + '/' + pluginConfig.main);

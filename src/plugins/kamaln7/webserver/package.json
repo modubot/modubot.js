@@ -4,6 +4,9 @@
     "title": "Webserver",
     "description": "Webserver module for Modubot",
     "version": "0.2.4",
-    "author": {"name": "Kamal Nasser"}
+    "author": {"name": "Kamal Nasser"},
+    "config": {
+        "port": 8888
+    }
 
 }

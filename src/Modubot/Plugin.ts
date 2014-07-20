@@ -51,7 +51,7 @@ export class Plugin {
 		var name = namespace.split('/')[1];
 
 		try {
-			var pConfig = this.loadConfiguration(namespace);
+			var pluginConfig = this.loadConfiguration(namespace);
 		} catch(err) {
 			bot.log.error(err);
 			throw err;
@@ -59,13 +59,12 @@ export class Plugin {
 
 
 		// Load the plugin
-		var pluginFile = require('../plugins/' + namespace + '/' + pConfig.main);
-		var pluginConfig = bot.config.plugin[namespace] || {};
-		bot.plugins[namespace] = new pluginFile.Plugin(bot, pluginConfig);
+		var pluginFile = require('../plugins/' + namespace + '/' + pluginConfig.main);
+		bot.plugins[namespace] = new pluginFile.Plugin(bot);
 
         // Merge the plugins config into the plugin class
-        for (var attrname in pConfig) {
-            bot.plugins[namespace][attrname] = pConfig[attrname];
+        for (var attrname in pluginConfig) {
+            bot.plugins[namespace][attrname] = pluginConfig[attrname];
         }
 
 		// Load the hooks

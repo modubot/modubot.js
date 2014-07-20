@@ -9,12 +9,13 @@ export class Plugin {
 	loadedAt:any;
 	readers:any;
 
-	constructor(bot:any, config:any) {
+	constructor(bot:any) {
 		this.bot = bot;
 		this.database = bot.database;
 		this.client = bot.client;
+        this.config = require('./package.json').config;
+
 		this.commands = {};
-		this.config = config;
 		this.loadedAt = moment();
 		this.readers = [];
 

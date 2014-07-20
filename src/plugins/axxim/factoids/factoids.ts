@@ -12,11 +12,12 @@ export class Plugin {
 	factoidSchema:any;
 	Factoid:any;
 
-	constructor(bot:any, config:any) {
+	constructor(bot:any) {
 		this.bot = bot;
-		this.config = config;
 		this.database = bot.database;
 		this.client = bot.client;
+        this.config = require('./package.json').config;
+
 		this.commands = {
 			'remember': 'onCommandRemember',
 			'r': 'onCommandRemember',

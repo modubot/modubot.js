@@ -4,6 +4,9 @@
     "title": "Wolframalpha",
     "description": "Wolframalpha plugin for Modubot",
     "version": "0.2.1",
-    "author": {"name": "Kamal Nasser"}
+    "author": {"name": "Kamal Nasser"},
+    "config": {
+        "applicationId": "Get an application ID from http://products.wolframalpha.com/developers/"
+    }
 
 }

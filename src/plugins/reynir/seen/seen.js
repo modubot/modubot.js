@@ -3,9 +3,9 @@ exports.Plugin = (function() {
 		this.bot = bot;
 		this.database = bot.database;
 		this.commands = { 'seen' : 'onCommandSeen' };
+        this.Log = this.bot.plugins['axxim/logger'].Log;
 		this.getLog = function() {
-			var logger = this.bot.plugins['axxim/logger'];
-			return logger && logger.Log;
+			return this.Log;
 		}.bind(this);
 
 		this.moment = require('moment');

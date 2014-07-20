@@ -59,7 +59,7 @@ export class Plugin {
 
 
 		// Load the plugin
-		var pluginFile = require('../plugins/' + namespace + '/' + pConfig.mainFile);
+		var pluginFile = require('../plugins/' + namespace + '/' + pConfig.main);
 		var pluginConfig = bot.config.plugin[namespace] || {};
 		bot.plugins[namespace] = new pluginFile.Plugin(bot, pluginConfig);
 
@@ -97,48 +97,17 @@ export class Plugin {
 	}
 
 	private loadConfiguration(namespace:string) {
-		var pluginConfig = new PluginConfig();
-
 		try {
-			var configFile = require('../plugins/' + namespace + '/plugin.json');
+			var configFile = require('../plugins/' + namespace + '/package.json');
 		} catch(err) {
 			throw err;
 		}
 
+        if ( ! configFile.main) {
+            configFile.main = configFile.name;
+        }
 
-		pluginConfig.name = configFile.name;
-		pluginConfig.title = configFile.title;
-		pluginConfig.description = configFile.description;
-		pluginConfig.version = configFile.version;
-		pluginConfig.author = configFile.author;
-		pluginConfig.requires = configFile.requires;
-		pluginConfig.nodeRequires = configFile.nodeRequires;
-		pluginConfig.mainFile = configFile.mainFile || configFile.name;
-
-		return pluginConfig;
+		return configFile;
 	}
 
 }
-
-class PluginConfig {
-	name: string;
-	title: string;
-	description: string;
-	version: string;
-	author: string;
-	requires: any;
-	nodeRequires: any;
-	mainFile:any;
-}
-
-/*
-interface PluginConfig {
-	name: string;
-	title: string;
-	description: string;
-	version: string;
-	author: string;
-	requires: any;
-	nodeRequires: any;
-}
-*/

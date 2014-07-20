@@ -4,12 +4,6 @@
     "title": "Webserver",
     "description": "Webserver module for Modubot",
     "version": "0.2.4",
-    "author": "Kamal Nasser",
-    "requires": {
-
-    },
-    "nodeRequires": {
-
-    }
+    "author": {"name": "Kamal Nasser"}
 
 }

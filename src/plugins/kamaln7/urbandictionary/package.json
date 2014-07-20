@@ -3,13 +3,7 @@
     "name": "urbandictionary",
     "title": "Urban Dictionary",
     "description": "Looks up words and phrases on Urban Dictionary",
-    "version": "0.1",
-    "author": "Kamal Nasser",
-    "requires": {
-
-    },
-    "nodeRequires": {
-
-    }
+    "version": "0.1.0",
+    "author": {"name": "Kamal Nasser"}
 
 }

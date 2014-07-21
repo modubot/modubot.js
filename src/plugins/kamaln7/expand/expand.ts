@@ -48,7 +48,12 @@ export class Plugin {
     }
 
     expand(from:string, to:string, url:string, notifyOnErr:boolean = true) {
-        urlExpander.expand(url, (function(err, longUrl) {
+        urlExpander.expand({
+            url: url,
+            headers: {
+                'User-Agent': 'Modubot.js (http://git.io/modubot.js) - kamaln7/expand v' + this.version
+            }
+        }, (function(err, longUrl) {
             if (err) {
                 notifyOnErr && this.bot.reply(from, to, 'An error occurred.', 'notice');
                 return;

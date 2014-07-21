@@ -7,11 +7,15 @@
   "contributors": [
     {
       "name": "Kamal Nasser",
-      "email": "kamal@kamalnasser.net"
+      "email": "hello@kamal.io"
     },
     {
       "name": "Luke Strickland",
       "email": "luke@axxim.net"
+    },
+    {
+      "name": "Reynir Björnsson",
+      "email": "reynir@reynir.dk"
     }
   ],
   "scripts": {

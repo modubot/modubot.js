@@ -54,7 +54,8 @@ export class Plugin {
                 return;
             }
 
-            if (url == longUrl) {
+            // Return if the expanded URL is the same as the original URL
+            if ((longUrl.replace(/\/$/, '')) == (url.replace(/\/$/, ''))) {
                 return;
             }
 

@@ -57,11 +57,13 @@ export class Factoid {
         }, cb);
     }
 
-	active(factoid:string, cb:any) {
+	active(factoid:string, cb:any, includeHits:boolean = false) {
 		var query = this.database.findOne({
 			factoid: factoid,
 			forgotten: false
-		}).sort({createdAt: -1});
+		}, {
+            hits: includeHits ? 1 : 0
+        }).sort({createdAt: -1});
 
 		query.exec(cb);
 	}
@@ -75,12 +77,12 @@ export class Factoid {
 
     // Example usage of the hits array.
     // Could be rendered as a graph and would look very cool.
-    hitsPerDay(_id:any, cb:any) {
-        this.database.findOne({
-            _id: _id
-        }, function(err, result) {
-            if (err)
+    hitsPerDay(factoid:string, cb:any) {
+        this.database.active(factoid, function(err, result) {
+            if (err) {
                 cb(err, null);
+                return;
+            }
 
             var hits = {};
             result.hits.map(function(hit) {
@@ -94,7 +96,7 @@ export class Factoid {
             });
 
             cb(null, hits);
-        });
+        }, true);
     }
 
 	forgetActive(factoid:string, cb:any, lockedOverride:boolean = false) {

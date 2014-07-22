@@ -152,6 +152,8 @@ export class Plugin {
 			var factoid = new Factoid(this.database);
 			var plugin = this;
 
+            // only used for adding a hit, temporary workaround (?)
+            var fF = factoid;
 			factoid.active(factoidName, (function(err, factoid) {
 				if(err){
 					plugin.bot.reply(from, to, err, 'notice');
@@ -163,7 +165,7 @@ export class Plugin {
 				}
 
                 // Add a hit
-                Factoid.hit(factoid, function(){});
+                fF.hit(factoid.factoid, function(){});
 
 				// By default no prefix
 				var prefix = '';

@@ -146,9 +146,15 @@ export class Factoid {
 		}, lockedOverride);
 	}
 
-    static hit(factoid:any, cb:any) {
-        factoid.hits.addToSet(Date.now());
-        factoid.save();
+    hit(factoid:string, cb:any) {
+        this.database.update({
+            factoid: factoid,
+            forgotten: false
+        }, {
+            $addToSet: {
+                hits: Date.now()
+            }
+        }, cb);
     }
 
 	generateMongooseSchema() {

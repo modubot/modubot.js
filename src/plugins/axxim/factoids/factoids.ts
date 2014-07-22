@@ -35,7 +35,7 @@ export class Plugin {
             if(!hasAccess) return;
 
             if (args.length < 2) {
-                this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid>', 'notice');
+                this.bot.reply(from, to, 'Usage: ' + args[0] + ' <factoid>', 'notice');
                 return;
             }
             var factoidName = args[1].toLowerCase();
@@ -58,7 +58,7 @@ export class Plugin {
             if(!hasAccess) return;
 
             if (args.length < 3) {
-                this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid> <text>', 'notice');
+                this.bot.reply(from, to, 'Usage: ' + args[0] + ' <factoid> <text>', 'notice');
                 return;
             }
 
@@ -88,7 +88,7 @@ export class Plugin {
 
     onCommandSearch(from:string, to:string, message:string, args:string[]) {
         if (args.length < 2) {
-            this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <search query>', 'notice');
+            this.bot.reply(from, to, 'Usage: ' + args[0] + ' <search query>', 'notice');
             return;
         }
 
@@ -118,14 +118,17 @@ export class Plugin {
 
     onCommandUsageCount(from:string, to:string, message:string, args:string[]) {
         if (args.length < 2) {
-            this.bot.reply(from, to, 'Usage: ' + this.bot.config.bot.command + args[0] + ' <factoid>', 'notice');
+            this.bot.reply(from, to, 'Usage: ' + args[0] + ' <factoid>', 'notice');
             return;
         }
 
         var factoid = new Factoid(this.database);
         factoid.active(args[1], (function(err:any, result:any) {
+            if (err) err = 'Sorry, an error occurred.';
+            if (!result) err = 'Factoid not found.';
+
             if (err) {
-                this.bot.reply(from, to, 'Sorry, an error occurred.', 'notice');
+                this.bot.reply(from, to, err, 'notice');
                 return;
             }
 

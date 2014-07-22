@@ -35,7 +35,10 @@ export class Plugin {
 				}
 
 				feed.channels.forEach((function (channel){
-					this.client.say(channel, '[' + feed.name + '] ' + item.title + ' - ' + item.link.href);
+                    // I need to figure out a better way to do this
+                    var url = item.link.href || item.link;
+
+					this.client.say(channel, '[' + feed.name + '] ' + item.title + ' - ' + url);
 				}).bind(this));
 			}).bind(this));
 

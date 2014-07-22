@@ -133,7 +133,7 @@ export class Plugin {
             }
 
             this.bot.reply(from, to, 'The factoid ' + result.factoid + ' has been used ' + result.hits.length + ' times so far.');
-        }).bind(this));
+        }).bind(this), true);
     }
 
 	/**

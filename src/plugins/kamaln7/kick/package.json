@@ -8,6 +8,6 @@
     },
     "pluginDependencies": [],
     "config": {
-        "admins": ["kamal"]
+        "admins": []
     }
 }

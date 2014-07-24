@@ -20,11 +20,12 @@ export class Plugin {
 	}
 
 	onCommandWeather(from:string, to:string, message:string, args:any) {
-		if (args.length < 1) {
-			this.bot.reply(from, to, this.bot.prefix + 'weather <location>', 'notice');
+		if (args.length < 2) {
+			this.bot.reply(from, to, args[0] + ' <location>', 'notice');
 			return;
 		}
 
+        args.shift();
 		this.weather({location: args.join(' '), logging: true, appid: this.config.appId}, (function(data) {
 			this.bot.reply(from, to, data.text + ' ' + data.temp + 'C | H: ' + data.high + 'C L: ' + data.low + 'C');
 		}).bind(this));

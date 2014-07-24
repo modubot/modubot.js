@@ -19,6 +19,6 @@ export class Plugin {
   }
 
   usage(from: string, to:string) {
-    this.bot.reply(from, to, 'Usage: .lmgtfy How is babby formed');
+    this.bot.reply(from, to, 'Usage: .lmgtfy <query>', 'notice');
   }
 }

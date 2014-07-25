@@ -206,6 +206,7 @@ export class Bot {
         }
 
         if (isChannel) {
+            to = to.toLowerCase();
             if (!this.client.chans.hasOwnProperty(to)) {
                 hasPermission = false;
             } else {

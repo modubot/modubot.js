@@ -1,7 +1,7 @@
 {
-    "name": "kick",
-    "title": "Kick",
-    "description": "Allows admins to kick users",
+    "name": "banhammer",
+    "title": "Banhammer",
+    "description": "Allows admins to kick/ban users",
     "version": "0.0.1",
     "author": {
         "name": "Kamal Nasser"

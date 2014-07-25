@@ -6,6 +6,13 @@ Modubot, the scalable, extensible IRC Bot.
 Installation
 ------------
 
+### Using modubot-js.cli
+
+    npm install -g modubot.js-cli
+    modubot new bot-name
+
+### Manually
+
     npm install -g grunt-cli
     npm install
     grunt
@@ -14,4 +21,4 @@ Installation
 Documentation
 -------------
 
-You can access Modubot's documentation [here](https://modubot.net/docs.html).
+You can view Modubot's documentation [here](https://modubot.net/docs.html).

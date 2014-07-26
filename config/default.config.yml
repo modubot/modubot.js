@@ -2,6 +2,7 @@
 network:
   host: ircserver
   port: 6667
+  secure: false
   selfSigned: false
   password: ""
   sasl: false

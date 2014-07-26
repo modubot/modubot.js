@@ -14,173 +14,183 @@ import bunyan = require('bunyan');
 
 export class Bot {
 
-	PluginManager: Plugin.Plugin;
+    PluginManager:Plugin.Plugin;
 
 
-	configDir: string;
+    configDir:string;
 
-	log: any;
-	chatLog: any;
+    log:any;
+    chatLog:any;
 
-	config: any;
-	plugins: any = {};
-	database: any;
-	client: any;
+    config:any;
+    plugins:any = {};
+    database:any;
+    client:any;
 
-	constructor(configDir: string) {
-		this.configDir = configDir;
+    constructor(configDir:string) {
+        this.configDir = configDir;
 
-		// Load Our Stuff
-		this.PluginManager = new Plugin.Plugin();
+        // Load Our Stuff
+        this.PluginManager = new Plugin.Plugin();
 
-		this.log = bunyan.createLogger({
-			name: 'debugLog',
-			streams: [
-				{
-					stream: process.stdout
-				},
-				{
-					type: 'rotating-file',
-					path: './logs/debug.log',
-					period: '1d',
-					count: 10
-				}
-			]
-		});
+        this.log = bunyan.createLogger({
+            name: 'debugLog',
+            streams: [
+                {
+                    stream: process.stdout
+                },
+                {
+                    type: 'rotating-file',
+                    path: './logs/debug.log',
+                    period: '1d',
+                    count: 10
+                }
+            ]
+        });
 
-		var defaultConfigPath = path.join(configDir, 'default.config.yml');
-		var localConfigPath = path.join(configDir, 'config.yml');
+        var defaultConfigPath = path.join(configDir, 'default.config.yml');
+        var localConfigPath = path.join(configDir, 'config.yml');
 
-		var defaultConfigContents = fs.readFileSync(defaultConfigPath, 'utf8');
-		var defaultConfig = yaml.load(defaultConfigContents);
+        var defaultConfigContents = fs.readFileSync(defaultConfigPath, 'utf8');
+        var defaultConfig = yaml.load(defaultConfigContents);
 
 
-		// Let's load our config and fallback if we need to.
-		try {
-			// Manually load file
-			var localConfigContents = fs.readFileSync(localConfigPath, 'utf8');
-			var localConfig = yaml.load(localConfigContents);
+        // Let's load our config and fallback if we need to.
+        try {
+            // Manually load file
+            var localConfigContents = fs.readFileSync(localConfigPath, 'utf8');
+            var localConfig = yaml.load(localConfigContents);
 
-		} catch(e) {
-			// Need to copy the file in sync so we can safely process.exit below
-			fs.writeFileSync(localConfigPath, fs.readFileSync(defaultConfigPath));
+        } catch (e) {
+            // Need to copy the file in sync so we can safely process.exit below
+            fs.writeFileSync(localConfigPath, fs.readFileSync(defaultConfigPath));
 
-			this.log.warn('Local config not found, copied default to config/config.yml');
+            this.log.warn('Local config not found, copied default to config/config.yml');
 
-			process.exit();
-		}
+            process.exit();
+        }
 
-		Object.keys(localConfig).forEach(function (key) {
-			if(["network", "bot"].indexOf(key) != -1){
-				Object.keys(localConfig[key]).forEach(function (subkey) {
+        Object.keys(localConfig).forEach(function (key) {
+            if (["network", "bot"].indexOf(key) != -1) {
+                Object.keys(localConfig[key]).forEach(function (subkey) {
                     defaultConfig[key][subkey] = localConfig[key][subkey];
-				});
-			} else {
-				defaultConfig[key] = localConfig[key];
-			}
-		});
+                });
+            } else {
+                defaultConfig[key] = localConfig[key];
+            }
+        });
 
-		this.config = defaultConfig;
-	}
+        this.config = defaultConfig;
+    }
 
-	spawn() {
-		var config = this.config;
-		var Logger = this.log;
+    spawn() {
+        var config = this.config;
+        var Logger = this.log;
 
-		this.database = mongoose;
-		mongoose.connect(config.database.mongodb);
-		var db = mongoose.connection;
+        this.database = mongoose;
+        mongoose.connect(config.database.mongodb);
+        var db = mongoose.connection;
 
-		db.on('error', function(err){
-			Logger.error('Could not establish MongoDB connection:' + err);
-		});
-		db.on('open', function(test){
-			Logger.info('Connected to MongoDB');
-		});
+        db.on('error', function (err) {
+            Logger.error('Could not establish MongoDB connection:' + err);
+        });
+        db.on('open', function () {
+            Logger.info('Connected to MongoDB');
+        });
 
-		Logger.info('Connecting to ' + config.network.host + ':' + config.network.port);
+        Logger.info('Connecting to ' + config.network.host + ':' + config.network.port);
 
-		this.client = new irc.Client(config.network.host, config.network.nick, {
-			port: config.network.port,
-			userName: config.network.username,
-			realName: config.network.realname,
-			channels: config.network.channels,
-			sasl: config.network.sasl,
-			password: config.network.password
-		});
+        if (config.network.port[0] = '+') {
+            config.network.secure = true;
+            config.network.port = config.network.port.toString().substr(1);
+        }
 
-		var plugins = this.config.plugins;
+        this.client = new irc.Client(config.network.host, config.network.nick, {
+            port: config.network.port,
+            userName: config.network.username,
+            realName: config.network.realname,
+            channels: config.network.channels,
+            sasl: config.network.sasl,
+            password: config.network.password,
+            secure: config.network.secure,
+            selfSigned: config.network.selfSigned || false
+        });
 
-		if(plugins !== null) {
-			plugins.forEach(function (p) {
-				this.PluginManager.load(this, p);
-			}, this);
-		}
+        var plugins = this.config.plugins;
 
+        if (plugins !== null) {
+            plugins.forEach(function (p) {
+                this.PluginManager.load(this, p);
+            }, this);
+        }
 
-		this.client.addListener('message', function (from, to, message) {
-			if (message.charAt(0) == config.bot.command) {
-				var command = message.split(' ')[0].substring(1);
+        this.client.addListener('message', function (from, to, message) {
+            if (message.charAt(0) == config.bot.command) {
+                var command = message.split(' ')[0].substring(1);
 
-				this.emit('command.' + command, from, to, message, message.split(' '));
-			}
-		});
+                this.emit('command.' + command, from, to, message, message.split(' '));
+            }
+        });
 
-		this.client.addListener('join', function (channel, nick, message) {
-			Logger.info('Joined Channel: ', channel);
-		});
+        this.client.addListener('join', function (channel, nick, message) {
+            Logger.info('Joined Channel: ', channel);
+        });
 
-		/**
-		 * Sends errors to plugins and if debug show them
-		 */
-		this.client.addListener('error', function (message) {
-			Logger.warn(message);
-		});
-	}
+        /**
+         * Sends errors to plugins and if debug show them
+         */
+        this.client.addListener('error', function (message) {
+            Logger.warn(message);
+        });
 
-	getReplyTo(from, to) {
-		if (to.charAt(0) == '#') {
-			return to;
-		} else {
-			return from;
-		}
-	}
+        this.client.addListener('netError', function (message) {
+            Logger.error(message);
+        });
+    }
 
-	reply(from, to, reply, type = 'privmsg') {
-		switch (type) {
-			case 'privmsg':
-				if (to.charAt(0) == '#') {
-					this.client.say(to, from + ': ' + reply);
-				} else {
-					this.client.say(from, reply);
-				}
-				break;
+    getReplyTo(from, to) {
+        if (to.charAt(0) == '#') {
+            return to;
+        } else {
+            return from;
+        }
+    }
 
-			case 'notice':
-				this.client.notice(from, reply);
-				break;
-		}
-	}
+    reply(from, to, reply, type = 'privmsg') {
+        switch (type) {
+            case 'privmsg':
+                if (to.charAt(0) == '#') {
+                    this.client.say(to, from + ': ' + reply);
+                } else {
+                    this.client.say(from, reply);
+                }
+                break;
+
+            case 'notice':
+                this.client.notice(from, reply);
+                break;
+        }
+    }
 
     // DEPRECATED -- you should use hasAccess instead.
-	hasPermission(from, to, mode, notice:boolean = true) {
-		var modes = ['', '+', '%', '@', '&', '~'];
+    hasPermission(from, to, mode, notice:boolean = true) {
+        var modes = ['', '+', '%', '@', '&', '~'];
 
-		if (to.charAt(0) !== '#') {
-			return true;
-		}
-		if (!this.client.chans.hasOwnProperty(to)) {
-			return false;
-		}
+        if (to.charAt(0) !== '#') {
+            return true;
+        }
+        if (!this.client.chans.hasOwnProperty(to)) {
+            return false;
+        }
 
-		var hasPermission = modes.indexOf(this.client.chans[to].users[from]) >= modes.indexOf(mode);
+        var hasPermission = modes.indexOf(this.client.chans[to].users[from]) >= modes.indexOf(mode);
 
-		if (notice && !hasPermission) {
-			this.reply(from, to, 'You are not authorized to do that.', 'notice');
-		}
+        if (notice && !hasPermission) {
+            this.reply(from, to, 'You are not authorized to do that.', 'notice');
+        }
 
-		return hasPermission;
-	}
+        return hasPermission;
+    }
 
     hasAccess(from:string, to:string, modes:any, cb:any, notice:boolean = true) {
         var channelModes = ['', '+', '%', '@', '&', '~'];

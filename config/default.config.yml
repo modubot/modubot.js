@@ -2,6 +2,7 @@
 network:
   host: ircserver
   port: 6667
+  selfSigned: false
   password: ""
   sasl: false
   nick: Modubot

@@ -100,11 +100,6 @@ export class Bot {
 
         Logger.info('Connecting to ' + config.network.host + ':' + config.network.port);
 
-        if (config.network.port[0] = '+') {
-            config.network.secure = true;
-            config.network.port = config.network.port.toString().substr(1);
-        }
-
         this.client = new irc.Client(config.network.host, config.network.nick, {
             port: config.network.port,
             userName: config.network.username,

@@ -190,6 +190,15 @@ export class Plugin {
 							// TODO: Improve this
 							plugin.client.emit('command.' + command, from, to, plugin.bot.config.command + command + ' ' + args.join(' ') + ' ' + message.replace(new RegExp('/^' + plugin.config.command.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + factoidName.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '[ ]?/i'), ''));
 							break;
+                        case 'action':
+                            // %input%
+                            var args:any = message.split(' ');
+                            args.shift();
+                            args = args.join(' ');
+                            content = content.replace(/%input%/gi, args);
+
+                            plugin.client.action(plugin.bot.getReplyTo(from, to), content);
+                            break;
 					}
 				} else {
                     // Replace %input% with factoid's args.

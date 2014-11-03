@@ -44,7 +44,8 @@ export class Plugin {
             var result = results.filter(function(result) {
                 return result.primary;
             }).map(function (result) {
-                return result.subpods[0].value;
+                // Limit to 600 characters
+                return result.subpods[0].value.substring(0, 600);
             }).join(' · ')
                 .replace(/(\r\n|\r|\n)/gm, ' · ');
 

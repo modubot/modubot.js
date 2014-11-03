@@ -51,7 +51,7 @@ class Plugin
 
             response =
               pages: data.list.length
-              result: data.list[page]
+              result: data.list[page].substring 0, 600 # limit response to 600 characters
       catch error
         err = 'An error occurred.'
       finally

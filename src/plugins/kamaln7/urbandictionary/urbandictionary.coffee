@@ -26,7 +26,7 @@ class Plugin
         # Replace new lines with ·
         definition = result.result.definition.replace(/(\r\n|\r|\n)/gm, ' · ')
 
-        @bot.reply from, to, "#{term}:[#{page}/#{result.pages}]: #{definition}"
+        @bot.reply from, to, "#{term}:[#{page}/#{result.pages}]: #{definition.substring 0, 400}"
 
   lookUp: (term, page, cb) ->
     url = "http://api.urbandictionary.com/v0/define?term=#{encodeURIComponent(term)}"

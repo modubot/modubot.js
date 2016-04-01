@@ -3,7 +3,7 @@
     "name": "google",
     "title": "Google Search",
     "description": "Google Search Module for Modubot",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": {"name": "Kamal Nasser"}
 
 }

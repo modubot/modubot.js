@@ -11,6 +11,7 @@ import mongoose = require('mongoose');
 import irc = require('irc');
 import Plugin = require('./Plugin');
 import bunyan = require('bunyan');
+import pkg = require('../../package.json');
 
 export class Bot {
 
@@ -23,6 +24,7 @@ export class Bot {
     chatLog:any;
 
     config:any;
+    version:any;
     plugins:any = {};
     database:any;
     client:any;
@@ -81,6 +83,7 @@ export class Bot {
         });
 
         this.config = defaultConfig;
+        this.version = pkg.version;
     }
 
     spawn() {

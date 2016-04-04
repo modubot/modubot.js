@@ -15,7 +15,7 @@ export class Plugin {
 	}
 
 	onCommandVersion(from:string, to:string, message:string, args:any) {
-		this.client.reply(from, to, 'Modubot v' + this.bot.version);
+		this.bot.reply(from, to, 'Modubot v' + this.bot.version);
 	}
 
 }

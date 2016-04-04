@@ -16,7 +16,6 @@ export class Bot {
 
     PluginManager:Plugin.Plugin;
 
-
     configDir:string;
 
     log:any;
@@ -81,6 +80,7 @@ export class Bot {
         });
 
         this.config = defaultConfig;
+        process.title = this.config.network.nick + '-' + this.config.network.host.replace(/^irc\./i, '').replace(/\.[a-z]{1,4}$/i, '');
     }
 
     spawn() {

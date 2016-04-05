@@ -1,6 +1,7 @@
 export class Plugin {
   bot: any;
   commands: any;
+  querystring: any;
 
   constructor(bot : any) {
     this.bot = bot;
